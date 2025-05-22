@@ -1,0 +1,38 @@
+{
+  "name": "sistema-de-gestao-agropecuaria",
+  "version": "1.0.0",
+  "description": "> Guia completo para configurar o ambiente local com Git, SSH e clonar o repositório usando Windows",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
+    "format": "prettier --write .",
+    "dev:frontend": "npm run dev --workspace=apps/frontend",
+    "dev:backend": "npm run dev --workspace=apps/backend",
+    "dev": "concurrently -k -n FRONTEND,BACKEND -c blue,green \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "setup": "npm install && npm run format && npm run lint && npm run dev"
+  },
+  "workspaces": [
+    "apps/*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MarceloDChagas/Sistema-de-gestao-agropecuaria.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MarceloDChagas/Sistema-de-gestao-agropecuaria/issues"
+  },
+  "homepage": "https://github.com/MarceloDChagas/Sistema-de-gestao-agropecuaria#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.32.1",
+    "@typescript-eslint/parser": "^8.32.1",
+    "eslint": "^9.27.0",
+    "eslint-config-prettier": "^10.1.5",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.3",
+    "concurrently": "^8.2.2"
+  }
+}
