@@ -40,12 +40,17 @@ cat ~/.ssh/id_ed25519_agro.pub
 ## ⚖️ 3. Configurar o SSH para o projeto
 
 1. Execute no Git Bash:
+```bash
+   mkdir -p ~/.ssh
+```
+
+3. Execute no Git Bash:
 
 ```bash
 notepad ~/.ssh/config
 ```
 
-2. Adicione:
+3. Adicione:
 
 ```
 Host github-agro
@@ -55,7 +60,7 @@ Host github-agro
   IdentitiesOnly yes
 ```
 
-3. Salve e feche
+4. Salve e feche
 
 ---
 
