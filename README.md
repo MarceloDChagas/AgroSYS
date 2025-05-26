@@ -1,5 +1,10 @@
 # 🚠 Guia para Colaboradores no Windows – Sistema de Gestão Agropecuária
 
+## Pre requisitos
+1. Git
+2. Node.js e Npm
+3. Docker
+
 > Guia completo para configurar o ambiente local com Git, SSH e clonar o repositório usando Windows
 
 ## 🔒 1. Gerar chave SSH exclusiva para este projeto
