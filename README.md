@@ -43,7 +43,10 @@ cat ~/.ssh/id_ed25519_agro.pub
 ```bash
    mkdir -p ~/.ssh
 ```
-
+2. Execute no Git Bash:  (Precisamos garantir que o arquivo não tenha extensão .txt, verifique isso em user/.ssh, a pasta é oculta) 
+```bash
+   mv ~/.ssh/config.txt ~/.ssh/config
+```
 3. Execute no Git Bash:
 
 ```bash
