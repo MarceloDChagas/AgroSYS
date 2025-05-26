@@ -4,7 +4,7 @@
 
 ## 🔒 1. Gerar chave SSH exclusiva para este projeto
 
-1. Abra o **Git Bash** (Menu Iniciar > digite "Git Bash")
+1. Abra o **Git Bash** (Menu Iniciar > digite "Git Bash") - Note que GitBash não é o padrão de terminal do Visual Studio Code. Ao abrir o terminal integrado, no canto superior direito clique no > que esta com a concavidade para cima e selecione o Git Bash.
 2. Execute:
 
 ```bash
