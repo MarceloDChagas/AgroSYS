@@ -154,4 +154,5 @@ git push origin feat/minha-feature
 - Sempre use branches (nunca commit direto na main)
 - Use mensagens de commit claras (`feat`, `fix`, `refactor`, etc.)
 - Sempre faca mudancas pequenas
+
 ---
