@@ -88,7 +88,7 @@ Hi NOME! You've successfully authenticated, but GitHub does not provide shell ac
 Execute no Git Bash:
 
 ```bash
-git clone git@github-agro:mlcr1/Sistema-de-gestao-agropecuaria.git
+git clone git@github-agro:MarceloDChagas/Sistema-de-gestao-agropecuaria.git
 ```
 
 Depois:
