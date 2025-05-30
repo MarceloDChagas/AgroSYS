@@ -202,7 +202,7 @@ sistema-de-gestao-agropecuaria/
 ├── shared/                # Código compartilhado
 │   ├── types/            # Tipos compartilhados
 │   ├── utils/            # Utilitários compartilhados
-│   └── constants/        # Constantes compartilhadas
+│   └── enum/        # Enums compartilhadas
 │
 ├── .husky/               # Git Hooks
 ├── .eslintrc.json        # Configuração do ESLint
