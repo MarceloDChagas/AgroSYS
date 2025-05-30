@@ -2,8 +2,6 @@
 
 Sistema completo para gestão de propriedades rurais, desenvolvido com tecnologias modernas em uma arquitetura monorepo.
 
-![Estrutura do Projeto](docs/project-structure.png)
-
 ## 🚠 Guia para Colaboradores no Windows – Sistema de Gestão Agropecuária
 
 ### Pré-requisitos
