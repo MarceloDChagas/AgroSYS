@@ -2,13 +2,16 @@
 
 Sistema completo para gestão de propriedades rurais, desenvolvido com tecnologias modernas em uma arquitetura monorepo.
 
-# 🚠 Guia para Colaboradores no Windows – Sistema de Gestão Agropecuária
+![Estrutura do Projeto](docs/project-structure.png)
 
-## Pre requisitos
+## 🚠 Guia para Colaboradores no Windows – Sistema de Gestão Agropecuária
+
+### Pré-requisitos
 
 1. Git
-2. Node.js e Npm
-3. Docker
+2. Node.js 18+
+3. npm ou yarn
+4. Docker (opcional, para desenvolvimento local)
 
 > Guia completo para configurar o ambiente local com Git, SSH e clonar o repositório usando Windows
 
@@ -22,7 +25,6 @@ ssh-keygen -t ed25519 -C "seu-email@exemplo.com" -f ~/.ssh/id_ed25519_agro
 ```
 
 3. Quando solicitado:
-
    - Pressione `Enter` para aceitar o local sugerido
    - Pode deixar a senha em branco
 
@@ -39,10 +41,8 @@ cat ~/.ssh/id_ed25519_agro.pub
 2. Copie o conteúdo exibido
 3. Acesse [https://github.com/settings/keys](https://github.com/settings/keys)
 4. Clique em **"New SSH key"**
-
    - Title: `Chave Agro`
    - Key: cole o conteúdo copiado
-
 5. Clique em **Add SSH key**
 
 ---
@@ -52,13 +52,13 @@ cat ~/.ssh/id_ed25519_agro.pub
 1. Execute no Git Bash:
 
 ```bash
-   mkdir -p ~/.ssh
+mkdir -p ~/.ssh
 ```
 
 2. Execute no Git Bash: (Precisamos garantir que o arquivo não tenha extensão .txt, verifique isso em user/.ssh, a pasta é oculta)
 
 ```bash
-   mv ~/.ssh/config.txt ~/.ssh/config
+mv ~/.ssh/config.txt ~/.ssh/config
 ```
 
 3. Execute no Git Bash:
@@ -67,7 +67,7 @@ cat ~/.ssh/id_ed25519_agro.pub
 notepad ~/.ssh/config
 ```
 
-3. Adicione:
+4. Adicione:
 
 ```
 Host github-agro
@@ -77,7 +77,7 @@ Host github-agro
   IdentitiesOnly yes
 ```
 
-4. Salve e feche
+5. Salve e feche
 
 ---
 
@@ -103,11 +103,6 @@ Execute no Git Bash:
 
 ```bash
 git clone git@github-agro:MarceloDChagas/Sistema-de-gestao-agropecuaria.git
-```
-
-Depois:
-
-```bash
 cd Sistema-de-gestao-agropecuaria
 ```
 
@@ -139,7 +134,7 @@ git checkout -b feat/minha-feature
 
 ### Commitar:
 
-### Antes de commitar, consulte o seguinte artigo: https://medium.com/linkapi-solutions/conventional-commits-pattern-3778d1a1e657
+Antes de commitar, consulte o seguinte artigo: https://medium.com/linkapi-solutions/conventional-commits-pattern-3778d1a1e657
 
 ```bash
 git add .
@@ -172,27 +167,75 @@ git push origin feat/minha-feature
 sistema-de-gestao-agropecuaria/
 ├── apps/                    # Aplicações principais
 │   ├── frontend/           # Aplicação Next.js (Frontend)
-│   └── backend/            # API Node.js (Backend)
-├── packages/               # Pacotes compartilhados
-├── .husky/                # Configuração do Husky (Git Hooks)
-├── .eslintrc.json         # Configuração do ESLint
-├── .prettierrc            # Configuração do Prettier
-├── package.json           # Configuração principal do projeto
-├── turbo.json             # Configuração do Turborepo
-└── tsconfig.json          # Configuração base do TypeScript
+│   │   ├── src/
+│   │   │   ├── app/       # Páginas da aplicação
+│   │   │   │   ├── layout.tsx
+│   │   │   │   ├── page.tsx
+│   │   │   │   └── globals.css
+│   │   │   ├── components/# Componentes reutilizáveis
+│   │   │   │   ├── auth/
+│   │   │   │   └── layout/
+│   │   │   ├── lib/       # Utilitários e configurações
+│   │   │   └── types/     # Definições de tipos
+│   │   └── public/        # Arquivos estáticos
+│   │
+│   └── backend/           # API NestJS (Backend)
+│       ├── src/
+│       │   ├── auth/      # Autenticação
+│       │   │   ├── guards/
+│       │   │   ├── strategies/
+│       │   │   ├── auth.controller.ts
+│       │   │   ├── auth.module.ts
+│       │   │   └── auth.service.ts
+│       │   ├── prisma/    # Configuração do banco
+│       │   │   ├── prisma.module.ts
+│       │   │   └── prisma.service.ts
+│       │   ├── users/     # Gerenciamento de usuários
+│       │   │   ├── users.controller.ts
+│       │   │   ├── users.module.ts
+│       │   │   └── users.service.ts
+│       │   ├── app.module.ts
+│       │   └── main.ts
+│       └── prisma/        # Schema do Prisma
+│           └── schema.prisma
+│
+├── shared/                # Código compartilhado
+│   ├── types/            # Tipos compartilhados
+│   ├── utils/            # Utilitários compartilhados
+│   └── constants/        # Constantes compartilhadas
+│
+├── .husky/               # Git Hooks
+├── .eslintrc.json        # Configuração do ESLint
+├── .prettierrc           # Configuração do Prettier
+├── package.json          # Configuração principal
+└── tsconfig.json         # Configuração base do TypeScript
 ```
 
 ## 📦 Tecnologias Principais
 
-- **Next.js**: Framework React para frontend
-- **Node.js**: Runtime para backend
+### Frontend
+
+- **Next.js 13+**: Framework React com App Router
 - **TypeScript**: Superset JavaScript com tipagem estática
+- **Tailwind CSS**: Framework CSS utilitário
+- **React Query**: Gerenciamento de estado e cache
+- **Zod**: Validação de dados
+
+### Backend
+
+- **NestJS**: Framework Node.js
 - **Prisma**: ORM para banco de dados
-- **Turborepo**: Gerenciador de monorepo
-- **ESLint**: Linter para código JavaScript/TypeScript
+- **PostgreSQL**: Banco de dados
+- **JWT**: Autenticação
+- **Swagger**: Documentação da API
+
+### Ferramentas de Desenvolvimento
+
+- **ESLint**: Linter
 - **Prettier**: Formatador de código
-- **Husky**: Git hooks para garantir qualidade do código
-- **lint-staged**: Executa linters em arquivos staged
+- **Husky**: Git hooks
+- **TypeScript**: Tipagem estática
+- **Turborepo**: Gerenciador de monorepo
 
 ## 🛠️ Configurações
 
@@ -249,26 +292,62 @@ npm run format       # Executa Prettier
 npm run setup        # Instala dependências, formata e inicia
 ```
 
-## 🔧 Configuração do Ambiente
-
-1. Clone o repositório
-2. Instale as dependências:
-   ```bash
-   npm install
-   ```
-3. Configure as variáveis de ambiente (se necessário)
-4. Execute o setup:
-   ```bash
-   npm run setup
-   ```
-
 ## 📝 Convenções de Código
 
-- TypeScript para tipagem estática
-- ESLint para linting
-- Prettier para formatação
-- Commits seguindo Conventional Commits
-- Branches seguindo Git Flow
+### Frontend
+
+- Use TypeScript para todos os arquivos
+- Componentes funcionais com hooks
+- Estilização com Tailwind CSS
+- Documentação com JSDoc
+- Testes com Jest e React Testing Library
+
+### Backend
+
+- Arquitetura modular com NestJS
+- DTOs para validação de dados
+- Documentação com Swagger
+- Testes com Jest
+- Migrations com Prisma
+
+## 🔧 Configuração do Ambiente
+
+### Backend
+
+1. Configure o banco de dados:
+
+```bash
+cd apps/backend
+npx prisma migrate dev
+```
+
+2. Inicie o servidor:
+
+```bash
+npm run dev
+```
+
+3. Acesse a documentação Swagger:
+
+```
+http://localhost:3000/api
+```
+
+### Frontend
+
+1. Configure as variáveis de ambiente
+2. Inicie o servidor:
+
+```bash
+cd apps/frontend
+npm run dev
+```
+
+3. Acesse a aplicação:
+
+```
+http://localhost:5173
+```
 
 ## 🤝 Contribuição
 
@@ -281,162 +360,3 @@ npm run setup        # Instala dependências, formata e inicia
 ## 📄 Licença
 
 Este projeto está sob a licença ISC. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
-## 🎯 Guia para Backend
-
-### Estrutura do Backend
-
-```
-apps/backend/
-├── src/
-│   ├── auth/              # Autenticação e autorização
-│   │   ├── guards/        # Guards de autenticação
-│   │   ├── strategies/    # Estratégias de autenticação
-│   │   ├── auth.controller.ts
-│   │   ├── auth.module.ts
-│   │   └── auth.service.ts
-│   ├── prisma/           # Configuração do banco de dados
-│   │   ├── prisma.module.ts
-│   │   └── prisma.service.ts
-│   ├── users/            # Gerenciamento de usuários
-│   │   ├── users.controller.ts
-│   │   ├── users.module.ts
-│   │   └── users.service.ts
-│   ├── app.module.ts     # Módulo principal
-│   └── main.ts          # Arquivo de inicialização
-```
-
-### Conceitos Importantes
-
-1. **NestJS**
-
-   - Controllers: Endpoints da API
-   - Services: Lógica de negócio
-   - Modules: Organização do código
-   - Guards: Proteção de rotas
-   - DTOs: Validação de dados
-
-2. **Prisma**
-
-   - Schema: Definição do banco de dados
-   - Queries: Operações no banco
-   - Migrations: Controle de versão do banco
-
-3. **Autenticação**
-   - JWT: Tokens de autenticação
-   - Guards: Proteção de rotas
-   - Strategies: Estratégias de autenticação
-
-### Testando a API
-
-1. Inicie o servidor:
-
-```bash
-cd apps/backend
-npm run start:dev
-```
-
-2. Acesse a documentação Swagger:
-
-```
-http://localhost:3000/api
-```
-
-3. Teste os endpoints usando o Swagger, Postman e Insomnia
-
-### Boas Práticas
-
-- Use DTOs para validação
-- Implemente tratamento de erros
-- Documente endpoints com Swagger
-- Siga princípios SOLID
-- Use migrations para alterações
-- Mantenha índices otimizados
-
-## 🎯 Guia para Frontend
-
-### Estrutura do Frontend
-
-```
-apps/frontend/
-├── src/
-│   ├── app/                 # Páginas da aplicação (Next.js App Router)
-│   │   ├── layout.tsx      # Layout principal
-│   │   ├── page.tsx        # Página inicial
-│   │   ├── login/          # Página de login
-│   │   └── globals.css     # Estilos globais
-│   ├── components/         # Componentes reutilizáveis
-│   │   ├── auth/          # Componentes de autenticação
-│   │   │   └── LoginForm.tsx
-│   │   └── layout/        # Componentes de layout
-│   │       └── Header.tsx
-│   ├── lib/               # Utilitários e configurações
-│   │   └── api.ts         # Configuração da API
-│   └── types/             # Definições de tipos TypeScript
-└── public/                # Arquivos estáticos
-```
-
-### Tecnologias do Frontend
-
-- **Next.js 13+**: Framework React com App Router
-- **TypeScript**: Superset JavaScript com tipagem estática
-- **Tailwind CSS**: Framework CSS utilitário
-- **React**: Biblioteca para construção de interfaces
-- **ESLint**: Linter para código JavaScript/TypeScript
-- **Prettier**: Formatador de código
-
-### Guia de Desenvolvimento Frontend
-
-1. **Criando uma Nova Página**
-
-   - Crie um novo diretório em `src/app/` com o nome da página
-   - Adicione um arquivo `page.tsx` dentro do diretório
-   - Exporte um componente React como default
-
-2. **Criando um Novo Componente**
-
-   - Crie um novo arquivo em `src/components/` com o nome do componente
-   - Use a extensão `.tsx` para componentes com TypeScript
-   - Exporte o componente como named export
-
-3. **Estilização**
-   - Use classes utilitárias do Tailwind
-   - Para estilos personalizados, use `@apply` no arquivo `globals.css`
-   - Mantenha a consistência com o design system
-
-### Scripts do Frontend
-
-```bash
-cd apps/frontend
-npm run dev      # Inicia o servidor de desenvolvimento
-npm run build    # Cria a build de produção
-npm run start    # Inicia o servidor de produção
-npm run lint     # Executa o linter
-npm run format   # Formata o código com Prettier
-```
-
-### Boas Práticas Frontend
-
-1. **Performance**
-   - Use lazy loading para componentes grandes
-   - Otimize imagens
-   - Implemente code splitting
-   - Use memo quando necessário
-   - Use tags semânticas
-   - Adicione atributos ARIA
-   - Mantenha contraste adequado
-   - Teste com leitores de tela
-   - Valide inputs
-   - Sanitize dados
-   - Use HTTPS
-   - Implemente CSRF protection
-   - Mantenha componentes pequenos
-   - Use TypeScript
-   - Siga princípios SOLID
-
-### Recursos Úteis Frontend
-
-- [Documentação do Next.js](https://nextjs.org/docs)
-- [Documentação do Tailwind CSS](https://tailwindcss.com/docs)
-- [Documentação do TypeScript](https://www.typescriptlang.org/docs)
-- [Documentação do React](https://reactjs.org/docs)
