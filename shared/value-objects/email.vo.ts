@@ -15,7 +15,6 @@ private static normalizeEmail(email: string): string {
   return lowercased;
 }
 
-
   private static validateEmail(email: string): void {
     Email.validateEmpty(email);
     Email.validateFormat(email);
