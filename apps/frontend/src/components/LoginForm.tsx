@@ -8,7 +8,7 @@ export default function LoginForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement login logic
+    // Dps valida aqui a logica de login
     console.log({ email, password });
   };
 
