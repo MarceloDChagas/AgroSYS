@@ -8,7 +8,6 @@ export default function LoginForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement login logic
     console.log({ email, password });
   };
 
@@ -35,7 +34,6 @@ export default function LoginForm() {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-
         <div>
           <label className="block text-sm text-gray-600">Senha</label>
           <input
@@ -46,7 +44,6 @@ export default function LoginForm() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-
         <div className="flex justify-between text-sm text-gray-600">
           <label className="flex items-center space-x-2">
             <input type="checkbox" className="accent-green-600" />
@@ -56,8 +53,7 @@ export default function LoginForm() {
             Esqueceu a senha?
           </a>
         </div>
-
-        <Button type="submit" color="#1b5e1f">
+        <Button type="submit" color="#1b5e1f" className="block">
           ENTRAR
         </Button>
       </form>

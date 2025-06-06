@@ -1,16 +1,8 @@
-import { Routes, Route } from 'react-router-dom';
-import './App.css';
-import './index.css';
 import { LoginPage } from './pages/LoginPage';
-import HomePage from './pages/HomePage';
+import './index.css';
 
-const App: React.FC = () => {
-  return (
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/login" element={<LoginPage />} />
-    </Routes>
-  );
-};
+function App() {
+  return <LoginPage />;
+}
 
 export default App;
