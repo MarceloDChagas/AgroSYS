@@ -19,13 +19,20 @@ export default function RegisterForm() {
       <div className="flex flex-col items-center space-y-2">
         <img src={logo} alt="Logo" className="w-20 h-20" />
         <h2 className="text-2xl font-bold text-[#1b5e1f] tracking-wider">
-          REGISTRO
+          CRIAR CONTA
         </h2>
       </div>
 
       <form className="space-y-6" onSubmit={handleSubmit}>
         <div>
           <label className="block text-sm text-gray-600">Usuário</label>
+          <input
+            placeholder="Nome de usuário"
+            className="w-full mt-1 p-3 border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-green-600"
+          />
+        </div>
+        <div>
+          <label className="block text-sm text-gray-600">E-mail</label>
           <input
             type="email"
             placeholder="Email institucional"
@@ -44,24 +51,16 @@ export default function RegisterForm() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <div className="flex justify-between text-sm text-gray-600">
-          <label className="flex items-center space-x-2">
-            <input type="checkbox" className="accent-green-600" />
-            <span>Lembrar-me</span>
-          </label>
-          <a href="#" className="text-green-700 hover:underline">
-            Esqueceu a senha?
-          </a>
-        </div>
+
         <Button type="submit" color="#1b5e1f" className="block">
-          ENTRAR
+         CRIAR CONTA
         </Button>
       </form>
 
       <div className="text-center text-sm text-gray-600">
-        Não possui uma conta?{' '}
+        Já possui conta? {' '}
         <a href="#" className="text-green-700 hover:underline">
-          Inscreva-se
+          <b>LOGIN</b>
         </a>
       </div>
     </div>
