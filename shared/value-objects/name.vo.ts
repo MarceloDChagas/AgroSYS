@@ -1,5 +1,4 @@
 export class Name {
-
   private readonly name: string;
 
   private static readonly MIN_LEN = 2;
@@ -12,11 +11,9 @@ export class Name {
     this.name = nameNormalized;
   }
 
-
-private static normalizeName(name: string): string {
-  return Name.removeEdgeSpaces(name);
-}
-
+  private static normalizeName(name: string): string {
+    return Name.removeEdgeSpaces(name);
+  }
 
   private static validateName(name: string): void {
     Name.validateEmpty(name);
@@ -24,14 +21,13 @@ private static normalizeName(name: string): string {
     Name.validateCharacters(name);
   }
 
-
   private static removeEdgeSpaces(name: string): string {
     return name.trim();
   }
 
   private static validateEmpty(name: string): void {
     if (!name) {
-      throw new Error("O nome não pode estar vazio.");
+      throw new Error('O nome não pode estar vazio.');
     }
   }
 
@@ -46,12 +42,11 @@ private static normalizeName(name: string): string {
   private static validateCharacters(name: string): void {
     const validNameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/u;
     if (!validNameRegex.test(name)) {
-      throw new Error("O nome contém caracteres inválidos.");
+      throw new Error('O nome contém caracteres inválidos.');
     }
   }
 
   public getName(): string {
     return this.name;
   }
-
 }

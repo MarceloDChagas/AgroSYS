@@ -1,5 +1,4 @@
 export class Email {
-
   private readonly email: string;
 
   constructor(email: string) {
@@ -9,12 +8,11 @@ export class Email {
     this.email = emailNormalized;
   }
 
-private static normalizeEmail(email: string): string {
-  const trimmed = Email.normalizeRemoveEdgeSpaces(email);
-  const lowercased = Email.normalizeToLowerCase(trimmed);
-  return lowercased;
-}
-
+  private static normalizeEmail(email: string): string {
+    const trimmed = Email.normalizeRemoveEdgeSpaces(email);
+    const lowercased = Email.normalizeToLowerCase(trimmed);
+    return lowercased;
+  }
 
   private static validateEmail(email: string): void {
     Email.validateEmpty(email);
@@ -22,17 +20,16 @@ private static normalizeEmail(email: string): string {
   }
 
   private static normalizeRemoveEdgeSpaces(email: string): string {
-  return email.trim();
-}
+    return email.trim();
+  }
 
-private static normalizeToLowerCase(email: string): string {
-  return email.toLowerCase();
-}
-
+  private static normalizeToLowerCase(email: string): string {
+    return email.toLowerCase();
+  }
 
   private static validateEmpty(email: string): void {
     if (!email) {
-      throw new Error("O email não pode estar vazio.");
+      throw new Error('O email não pode estar vazio.');
     }
   }
 
@@ -40,7 +37,7 @@ private static normalizeToLowerCase(email: string): string {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!emailRegex.test(email)) {
-      throw new Error("O email informado é inválido.");
+      throw new Error('O email informado é inválido.');
     }
   }
 

@@ -1,73 +1,46 @@
-import logo from '../assets/logo.png';
-import { useState } from 'react';
-import { Button } from './ui/Button';
+// exemplo dentro do seu LoginForm.jsx (simplificado)
 
 export default function LoginForm() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Dps valida aqui a logica de login
-    console.log({ email, password });
-  };
-
-  {
-    /* Essa cor aqui e a interna */
-  }
   return (
-    <div className="bg-[#f0f4e9] rounded-2xl shadow-2xl p-10 w-full max-w-md space-y-6">
-      <div className="flex flex-col items-center space-y-2">
-        <img src={logo} alt="Logo" className="w-20 h-20" />
-        <h2 className="text-2xl font-bold text-[#1b5e1f] tracking-wider">
-          LOGIN
-        </h2>
+    <form>
+      <label htmlFor="email" className="block text-left text-[#2d572c] mb-1">Usuário</label>
+      <input
+        type="email"
+        id="email"
+        placeholder="Nome ou @gmail.com"
+        required
+        className="w-full p-2 mb-4 border border-gray-300 rounded"
+      />
+
+      <label htmlFor="senha" className="block text-left text-[#2d572c] mb-1">Senha</label>
+      <input
+        type="password"
+        id="senha"
+        placeholder="Senha"
+        required
+        className="w-full p-2 mb-4 border border-gray-300 rounded"
+      />
+
+      <div className="flex justify-between text-sm mb-6 text-[#2d572c]">
+        <label className="flex items-center gap-1">
+          <input type="checkbox" /> Lembrar-me
+        </label>
+        <a href="#" className="hover:underline">Esqueci a senha</a>
       </div>
 
-      <form className="space-y-6" onSubmit={handleSubmit}>
-        <div>
-          <label className="block text-sm text-gray-600">Usuário</label>
-          <input
-            type="email"
-            placeholder="Email institucional"
-            className="w-full mt-1 p-3 border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-green-600"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
+      <button
+        type="submit"
+        className="bg-[#2d572c] w-full text-white py-2 rounded font-bold hover:bg-[#1b3e1e] transition-colors"
+      >
+        ENTRAR
+      </button>
 
-        <div>
-          <label className="block text-sm text-gray-600">Senha</label>
-          <input
-            type="password"
-            placeholder="Senha"
-            className="w-full mt-1 p-3 border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-green-600"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-
-        <div className="flex justify-between text-sm text-gray-600">
-          <label className="flex items-center space-x-2">
-            <input type="checkbox" className="accent-green-600" />
-            <span>Lembrar-me</span>
-          </label>
-          <a href="#" className="text-green-700 hover:underline">
-            Esqueceu a senha?
-          </a>
-        </div>
-
-        <Button type="submit" color="#1b5e1f">
-          ENTRAR
-        </Button>
-      </form>
-
-      <div className="text-center text-sm text-gray-600">
+      <p className="mt-4 text-sm text-[#2d572c]">
         Não possui uma conta?{' '}
-        <a href="#" className="text-green-700 hover:underline">
+        <a href="#" className="underline hover:text-[#1b3e1e]">
           Inscreva-se
         </a>
-      </div>
-    </div>
+      </p>
+    </form>
   );
 }

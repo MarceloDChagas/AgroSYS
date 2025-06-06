@@ -7,8 +7,8 @@ import HomePage from './pages/HomePage';
 const App: React.FC = () => {
   return (
     <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/login" element={<LoginPage />} />
+      <Route path="/" element={<LoginPage />} />
+      <Route path="/login" element={<HomePage />} />
     </Routes>
   );
 };
