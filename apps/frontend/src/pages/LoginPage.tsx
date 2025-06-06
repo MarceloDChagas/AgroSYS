@@ -1,5 +1,6 @@
-import LoginForm from '../components/LoginForm'; // Assumo que seu LoginForm já está estilizado
+import LoginForm from '../components/LoginForm'; // 
 import agroImage from '../assets/agro.jpg';
+import logo from  '../assets/logo.png';
 
 export function LoginPage() {
   return (
@@ -37,7 +38,7 @@ export function LoginPage() {
       {/* Lado do formulário */}
       <div className="flex-1 bg-[#d9e2d5] flex justify-center items-center">
         <div className="bg-[#f0f3e8] p-10 rounded-lg shadow-md w-[350px] text-center">
-          <div className="text-4xl mb-2 text-[#2d572c]">🌿</div>
+           <img src={logo} alt="Logo" className="mx-auto mb-2 w-16 h-16" />
           <h2 className="text-[#2d572c] text-2xl font-bold mb-6">LOGIN</h2>
           <LoginForm />
         </div>
