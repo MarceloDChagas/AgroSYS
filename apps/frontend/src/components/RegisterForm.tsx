@@ -1,6 +1,7 @@
 import logo from '../assets/logo.png';
 import { useState } from 'react';
 import { Button } from './ui/Button';
+import { Link } from 'react-router-dom';
 
 export default function RegisterForm() {
   const [email, setEmail] = useState('');
@@ -53,17 +54,16 @@ export default function RegisterForm() {
         </div>
 
         <Button type="submit" color="#1b5e1f" className="block">
-         CRIAR CONTA
+          CRIAR CONTA
         </Button>
       </form>
 
       <div className="text-center text-sm text-gray-600">
-        Já possui conta? {' '}
-        <a href="#" className="text-green-700 hover:underline">
-          <b>LOGIN</b>
-        </a>
+        Já possui conta?{' '}
+        <Link to="/login" className="text-green-700 hover:underline">
+          Login
+        </Link>
       </div>
     </div>
   );
 }
-

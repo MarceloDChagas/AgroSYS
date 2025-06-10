@@ -1,6 +1,7 @@
 import logo from '../assets/logo.png';
 import { useState } from 'react';
 import { Button } from './ui/Button';
+import { Link } from 'react-router-dom';
 
 export default function LoginForm() {
   const [email, setEmail] = useState('');
@@ -57,12 +58,11 @@ export default function LoginForm() {
           ENTRAR
         </Button>
       </form>
-
       <div className="text-center text-sm text-gray-600">
         Não possui uma conta?{' '}
-        <a href="#" className="text-green-700 hover:underline">
+        <Link to="/register" className="text-green-700 hover:underline">
           Inscreva-se
-        </a>
+        </Link>
       </div>
     </div>
   );
