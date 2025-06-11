@@ -1,15 +1,7 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-<<<<<<< HEAD
     "declaration": true,
-=======
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "rootDir": "./src",
-    "outDir": "./dist",
-    "declaration": false,
->>>>>>> origin/main
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
