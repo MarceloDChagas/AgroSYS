@@ -1,5 +1,6 @@
 import { Tool } from '@prisma/client';
 import { CreateToolDto } from '@shared/dto/tool/create-tool.dto';
+import { UpdateToolDto } from '@shared/dto/tool/update-tool.dto';
 import { EStatusTool, EToolName } from '@shared/enums/tool.enum';
 
 export interface IToolRepository {
@@ -10,7 +11,7 @@ export interface IToolRepository {
 
   create(data: CreateToolDto): Promise<Tool>;
 
-  update(id: string, data: Partial<CreateToolDto>): Promise<Tool | null>;
+  update(id: string, data: UpdateToolDto): Promise<Tool | null>;
 
   delete(id: string): Promise<void>;
 
