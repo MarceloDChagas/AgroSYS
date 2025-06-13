@@ -44,4 +44,5 @@ export class ToolRepository implements IToolRepository {
   async findByToolName(toolName: EToolName): Promise<Tool[]> {
     return this.prisma.tool.findMany({ where: { toolName } });
   }
+  
 }
