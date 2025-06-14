@@ -20,7 +20,7 @@ export function Header() {
         </div>
         <FaUserCircle size={50} className="text-[#1b5e1f]" />
       </div>
-      <div className="bg-[#1b5e1f] w-full text-white text-lg font-bold text-right px-10 py-2">
+      <div className="bg-[#1b5e1f] w-full text-white text-lg font-bold text-right px-10 py-2">  
         BEM-VINDO, [NOME]!
       </div>
     </header>
