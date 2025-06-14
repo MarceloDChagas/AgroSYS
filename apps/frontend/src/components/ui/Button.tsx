@@ -11,7 +11,7 @@ export function Button({
   ...props
 }: ButtonProps) {
   const baseStyles =
-    'w-3/4 mx-auto py-3 px-4 rounded-lg font-medium transition-all';
+    'w-3/4 mx-auto py-3 px-4 rounded-full font-medium transition-all';
   const variants = {
     'green-button': 'bg-[#1b5e1f] text-white hover:bg-[#155219]',
     'white-button':
