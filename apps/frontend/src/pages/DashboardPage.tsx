@@ -52,8 +52,6 @@ export function DashboardPage() {
 
         {/* Conteúdo principal */}
         <main className="flex-1 flex flex-col">
-          {/* Aqui você pode remover o header que estava antes */}
-          {/* Ícones da dashboard */}
           <section className="flex-1 flex items-center justify-center bg-white p-6">
             <div className="grid grid-cols-2 gap-10">
               <Card icon={<FaLeaf size={48} />} label="COLHEITA" route="/colheita" />
