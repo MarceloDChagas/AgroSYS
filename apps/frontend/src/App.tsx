@@ -2,10 +2,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import './index.css';
-import {HomePage} from './pages/HomePage';
+import { HomePage } from './pages/HomePage';
 import { DashboardPage } from './pages/DashboardPage';
-
-
 
 function App() {
   return (
