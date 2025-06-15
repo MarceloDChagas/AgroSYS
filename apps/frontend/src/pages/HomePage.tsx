@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/Button';
+import { RotatedTitle } from '../components/RotatedTitle';
 import agroImage from '../assets/agro.jpg';
 import logo from '../assets/logo.png';
 import { Link } from 'react-router-dom';
@@ -15,11 +16,9 @@ export function HomePage() {
         />
         {/* Overlay escura */}
         <div className="absolute inset-0 bg-black/40 z-0" />
-        
+
         {/* Texto vertical centralizado na borda direita */}
-        <h1 className="absolute top-1/2 left-full -translate-x-1/2 -translate-y-1/2 rotate-[-90deg] text-8xl font-extrabold tracking-[0.3em] text-transparent bg-clip-text bg-gradient-to-b from-white to-[#2d572c] z-10 whitespace-nowrap">
-          AGRO SYS
-        </h1>
+        <RotatedTitle className="z-10 whitespace-nowrap" />
       </div>
 
       {/* Lado direito: Conteúdo */}
@@ -38,23 +37,37 @@ export function HomePage() {
               <span className="font-bold text-xl text-[#1b5e1f]">
                 Monitoramento em tempo real
               </span>
-              <p className="text-[#1b5e1f]">Acompanhe dados da lavoura, clima e produtividade.</p>
+              <p className="text-[#1b5e1f]">
+                Acompanhe dados da lavoura, clima e produtividade.
+              </p>
             </div>
             <div>
-              <span className="font-bold text-xl text-[#1b5e1f]">Controle de Estoque</span>
-              <p className="text-[#1b5e1f]">Organize insumos, sementes e safras com eficiência.</p>
+              <span className="font-bold text-xl text-[#1b5e1f]">
+                Controle de Estoque
+              </span>
+              <p className="text-[#1b5e1f]">
+                Organize insumos, sementes e safras com eficiência.
+              </p>
             </div>
             <div>
-              <span className="font-bold text-xl text-[#1b5e1f]">Acesso fácil e rápido</span>
-              <p className="text-[#1b5e1f]">Use em qualquer lugar, direto do seu celular ou computador.</p>
+              <span className="font-bold text-xl text-[#1b5e1f]">
+                Acesso fácil e rápido
+              </span>
+              <p className="text-[#1b5e1f]">
+                Use em qualquer lugar, direto do seu celular ou computador.
+              </p>
             </div>
           </div>
           <div className="flex gap-6 w-full justify-center">
             <Link to="/register" className="w-48">
-              <Button variant="green-button" className="w-full text-xl py-3">CADASTRAR</Button>
+              <Button variant="green-button" className="w-full text-xl py-3">
+                CADASTRAR
+              </Button>
             </Link>
             <Link to="/login" className="w-48">
-              <Button variant="white-button" className="w-full text-xl py-3">ENTRAR</Button>
+              <Button variant="white-button" className="w-full text-xl py-3">
+                ENTRAR
+              </Button>
             </Link>
           </div>
         </div>
