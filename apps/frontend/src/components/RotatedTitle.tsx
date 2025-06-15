@@ -18,7 +18,6 @@ export function RotatedTitle({
       ? 'left-0 -translate-x-1/2'
       : 'left-full -translate-x-1/2';
 
-  // Define o gradiente dinamicamente com base na posição
   const gradientClass =
     spanClassName ??
     (position === 'left'
