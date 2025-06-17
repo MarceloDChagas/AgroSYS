@@ -1,16 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '@infra/prisma/prisma.service';
+import { PrismaService } from '../../prisma/prisma.service';
 import { Tool } from '@prisma/client';
 import { CreateToolDto } from '@shared/dto/tool/create-tool.dto';
 import { UpdateToolDto } from '@shared/dto/tool/update-tool.dto';
 import { IToolRepository } from './tool.repository.interface';
 import { EStatusTool, EToolName } from '@shared/enums/tool.enum';
 
-
 @Injectable()
-
 export class ToolRepository implements IToolRepository {
-
   constructor(private readonly prisma: PrismaService) {}
 
   async findOne(id: string): Promise<Tool | null> {
@@ -34,7 +31,6 @@ export class ToolRepository implements IToolRepository {
 
   async delete(id: string): Promise<void> {
     await this.prisma.tool.delete({ where: { id } });
-
   }
 
   async findByStatus(status: EStatusTool): Promise<Tool[]> {
@@ -44,5 +40,4 @@ export class ToolRepository implements IToolRepository {
   async findByToolName(toolName: EToolName): Promise<Tool[]> {
     return this.prisma.tool.findMany({ where: { toolName } });
   }
-  
 }

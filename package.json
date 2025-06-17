@@ -30,6 +30,8 @@
   },
   "homepage": "https://github.com/MarceloDChagas/Sistema-de-gestao-agropecuaria#readme",
   "devDependencies": {
+    "@nestjs/testing": "^10.4.19",
+    "@types/jest": "^29.5.14",
     "@typescript-eslint/eslint-plugin": "5.62.0",
     "@typescript-eslint/parser": "5.62.0",
     "autoprefixer": "^10.4.17",
@@ -40,10 +42,12 @@
     "eslint-plugin-react": "7.33.2",
     "eslint-plugin-react-hooks": "4.6.0",
     "husky": "8.0.3",
+    "jest": "^30.0.0",
     "lint-staged": "13.3.0",
     "postcss": "^8.4.35",
     "prettier": "2.8.8",
     "tailwindcss": "^3.4.1",
+    "ts-jest": "^29.4.0",
     "turbo": "1.12.4",
     "typescript": "5.3.3"
   },

@@ -1,5 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { IToolRepository } from './repositories/tool.repository.interface';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  IToolRepository,
+  TOOL_REPOSITORY,
+} from './repositories/tool.repository.interface';
 import { CreateToolDto } from '@shared/dto/tool/create-tool.dto';
 import { UpdateToolDto } from '@shared/dto/tool/update-tool.dto';
 import { EStatusTool, EToolName } from '@shared/enums/tool.enum';
@@ -7,12 +10,17 @@ import { Tool } from '@prisma/client';
 
 @Injectable()
 export class ToolService {
-  constructor(private readonly toolRepository: IToolRepository) {}
+  constructor(
+    @Inject(TOOL_REPOSITORY)
+    private readonly toolRepository: IToolRepository
+  ) {}
 
   async findOne(id: string): Promise<Tool> {
     const tool = await this.toolRepository.findOne(id);
     if (!tool) {
-      throw new NotFoundException(`Ferramenta com o código ${id} não encontrada`);
+      throw new NotFoundException(
+        `Ferramenta com o código ${id} não encontrada`
+      );
     }
     return tool;
   }
@@ -34,10 +42,11 @@ export class ToolService {
   }
 
   async delete(id: string): Promise<void> {
-
     const tool = await this.toolRepository.findOne(id);
     if (!tool) {
-      throw new NotFoundException(`Ferramenta com o código ${id} não encontrada`);
+      throw new NotFoundException(
+        `Ferramenta com o código ${id} não encontrada`
+      );
     }
     await this.toolRepository.delete(id);
   }
@@ -49,5 +58,4 @@ export class ToolService {
   async findByToolName(toolName: EToolName): Promise<Tool[]> {
     return this.toolRepository.findByToolName(toolName);
   }
-
-  }
+}
