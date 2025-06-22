@@ -1,0 +1,7 @@
+# Arquivos gerados automaticamente
+shared/**/*.d.ts
+shared/**/*.js
+dist/
+build/
+node_modules/
+*.min.js 

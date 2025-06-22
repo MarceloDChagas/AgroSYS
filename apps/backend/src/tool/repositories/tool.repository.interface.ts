@@ -1,5 +1,4 @@
 import { Tool } from '@prisma/client';
-import { PrismaService } from '../../prisma/prisma.service';
 import { CreateToolDto } from '@shared/dto/tool/create-tool.dto';
 import { UpdateToolDto } from '@shared/dto/tool/update-tool.dto';
 import { EStatusTool, EToolName } from '@shared/enums/tool.enum';

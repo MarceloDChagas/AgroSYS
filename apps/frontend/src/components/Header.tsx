@@ -1,5 +1,5 @@
-import { FaUserCircle } from 'react-icons/fa';
-import logo from '../assets/logo.png';
+import { FaUserCircle } from "react-icons/fa";
+import logo from "../assets/logo.png";
 
 export function Header() {
   return (

@@ -1,4 +1,1 @@
-export enum EHarvestCycle {
-  
-}
-
+export enum EHarvestCycle {}
