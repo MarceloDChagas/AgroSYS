@@ -3,8 +3,8 @@ import {
   OnModuleInit,
   OnModuleDestroy,
   Logger,
-} from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+} from "@nestjs/common";
+import { PrismaClient } from "@prisma/client";
 
 @Injectable()
 export class PrismaService
@@ -15,16 +15,16 @@ export class PrismaService
 
   constructor() {
     super({
-      log: ['query', 'info', 'warn', 'error'],
+      log: ["query", "info", "warn", "error"],
     });
   }
 
   async onModuleInit() {
     try {
       await this.$connect();
-      this.logger.log('Successfully connected to the database');
+      this.logger.log("Successfully connected to the database");
     } catch (error) {
-      this.logger.error('Failed to connect to the database', error);
+      this.logger.error("Failed to connect to the database", error);
       throw error;
     }
   }
@@ -32,9 +32,9 @@ export class PrismaService
   async onModuleDestroy() {
     try {
       await this.$disconnect();
-      this.logger.log('Successfully disconnected from the database');
+      this.logger.log("Successfully disconnected from the database");
     } catch (error) {
-      this.logger.error('Failed to disconnect from the database', error);
+      this.logger.error("Failed to disconnect from the database", error);
       throw error;
     }
   }

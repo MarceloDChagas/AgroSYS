@@ -1,5 +1,4 @@
 export class Name {
-
   private readonly name: string;
 
   private static readonly MIN_LEN = 2;
@@ -12,18 +11,15 @@ export class Name {
     this.name = nameNormalized;
   }
 
-
-private static normalizeName(name: string): string {
-  return Name.removeEdgeSpaces(name);
-}
-
+  private static normalizeName(name: string): string {
+    return Name.removeEdgeSpaces(name);
+  }
 
   private static validateName(name: string): void {
     Name.validateEmpty(name);
     Name.validateLength(name);
     Name.validateCharacters(name);
   }
-
 
   private static removeEdgeSpaces(name: string): string {
     return name.trim();
@@ -53,5 +49,4 @@ private static normalizeName(name: string): string {
   public getName(): string {
     return this.name;
   }
-
 }

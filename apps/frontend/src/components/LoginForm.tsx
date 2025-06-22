@@ -2,14 +2,41 @@ import logo from '../assets/logo.png';
 import { useState } from 'react';
 import { Button } from './ui/Button';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({ email, password });
+    setIsLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch('http://localhost:3000/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('token', data.access_token);
+        navigate('/home');
+      } else {
+        setError('Credenciais inválidas');
+      }
+    } catch (err) {
+      setError('Erro ao conectar com o servidor');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   {

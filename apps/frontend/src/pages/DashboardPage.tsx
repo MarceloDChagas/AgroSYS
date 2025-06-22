@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Header } from '../components/Header';
-import { FaLeaf, FaTools, FaDollarSign, FaFileInvoice } from 'react-icons/fa';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Header } from "../components/Header";
+import { FaLeaf, FaTools, FaDollarSign, FaFileInvoice } from "react-icons/fa";
 
 interface CardProps {
   icon: React.ReactNode;
@@ -24,7 +24,7 @@ function Card({ icon, label, route }: CardProps) {
 }
 
 export function DashboardPage() {
-  const [active, setActive] = useState('DASHBOARD');
+  const [active, setActive] = useState("DASHBOARD");
 
   return (
     <div className="flex flex-col min-h-screen font-sans">
@@ -36,19 +36,19 @@ export function DashboardPage() {
             <h2 className="text-lg font-bold mb-4">DASHBOARD</h2>
             <nav className="flex flex-col space-y-4">
               {[
-                'COLHEITA',
-                'FERRAMENTAS',
-                'VENDAS',
-                'NOTAS FISCAIS',
-                'PERFIL',
+                "COLHEITA",
+                "FERRAMENTAS",
+                "VENDAS",
+                "NOTAS FISCAIS",
+                "PERFIL",
               ].map((item) => (
                 <button
                   key={item}
                   onClick={() => setActive(item)}
                   className={`text-left transition-all duration-200 px-2 py-1 rounded ${
                     active === item
-                      ? 'bg-[#eaf4e1] font-bold'
-                      : 'hover:bg-[#eaf4e1]'
+                      ? "bg-[#eaf4e1] font-bold"
+                      : "hover:bg-[#eaf4e1]"
                   }`}
                 >
                   {item}

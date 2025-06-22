@@ -1,8 +1,9 @@
-import { Module } from '@nestjs/common';
-import { ToolController } from './tool.controller';
-import { ToolService } from './tool.service';
-import { ToolRepository } from './repositories/tool.repository';
-import { PrismaService } from '../prisma.service';
+import { Module } from "@nestjs/common";
+import { ToolController } from "./tool.controller";
+import { ToolService } from "./tool.service";
+import { ToolRepository } from "./repositories/Postgres/ToolRepository.postgres";
+import { PrismaService } from "../prisma/prisma.service";
+import { TOOL_REPOSITORY } from "./repositories/tool.repository.interface";
 
 @Module({
   controllers: [ToolController],
@@ -10,7 +11,7 @@ import { PrismaService } from '../prisma.service';
     ToolService,
     PrismaService,
     {
-      provide: 'IToolRepository',
+      provide: TOOL_REPOSITORY,
       useClass: ToolRepository,
     },
   ],

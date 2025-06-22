@@ -1,7 +1,7 @@
-import { motion } from 'framer-motion';
-import RegisterForm from '../components/RegisterForm';
-import { RotatedTitle } from '../components/RotatedTitle';
-import agroImage from '../assets/agro.jpg';
+import { motion } from "framer-motion";
+import RegisterForm from "../components/RegisterForm";
+import { RotatedTitle } from "../components/RotatedTitle";
+import agroImage from "../assets/agro.jpg";
 
 export function RegisterPage() {
   return (

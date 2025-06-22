@@ -2,14 +2,40 @@ import logo from '../assets/logo.png';
 import { useState } from 'react';
 import { Button } from './ui/Button';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function RegisterForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({ email, password });
+    setIsLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch('http://localhost:3000/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password, name }),
+      });
+
+      if (response.ok) {
+        navigate('/login');
+      } else {
+        setError('Erro ao criar conta');
+      }
+    } catch (err) {
+      setError('Erro ao conectar com o servidor');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   {

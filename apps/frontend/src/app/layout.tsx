@@ -1,12 +1,12 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import './globals.css';
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Sistema de Gestão Agropecuária',
-  description: 'Sistema completo para gestão de propriedades rurais',
+  title: "Sistema de Gestão Agropecuária",
+  description: "Sistema completo para gestão de propriedades rurais",
 };
 
 export default function RootLayout({

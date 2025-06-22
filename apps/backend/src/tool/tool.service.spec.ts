@@ -1,12 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ToolService } from './tool.service';
-import {
-  TOOL_REPOSITORY,
-  IToolRepository,
-} from './repositories/tool.repository.interface';
+import { TOOL_REPOSITORY } from './repositories/tool.repository.interface';
 import { CreateToolDto } from '@shared/dto/tool/create-tool.dto';
 import { UpdateToolDto } from '@shared/dto/tool/update-tool.dto';
 import { EToolName, EStatusTool } from '@shared/enums/tool.enum';
+import { Tool } from '@prisma/client';
 
 describe('ToolService', () => {
   let service: ToolService;
