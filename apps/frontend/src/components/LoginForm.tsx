@@ -32,7 +32,7 @@ export default function LoginForm() {
       } else {
         setError('Credenciais inválidas');
       }
-    } catch (err) {
+    } catch {
       setError('Erro ao conectar com o servidor');
     } finally {
       setIsLoading(false);
@@ -81,10 +81,18 @@ export default function LoginForm() {
             Esqueceu a senha?
           </a>
         </div>
-        <Button type="submit" color="#1b5e1f" className="block">
-          ENTRAR
+        <Button
+          type="submit"
+          color="#1b5e1f"
+          className="block"
+          disabled={isLoading}
+        >
+          {isLoading ? 'ENTRANDO...' : 'ENTRAR'}
         </Button>
       </form>
+
+      {error && <div className="text-red-600 text-sm text-center">{error}</div>}
+
       <div className="text-center text-sm text-gray-600">
         Não possui uma conta?{' '}
         <Link to="/register" className="text-green-700 hover:underline">

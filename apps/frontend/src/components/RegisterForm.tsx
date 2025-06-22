@@ -31,7 +31,7 @@ export default function RegisterForm() {
       } else {
         setError('Erro ao criar conta');
       }
-    } catch (err) {
+    } catch {
       setError('Erro ao conectar com o servidor');
     } finally {
       setIsLoading(false);
@@ -56,6 +56,8 @@ export default function RegisterForm() {
           <input
             placeholder="Nome de usuário"
             className="w-full mt-1 p-3 border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-green-600"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
         </div>
         <div>
@@ -79,10 +81,17 @@ export default function RegisterForm() {
           />
         </div>
 
-        <Button type="submit" color="#1b5e1f" className="block">
-          CRIAR CONTA
+        <Button
+          type="submit"
+          color="#1b5e1f"
+          className="block"
+          disabled={isLoading}
+        >
+          {isLoading ? 'CRIANDO...' : 'CRIAR CONTA'}
         </Button>
       </form>
+
+      {error && <div className="text-red-600 text-sm text-center">{error}</div>}
 
       <div className="text-center text-sm text-gray-600">
         Já possui conta?{' '}

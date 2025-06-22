@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { Button } from '../ui/Button';
-import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 export default function LoginForm() {
@@ -74,12 +73,16 @@ export default function LoginForm() {
           required
         />
       </div>
-      <button
+      <Button
         type="submit"
-        className="w-full rounded-md bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+        color="#1b5e1f"
+        className="w-full"
+        disabled={isLoading}
       >
-        Entrar
-      </button>
+        {isLoading ? 'Entrando...' : 'Entrar'}
+      </Button>
+
+      {error && <div className="text-red-600 text-sm text-center">{error}</div>}
     </form>
   );
 }
