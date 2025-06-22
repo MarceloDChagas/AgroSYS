@@ -29,7 +29,7 @@ export class Email {
 
   private static validateEmpty(email: string): void {
     if (!email) {
-      throw new Error("O email não pode estar vazio.");
+      throw new Error('O email não pode estar vazio.');
     }
   }
 
@@ -37,7 +37,7 @@ export class Email {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!emailRegex.test(email)) {
-      throw new Error("O email informado é inválido.");
+      throw new Error('O email informado é inválido.');
     }
   }
 

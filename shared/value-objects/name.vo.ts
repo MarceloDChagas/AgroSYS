@@ -27,7 +27,7 @@ export class Name {
 
   private static validateEmpty(name: string): void {
     if (!name) {
-      throw new Error("O nome não pode estar vazio.");
+      throw new Error('O nome não pode estar vazio.');
     }
   }
 
@@ -42,7 +42,7 @@ export class Name {
   private static validateCharacters(name: string): void {
     const validNameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/u;
     if (!validNameRegex.test(name)) {
-      throw new Error("O nome contém caracteres inválidos.");
+      throw new Error('O nome contém caracteres inválidos.');
     }
   }
 
