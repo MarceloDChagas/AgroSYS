@@ -1,5 +1,5 @@
-import { EPermission } from './permission.enum';
-import { ERole } from '../enums/user.enum';
+import { EPermission } from '@sharedpermissionspermission.enum.ts';
+import { ERole } from '@shared/enums/user.enum';
 
 export const rolePermissions: Record<ERole, EPermission[]> = {
   [ERole.ADMIN]: [
