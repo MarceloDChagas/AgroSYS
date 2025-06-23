@@ -1,7 +1,6 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Header } from "../components/Header";
-import { FaLeaf, FaTools, FaDollarSign, FaFileInvoice } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
+import { FaLeaf, FaTools, FaDollarSign, FaFileInvoice } from 'react-icons/fa';
+import { SideMenu } from '../components/layout/SideMenu';
 
 interface CardProps {
   icon: React.ReactNode;
@@ -24,69 +23,33 @@ function Card({ icon, label, route }: CardProps) {
 }
 
 export function DashboardPage() {
-  const [active, setActive] = useState("DASHBOARD");
-
   return (
-    <div className="flex flex-col min-h-screen font-sans">
-      <Header /> {/* <-- Aqui você usa o Header */}
-      <div className="flex flex-1">
-        {/* Menu lateral */}
-        <aside className="w-56 bg-[#f8fbf3] shadow-md p-4 text-[#1b5e1f] font-semibold text-sm">
-          <div className="mb-8">
-            <h2 className="text-lg font-bold mb-4">DASHBOARD</h2>
-            <nav className="flex flex-col space-y-4">
-              {[
-                "COLHEITA",
-                "FERRAMENTAS",
-                "VENDAS",
-                "NOTAS FISCAIS",
-                "PERFIL",
-              ].map((item) => (
-                <button
-                  key={item}
-                  onClick={() => setActive(item)}
-                  className={`text-left transition-all duration-200 px-2 py-1 rounded ${
-                    active === item
-                      ? "bg-[#eaf4e1] font-bold"
-                      : "hover:bg-[#eaf4e1]"
-                  }`}
-                >
-                  {item}
-                </button>
-              ))}
-            </nav>
-          </div>
-        </aside>
-
-        {/* Conteúdo principal */}
-        <main className="flex-1 flex flex-col">
-          <section className="flex-1 flex items-center justify-center bg-white p-6">
-            <div className="grid grid-cols-2 gap-10">
-              <Card
-                icon={<FaLeaf size={48} />}
-                label="COLHEITA"
-                route="/colheita"
-              />
-              <Card
-                icon={<FaTools size={48} />}
-                label="FERRAMENTAS"
-                route="/ferramentas"
-              />
-              <Card
-                icon={<FaDollarSign size={48} />}
-                label="VENDAS"
-                route="/vendas"
-              />
-              <Card
-                icon={<FaFileInvoice size={48} />}
-                label="NOTAS FISCAIS"
-                route="/notas"
-              />
-            </div>
-          </section>
-        </main>
+    <SideMenu title="DASHBOARD">
+      <div className="flex justify-center items-center h-full w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+          <Card
+            icon={<FaLeaf size={64} />}
+            label="COLHEITA"
+            route="/colheita"
+          />
+          <Card
+            icon={<FaTools size={64} />}
+            label="FERRAMENTAS"
+            route="/ferramentas"
+          />
+          <Card
+            icon={<FaDollarSign size={64} />}
+            label="VENDAS"
+            route="/vendas"
+          />
+          <Card
+            icon={<FaFileInvoice size={64} />}
+            label="NOTAS FISCAIS"
+            route="/notas"
+          />
+        </div>
       </div>
-    </div>
+    </SideMenu>
   );
 }
 
