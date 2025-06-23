@@ -6,17 +6,17 @@ import { ERole } from '@shared/enums/user.enum';
 export const USER_REPOSITORY = 'USER_REPOSITORY';
 
 export interface IUserRepository {
-  findOne(id: string): Promise<PrismaUser | null>;
+  findOne(id: string): Promise<User | null>;
 
-  findAll(): Promise<PrismaUser[]>;
+  findAll(): Promise<User[]>;
 
-  create(data: CreateUserDto): Promise<PrismaUser>;
+  create(data: CreateUserDto): Promise<User>;
 
-  update(id: string, data: UpdateUserDto): Promise<PrismaUser | null>;
+  update(id: string, data: UpdateUserDto): Promise<User | null>;
 
   delete(id: string): Promise<void>;
 
-  findByRole(role: Role): Promise<PrismaUser[]>;
+  findByRole(role: Role): Promise<User[]>;
 
-  findByEmail(email: string): Promise<PrismaUser | null>;
+  findByEmail(email: string): Promise<User | null>;
 }
