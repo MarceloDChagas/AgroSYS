@@ -3,8 +3,8 @@ import { EToolName, EStatusTool } from '@shared/enums/tool.enum';
 
 export class CreateToolDto {
   @IsEnum(EToolName)
-  toolName: EToolName;
+  toolName!: EToolName;
 
   @IsEnum(EStatusTool)
-  status: EStatusTool;
+  status!: EStatusTool;
 }

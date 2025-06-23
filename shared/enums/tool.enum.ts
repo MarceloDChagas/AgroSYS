@@ -1,7 +1,7 @@
 export enum EStatusTool {
-  REQUESTED = 'SOLICITADA',
-  RETURNED = 'DEVOLVIDA',
-  LENDING = 'EMPRESTADA',
+  SOLICITADA = 'SOLICITADA',
+  DEVOLVIDA = 'DEVOLVIDA',
+  EMPRESTADA = 'EMPRESTADA',
 }
 
 export enum EToolName {

@@ -1,22 +1,22 @@
-import { User } from '@prisma/client';
-import { CreateUserDto } from '@shared/dto/user/create-user.dto';
-import { UpdateUserDto } from '@shared/dto/user/update-user.dto';
 import { ERole } from '@shared/enums/user.enum';
-
-export const USER_REPOSITORY = 'USER_REPOSITORY';
+import { CreateUserDto } from '@shared/dto/user/create.user.dto';
+import { UpdateUserDto } from '@shared/dto/user/update-user.dto';
+import { User } from '@shared/types/user';
 
 export interface IUserRepository {
-  findOne(id: string): Promise<PrismaUser | null>;
+  findOne(id: string): Promise<User | null>;
 
-  findAll(): Promise<PrismaUser[]>;
+  findById(id: string): Promise<User | null>;
 
-  create(data: CreateUserDto): Promise<PrismaUser>;
+  findAll(): Promise<User[]>;
 
-  update(id: string, data: UpdateUserDto): Promise<PrismaUser | null>;
+  create(data: CreateUserDto): Promise<User>;
+
+  update(id: string, data: UpdateUserDto): Promise<User | null>;
 
   delete(id: string): Promise<void>;
 
-  findByRole(role: Role): Promise<PrismaUser[]>;
+  findByRole(role: ERole): Promise<User[]>;
 
-  findByEmail(email: string): Promise<PrismaUser | null>;
+  findByEmail(email: string): Promise<User | null>;
 }
