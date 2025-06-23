@@ -1,24 +1,24 @@
 import { SideMenu } from '../components/layout/SideMenu';
 
-export function VendasPage() {
+export function NotasPage() {
   return (
-    <SideMenu title="VENDAS">
+    <SideMenu title="NOTAS FISCAIS">
       <div className="flex justify-center items-center h-full w-full">
         <div className="bg-[#f4f8ee] p-8 rounded-2xl shadow-md w-full max-w-4xl">
-          {/* Botão para registrar nova venda */}
+          {/* Botão para registrar nova nota fiscal */}
           <div className="flex justify-end mb-4">
             <button className="bg-[#1b5e1f] text-white px-4 py-2 rounded hover:bg-green-800 transition">
-              Registrar Nova Venda
+              Registrar Nova Nota Fiscal
             </button>
           </div>
 
-          {/* Tabela de vendas */}
+          {/* Tabela de notas fiscais */}
           <div className="overflow-x-auto">
             <table className="min-w-full text-center border-collapse">
               <thead className="bg-[#eaf4e1] text-[#1b5e1f] font-bold">
                 <tr>
                   <th className="py-2 px-4 border">DATA</th>
-                  <th className="py-2 px-4 border">PRODUTO</th>
+                  <th className="py-2 px-4 border">NÚMERO</th>
                   <th className="py-2 px-4 border">VALOR</th>
                 </tr>
               </thead>
