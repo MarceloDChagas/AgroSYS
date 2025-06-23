@@ -1,10 +1,13 @@
-import { Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { UsersService } from '../users/users.service';
-import * as bcrypt from 'bcrypt';
+import { ConflictException, Injectable, Logger } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import { UsersService } from "../users/users.service";
+import * as bcrypt from "bcrypt";
+import { CreateUserDto } from "@shared/dto/user/create.user.dto";
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
+
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService
@@ -14,48 +17,55 @@ export class AuthService {
     email: string,
     pass: string
   ): Promise<{ id: string; email: string; name: string } | null> {
-    console.log('🔍 Tentando validar usuário:', email);
-
     const user = await this.usersService.findByEmail(email);
-    console.log('👤 Usuário encontrado:', user ? 'Sim' : 'Não');
 
     if (user) {
-      console.log('🔐 Senha fornecida:', pass);
-      console.log('🔐 Hash no banco:', user.password.getPassword());
-
       const isPasswordValid = await bcrypt.compare(
         pass,
         user.password.getPassword()
       );
-      console.log('✅ Senha válida:', isPasswordValid);
 
       if (isPasswordValid) {
-        const { password, ...result } = user;
+        const { password: _, ...result } = user;
         const userResult = {
           ...result,
           email: result.email.getEmail(),
           name: result.name.getName(),
         };
-        console.log('🎉 Login bem-sucedido para:', userResult.email);
+        this.logger.log(`Login successful for user: ${userResult.email}`);
         return userResult;
-      } else {
-        console.log('❌ Senha incorreta');
       }
-    } else {
-      console.log('❌ Usuário não encontrado no banco');
     }
 
     return null;
   }
 
   async login(user: { id: string; email: string; name: string }) {
-    console.log('🔑 Gerando token JWT para:', user.email);
     const payload = { email: user.email, sub: user.id };
     const token = this.jwtService.sign(payload);
-    console.log('🎫 Token gerado:', token.substring(0, 20) + '...');
 
     return {
       access_token: token,
     };
+  }
+
+  async register(createUserDto: CreateUserDto) {
+    const existingUser = await this.usersService.findByEmail(
+      createUserDto.email.getEmail()
+    );
+    if (existingUser) {
+      throw new ConflictException("Email já está em uso.");
+    }
+
+    const userToCreate = {
+      email: createUserDto.email.getEmail(),
+      password: createUserDto.password.getPassword(),
+      name: createUserDto.name.getName(),
+      role: createUserDto.role,
+    };
+
+    const user = await this.usersService.create(userToCreate);
+    this.logger.log(`User registered successfully: ${user.email.getEmail()}`);
+    return { message: "Usuário registrado com sucesso", user };
   }
 }

@@ -1,11 +1,11 @@
 export enum EStatusTool {
-  SOLICITADA = 'SOLICITADA',
-  DEVOLVIDA = 'DEVOLVIDA',
-  EMPRESTADA = 'EMPRESTADA',
+  REQUESTED = "REQUESTED",
+  RETURNED = "RETURNED",
+  LENDING = "LENDING",
 }
 
 export enum EToolName {
-  ENXADA = 'ENXADA',
-  PA = 'PA',
-  TRATOR = 'TRATOR',
+  ENXADA = "ENXADA",
+  PA = "PA",
+  TRATOR = "TRATOR",
 }

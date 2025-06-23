@@ -1,23 +1,13 @@
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
-import { ERole } from '@shared/enums/user.enum';
-import { Email } from '../../value-objects/email.vo';
-import { Name } from '../../value-objects/name.vo';
-import { Password } from '../../value-objects/password.vo';
+import { Email } from "@shared/value-objects/email.vo";
+import { Name } from "@shared/value-objects/name.vo";
+import { Password } from "@shared/value-objects/password.vo";
+import { ERole } from "@shared/enums/user.enum";
 
 export class CreateUserDto {
-  @IsEmail()
-  @IsNotEmpty()
-  email!: Email;
-
-  @IsString()
-  @IsNotEmpty()
-  password!: Password;
-
-  @IsString()
-  @IsNotEmpty()
-  name!: Name;
-
-  @IsString()
-  @IsNotEmpty()
-  role?: ERole;
+  constructor(
+    public email: Email,
+    public password: Password,
+    public name: Name,
+    public role?: ERole
+  ) {}
 }

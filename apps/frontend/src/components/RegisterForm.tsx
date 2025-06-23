@@ -1,38 +1,36 @@
-import logo from '../assets/logo.png';
-import { useState } from 'react';
-import { Button } from './ui/Button';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import logo from "../assets/logo.png";
+import { useState } from "react";
+import { Button } from "./ui/Button";
+import { Link } from "react-router-dom";
+import type { RegisterFormData } from "@/types/forms/register-form-data";
 
-export default function RegisterForm() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
+interface RegisterFormProps {
+  onSubmit: (
+    data: Omit<RegisterFormData, "confirmPassword">
+  ) => Promise<void> | void;
+}
+
+export default function RegisterForm({ onSubmit }: RegisterFormProps) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-  const navigate = useNavigate();
+  const [error, setError] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
+
+    if (password !== confirmPassword) {
+      setError("As senhas não coincidem");
+      return;
+    }
     setIsLoading(true);
-    setError('');
-
     try {
-      const response = await fetch('http://localhost:3000/users', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password, name }),
-      });
-
-      if (response.ok) {
-        navigate('/login');
-      } else {
-        setError('Erro ao criar conta');
-      }
+      await onSubmit({ email, password, name });
     } catch {
-      setError('Erro ao conectar com o servidor');
+      setError("Erro ao criar conta");
     } finally {
       setIsLoading(false);
     }
@@ -81,20 +79,31 @@ export default function RegisterForm() {
           />
         </div>
 
+        <div>
+          <label className="block text-sm text-gray-600">Confirmar Senha</label>
+          <input
+            type="password"
+            placeholder="Confirme sua senha"
+            className="w-full mt-1 p-3 border rounded-md text-base focus:outline-none focus:ring-2 focus:ring-green-600"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+        </div>
+
         <Button
           type="submit"
           color="#1b5e1f"
           className="block"
           disabled={isLoading}
         >
-          {isLoading ? 'CRIANDO...' : 'CRIAR CONTA'}
+          {isLoading ? "CRIANDO..." : "CRIAR CONTA"}
         </Button>
       </form>
 
       {error && <div className="text-red-600 text-sm text-center">{error}</div>}
 
       <div className="text-center text-sm text-gray-600">
-        Já possui conta?{' '}
+        Já possui conta?{" "}
         <Link to="/login" className="text-green-700 hover:underline">
           Login
         </Link>

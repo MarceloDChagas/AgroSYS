@@ -1,13 +1,17 @@
-const apiAdress = process.env.URL || 'http://localhost:3000';
+const apiAdress = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 export const routes = {
   // Auth
-  login: `${apiAdress}/auth/login`,
-  profile: `${apiAdress}/auth/profile`,
+  login: "/login",
+  profile: "/profile",
+  register: `${apiAdress}/auth/register`,
 
   // Usuários
   users: `${apiAdress}/users`, // GET (listar), POST (criar)
   userById: (id: string) => `${apiAdress}/users/${id}`,
+  createUser: `${apiAdress}/users`, // POST
+  updateUser: (id: string) => `${apiAdress}/users/${id}`,
+  deleteUser: (id: string) => `${apiAdress}/users/${id}`,
 
   // Ferramentas
   tools: `${apiAdress}/tools`, // GET (listar), POST (criar)

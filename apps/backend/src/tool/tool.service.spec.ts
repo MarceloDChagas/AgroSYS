@@ -1,12 +1,11 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { ToolService } from './tool.service';
-import { TOOL_REPOSITORY } from './repositories/tool.repository.interface';
-import { CreateToolDto } from '@shared/dto/tool/create-tool.dto';
-import { UpdateToolDto } from '@shared/dto/tool/update-tool.dto';
-import { EToolName, EStatusTool } from '@shared/enums/tool.enum';
-import { Tool } from '@prisma/client';
+import { Test, TestingModule } from "@nestjs/testing";
+import { ToolService } from "./tool.service";
+import { TOOL_REPOSITORY } from "./repositories/tool.repository.interface";
+import { CreateToolDto } from "@shared/dto/tool/create-tool.dto";
+import { UpdateToolDto } from "@shared/dto/tool/update-tool.dto";
+import { EToolName, EStatusTool } from "@shared/enums/tool.enum";
 
-describe('ToolService', () => {
+describe("ToolService", () => {
   let service: ToolService;
 
   // Mock do repositório
@@ -38,20 +37,20 @@ describe('ToolService', () => {
     jest.clearAllMocks();
   });
 
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(service).toBeDefined();
   });
 
   //Teste para o create
-  describe('create', () => {
-    it('deve criar uma ferramenta', async () => {
+  describe("create", () => {
+    it("deve criar uma ferramenta", async () => {
       const dto: CreateToolDto = {
         toolName: EToolName.ENXADA,
         status: EStatusTool.REQUESTED,
       };
 
       const expectedResult = {
-        id: '1',
+        id: "1",
         ...dto,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -67,9 +66,9 @@ describe('ToolService', () => {
   });
 
   //Teste para o FindOne
-  describe('findOne', () => {
-    it('deve retornar uma ferramenta existente pelo ID', async () => {
-      const id = '123';
+  describe("findOne", () => {
+    it("deve retornar uma ferramenta existente pelo ID", async () => {
+      const id = "123";
       const mockTool = {
         id,
         toolName: EToolName.ENXADA,
@@ -86,8 +85,8 @@ describe('ToolService', () => {
       expect(mockToolRepository.findOne).toHaveBeenCalledWith(id);
     });
 
-    it('deve lançar NotFoundException se a ferramenta não for encontrada', async () => {
-      const id = 'nao-existe';
+    it("deve lançar NotFoundException se a ferramenta não for encontrada", async () => {
+      const id = "nao-existe";
       mockToolRepository.findOne.mockResolvedValue(null);
 
       await expect(service.findOne(id)).rejects.toThrowError(
@@ -99,18 +98,18 @@ describe('ToolService', () => {
   });
 
   //Teste para o findAll
-  describe('findAll', () => {
-    it('deve retornar uma lista de ferramentas', async () => {
+  describe("findAll", () => {
+    it("deve retornar uma lista de ferramentas", async () => {
       const mockTools = [
         {
-          id: '1',
+          id: "1",
           toolName: EToolName.ENXADA,
           status: EStatusTool.LENDING,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
-          id: '2',
+          id: "2",
           toolName: EToolName.PA,
           status: EStatusTool.REQUESTED,
           createdAt: new Date(),
@@ -128,9 +127,9 @@ describe('ToolService', () => {
   });
 
   //Teste para o update
-  describe('update', () => {
-    it('deve atualizar uma ferramenta existente', async () => {
-      const id = '1';
+  describe("update", () => {
+    it("deve atualizar uma ferramenta existente", async () => {
+      const id = "1";
       const updateDto: UpdateToolDto = {
         status: EStatusTool.RETURNED,
       };
@@ -151,8 +150,8 @@ describe('ToolService', () => {
       expect(mockToolRepository.update).toHaveBeenCalledWith(id, updateDto);
     });
 
-    it('deve lançar NotFoundException se a ferramenta não for encontrada', async () => {
-      const id = '999';
+    it("deve lançar NotFoundException se a ferramenta não for encontrada", async () => {
+      const id = "999";
       const updateDto: UpdateToolDto = {
         status: EStatusTool.LENDING,
       };
@@ -168,9 +167,9 @@ describe('ToolService', () => {
   });
 
   //Teste para o delete
-  describe('delete', () => {
-    it('deve deletar uma ferramenta existente', async () => {
-      const id = '1';
+  describe("delete", () => {
+    it("deve deletar uma ferramenta existente", async () => {
+      const id = "1";
       const mockTool = {
         id,
         toolName: EToolName.PA,
@@ -188,8 +187,8 @@ describe('ToolService', () => {
       expect(mockToolRepository.delete).toHaveBeenCalledWith(id);
     });
 
-    it('deve lançar NotFoundException se a ferramenta não existir', async () => {
-      const id = '999';
+    it("deve lançar NotFoundException se a ferramenta não existir", async () => {
+      const id = "999";
       mockToolRepository.findOne.mockResolvedValue(null);
 
       await expect(service.delete(id)).rejects.toThrowError(
@@ -202,20 +201,20 @@ describe('ToolService', () => {
   });
 
   //Teste para o findByStatus
-  describe('findByStatus', () => {
-    it('deve retornar ferramentas com o status informado', async () => {
+  describe("findByStatus", () => {
+    it("deve retornar ferramentas com o status informado", async () => {
       const status = EStatusTool.REQUESTED;
 
       const mockTools = [
         {
-          id: '1',
+          id: "1",
           toolName: EToolName.PA,
           status,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
-          id: '2',
+          id: "2",
           toolName: EToolName.TRATOR,
           status,
           createdAt: new Date(),
@@ -233,22 +232,22 @@ describe('ToolService', () => {
   });
 
   //Teste para o findByToolName
-  describe('findByToolName', () => {
-    it('deve retornar ferramentas com o nome informado', async () => {
+  describe("findByToolName", () => {
+    it("deve retornar ferramentas com o nome informado", async () => {
       const toolName = EToolName.TRATOR;
 
       const mockTools = [
         {
-          id: '1',
+          id: "1",
           toolName,
           status: EStatusTool.REQUESTED,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
-          id: '2',
+          id: "2",
           toolName,
-          status: EStatusTool.RETURNED,
+          status: EStatusTool.REQUESTED,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
