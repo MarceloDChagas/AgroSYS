@@ -1,0 +1,13 @@
+import { EPermission } from './permission.enum';
+import { ERole } from '../enums/user.enum';
+
+export const rolePermissions: Record<ERole, EPermission[]> = {
+  [ERole.ADMIN]: [
+    EPermission.CREATE_TOOL,
+    EPermission.UPDATE_TOOL,
+    EPermission.DELETE_TOOL,
+    EPermission.READ_TOOL,
+  ],
+
+  [ERole.COMMON_USER]: [EPermission.READ_TOOL],
+};
