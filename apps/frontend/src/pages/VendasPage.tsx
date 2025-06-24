@@ -1,50 +1,66 @@
-import { SideMenu } from '../components/layout/SideMenu';
+import { SideMenu } from "../components/layout/SideMenu";
+import { useNavigate } from "react-router-dom";
 
-export function VendasPage() {
+function VendasPage() {
+  const navigate = useNavigate();
+
   return (
     <SideMenu title="VENDAS">
-      <div className="flex justify-center items-center h-full w-full">
-        <div className="bg-[#f4f8ee] p-8 rounded-2xl shadow-md w-full max-w-4xl">
-          {/* Botão para registrar nova venda */}
-          <div className="flex justify-end mb-4">
-            <button className="bg-[#1b5e1f] text-white px-4 py-2 rounded hover:bg-green-800 transition">
-              Registrar Nova Venda
-            </button>
-          </div>
+      <div className="flex flex-col gap-4 items-center">
+        {/* Filtros */}
+        <div className="flex flex-col md:flex-row gap-4 items-center">
+          <select className="px-3 py-2 border rounded-md text-[#1b5e1f]">
+            <option>Data</option>
+          </select>
+          <select className="px-3 py-2 border rounded-md text-[#1b5e1f]">
+            <option>Cliente</option>
+          </select>
+          <select className="px-3 py-2 border rounded-md text-[#1b5e1f]">
+            <option>Produto</option>
+          </select>
+          <button className="bg-[#1b5e1f] text-white px-4 py-2 rounded hover:bg-green-800 transition">
+            FILTRAR
+          </button>
+        </div>
 
-          {/* Tabela de vendas */}
-          <div className="overflow-x-auto">
-            <table className="min-w-full text-center border-collapse">
-              <thead className="bg-[#eaf4e1] text-[#1b5e1f] font-bold">
-                <tr>
-                  <th className="py-2 px-4 border">DATA</th>
-                  <th className="py-2 px-4 border">PRODUTO</th>
-                  <th className="py-2 px-4 border">VALOR</th>
+        {/* Tabela */}
+        <div className="overflow-x-auto bg-[#f4f8ee] p-4 rounded-lg shadow w-full max-w-5xl">
+          <table className="min-w-full text-center border-collapse">
+            <thead className="bg-[#eaf4e1] text-[#1b5e1f] font-bold">
+              <tr>
+                <th className="py-2 px-4 border">N° VENDA</th>
+                <th className="py-2 px-4 border">CLIENTE</th>
+                <th className="py-2 px-4 border">PRODUTO</th>
+                <th className="py-2 px-4 border">VALOR TOTAL</th>
+                <th className="py-2 px-4 border">DATA</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white text-[#1b5e1f]">
+              {[1, 2, 3].map((row) => (
+                <tr key={row}>
+                  <td className="py-2 px-4 border">000{row}</td>
+                  <td className="py-2 px-4 border">Fulano</td>
+                  <td className="py-2 px-4 border">Produto {row}</td>
+                  <td className="py-2 px-4 border">R$ 100,00</td>
+                  <td className="py-2 px-4 border">21/06/2025</td>
                 </tr>
-              </thead>
-              <tbody className="bg-white text-[#1b5e1f]">
-                {[1, 2, 3, 4].map((row: number) => (
-                  <tr key={row}>
-                    <td className="py-2 px-4 border">célula 1</td>
-                    <td className="py-2 px-4 border">célula 1</td>
-                    <td className="py-2 px-4 border">célula 1</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
-          {/* Botões de ação */}
-          <div className="flex justify-center gap-4 mt-6">
-            <button className="bg-[#1b5e1f] text-white px-6 py-2 rounded hover:bg-green-800 transition">
-              EDITAR
-            </button>
-            <button className="bg-[#1b5e1f] text-white px-6 py-2 rounded hover:bg-green-800 transition">
-              EXCLUIR
-            </button>
-          </div>
+        {/* Ações */}
+        <div className="flex gap-3">
+          <button onClick={() => navigate("/vendas/visualizar")} className="bg-[#1b5e1f] text-white py-2 px-4 rounded hover:bg-green-800 transition">VISUALIZAR</button>
+          <button onClick={() => navigate("/vendas/nota")} className="bg-[#1b5e1f] text-white py-2 px-4 rounded hover:bg-green-800 transition">VER NOTA</button>
+          <button className="bg-red-700 text-white py-2 px-4 rounded hover:bg-red-800 transition">EXCLUIR</button>
+          <button onClick={() => navigate("/vendas/registrar")} className="bg-[#1b5e1f] text-white py-2 px-4 rounded hover:bg-green-800 transition ml-4">
+            REGISTRAR VENDA
+          </button>
         </div>
       </div>
     </SideMenu>
   );
 }
+
+export default VendasPage;
