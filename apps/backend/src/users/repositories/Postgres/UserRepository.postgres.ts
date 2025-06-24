@@ -1,26 +1,15 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../../prisma/prisma.service';
-import { CreateUserDto } from '@shared/dto/user/create.user.dto';
-import { IUserRepository } from '../user.repository.interface';
-import { User } from '@shared/types/user';
-import { ERole } from '@shared/enums/user.enum';
-import { UserPrismaSelected, userSelect } from './Utils.postgres';
-import { Email } from '@shared/value-objects/email.vo';
-import { Name } from '@shared/value-objects/name.vo';
-import { Password } from '@shared/value-objects/password.vo';
-import { UpdateUserDto } from '@shared/dto/user/update-user.dto';
-import { Role } from '@prisma/client';
-
-// Mapeamento entre enums
-const roleMap = {
-  [Role.COMMON]: ERole.COMMON_USER,
-  [Role.ADMIN]: ERole.ADMIN,
-};
-
-const reverseRoleMap = {
-  [ERole.COMMON_USER]: Role.COMMON,
-  [ERole.ADMIN]: Role.ADMIN,
-};
+import { Injectable } from "@nestjs/common";
+import { PrismaService } from "../../../prisma/prisma.service";
+import { CreateUserDto } from "@shared/dto/user/create.user.dto";
+import { IUserRepository } from "../user.repository.interface";
+import { User } from "@shared/types/user";
+import { ERole, Role } from "@shared/enums/user.enum";
+import { UserPrismaSelected, userSelect } from "./Utils.postgres";
+import { Email } from "@shared/value-objects/email.vo";
+import { Name } from "@shared/value-objects/name.vo";
+import { Password } from "@shared/value-objects/password.vo";
+import { UpdateUserDto } from "@shared/dto/user/update-user.dto";
+import { roleMap, reverseRoleMap } from "@shared/permissions/permission.map";
 
 function toDomainUser(prismaUser: UserPrismaSelected): User {
   return {
