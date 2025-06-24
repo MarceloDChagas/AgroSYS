@@ -1,13 +1,19 @@
-import { SideMenu } from '../components/layout/SideMenu';
+import { useNavigate } from "react-router-dom";
+import { SideMenu } from "../components/layout/SideMenu";
 
-export function ColheitaPage() {
+function ColheitaPage() {
+  const navigate = useNavigate();
+
   return (
     <SideMenu title="COLHEITA">
       <div className="flex justify-center items-center h-full w-full">
-        <div className="bg-[#f4f8ee] p-8 rounded-2xl shadow-md w-full max-w-4xl">
+        <div className="bg-[#f4f8ee] p-10 rounded-2xl shadow-md w-full max-w-4xl">
           {/* Botão para registrar nova colheita */}
           <div className="flex justify-end mb-4">
-            <button className="bg-[#1b5e1f] text-white px-4 py-2 rounded hover:bg-green-800 transition">
+            <button
+              onClick={() => navigate("/colheita/nova")}
+              className="bg-[#1b5e1f] text-white px-4 py-2 rounded hover:bg-green-800 transition"
+            >
               Registrar Nova Colheita
             </button>
           </div>
@@ -23,7 +29,7 @@ export function ColheitaPage() {
                 </tr>
               </thead>
               <tbody className="bg-white text-[#1b5e1f]">
-                {[1, 2, 3, 4].map((row: number) => (
+                {[1, 2, 3, 4].map((row) => (
                   <tr key={row}>
                     <td className="py-2 px-4 border">célula 1</td>
                     <td className="py-2 px-4 border">célula 1</td>
@@ -48,3 +54,5 @@ export function ColheitaPage() {
     </SideMenu>
   );
 }
+
+export default ColheitaPage;
