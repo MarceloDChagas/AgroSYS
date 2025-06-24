@@ -18,16 +18,120 @@ enum Role {
   ADMIN
 }
 
+enum ProductStatus {
+  AVAILABLE
+  OUT_OF_STOCK
+  DISCONTINUED
+}
+
+enum SaleStatus {
+  PENDING
+  COMPLETED
+  CANCELLED
+}
+
+enum InvoiceStatus {
+  DRAFT
+  ISSUED
+  PAID
+  CANCELLED
+}
+
 model User {
   id       String @id @default(uuid())
   email    String @unique
   password String
   name     String
   role     Role   @default(COMMON) // Pode ser COMMON ou ADMIN
+  
+  // Relacionamentos
+  sales    Sale[]
+  invoices Invoice[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model Tool {
   id        String  @id @default(uuid())
   toolName  String
   status    String
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Product {
+  id          String        @id @default(uuid())
+  name        String
+  description String?
+  price       Decimal       @db.Decimal(10, 2)
+  quantity    Int           @default(0)
+  status      ProductStatus @default(AVAILABLE)
+  category    String?
+  
+  // Relacionamentos
+  saleItems   SaleItem[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("products")
+}
+
+model Sale {
+  id          String     @id @default(uuid())
+  userId      String
+  totalAmount Decimal    @db.Decimal(10, 2)
+  status      SaleStatus @default(PENDING)
+  saleDate    DateTime   @default(now())
+  
+  // Relacionamentos
+  user      User       @relation(fields: [userId], references: [id])
+  saleItems SaleItem[]
+  invoice   Invoice?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("sales")
+}
+
+model SaleItem {
+  id        String  @id @default(uuid())
+  saleId    String
+  productId String
+  quantity  Int
+  unitPrice Decimal @db.Decimal(10, 2)
+  totalPrice Decimal @db.Decimal(10, 2)
+  
+  // Relacionamentos
+  sale    Sale    @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("sale_items")
+}
+
+model Invoice {
+  id            String        @id @default(uuid())
+  saleId        String        @unique
+  userId        String
+  invoiceNumber String        @unique
+  totalAmount   Decimal       @db.Decimal(10, 2)
+  status        InvoiceStatus @default(DRAFT)
+  issueDate     DateTime      @default(now())
+  dueDate       DateTime?
+  paidDate      DateTime?
+  
+  // Relacionamentos
+  sale Sale @relation(fields: [saleId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("invoices")
 }
