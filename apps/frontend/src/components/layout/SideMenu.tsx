@@ -13,7 +13,7 @@ const menuItems = [
   { label: 'FERRAMENTAS', route: '/ferramentas' },
   { label: 'VENDAS', route: '/vendas' },
   { label: 'NOTAS FISCAIS', route: '/notas' },
-  { label: 'UNIDADES DE PRODUÇÃO', route: '/unidades' },
+  { label: 'UNIDADES DE PRODUÇÃO', route: '/UapPage' },
   { label: 'INSUMOS E PRODUTOS', route: '/insumos' },
   { label: 'PERFIL', route: '/perfil' },
 ];

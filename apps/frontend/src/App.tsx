@@ -17,6 +17,10 @@ import NotaFiscalPage from './pages/NotaFiscalPage';
 import GerarNotaPage from './pages/GerarNotaPage';
 import VisualizarNotaPage from './pages/VisualizarNotaPage';
 import NotasFiscaisPage from './pages/NotasFiscaisPage';
+import UapPage from './pages/UapPage';
+import CadastroUapPage from './pages/CadastroUapPage';
+
+
 
 function App() {
   return (
@@ -39,6 +43,8 @@ function App() {
         <Route path="/notas/gerar" element={<GerarNotaPage />} />
         <Route path="/notas/visualizar" element={<VisualizarNotaPage />} />
         <Route path="/notas" element={<NotasFiscaisPage />} />
+        <Route path="/UapPage" element={<UapPage />} />
+        <Route path="/uap/cadastro" element={<CadastroUapPage />} />
       </Routes>
     </Router>
   );
