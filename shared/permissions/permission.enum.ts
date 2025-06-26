@@ -17,5 +17,18 @@ export enum EPermission {
   DELETE_PRODUCT = "DELETE_PRODUCT",
   READ_PRODUCT = "READ_PRODUCT",
 
+  // Permissões de vendas
+  CREATE_SALE = "CREATE_SALE",
+  UPDATE_SALE = "UPDATE_SALE",
+  DELETE_SALE = "DELETE_SALE",
+  READ_SALE = "READ_SALE",
+
+  // Permissões de notas fiscais
+  CREATE_INVOICE = "CREATE_INVOICE",
+  UPDATE_INVOICE = "UPDATE_INVOICE",
+  DELETE_INVOICE = "DELETE_INVOICE",
+  READ_INVOICE = "READ_INVOICE",
+  ISSUE_INVOICE = "ISSUE_INVOICE",
+
   // Ir adicionando conforme necessário
 }

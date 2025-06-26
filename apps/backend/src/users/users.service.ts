@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, Inject, Logger } from "@nestjs/common";
 import { IUserRepository } from "./repositories/user.repository.interface";
-import { USER_REPOSITORY } from "./repositories/tokens";
+import { USER_REPOSITORY } from "./repositories/userToken";
 import { Email } from "@shared/value-objects/email.vo";
 import { Name } from "@shared/value-objects/name.vo";
 import { Password } from "@shared/value-objects/password.vo";

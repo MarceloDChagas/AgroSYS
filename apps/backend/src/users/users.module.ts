@@ -3,7 +3,7 @@ import { UsersService } from "./users.service";
 import { UsersController } from "./users.controller";
 import { PrismaModule } from "../prisma/prisma.module";
 import { UserRepositoryPostgres } from "./repositories/Postgres/UserRepository.postgres";
-import { USER_REPOSITORY } from "./repositories/tokens";
+import { USER_REPOSITORY } from "./repositories/userToken";
 import { PermissionsGuard } from "@shared/permissions";
 
 @Module({

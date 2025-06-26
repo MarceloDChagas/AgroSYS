@@ -22,7 +22,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  //@RequirePermissions(EPermission.CREATE_USER)
+  @RequirePermissions(EPermission.CREATE_USER)
   @ApiOperation({ summary: "Criar novo usuário" })
   @ApiResponse({ status: 201, description: "Usuário criado com sucesso" })
   async create(@Body() rawDto: RawCreateUserDto) {

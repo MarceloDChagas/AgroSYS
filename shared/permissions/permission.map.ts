@@ -32,12 +32,30 @@ export const rolePermissions: Record<ERole, EPermission[]> = {
     EPermission.UPDATE_PRODUCT,
     EPermission.DELETE_PRODUCT,
     EPermission.READ_PRODUCT,
+
+    // Permissões de vendas
+    EPermission.CREATE_SALE,
+    EPermission.UPDATE_SALE,
+    EPermission.DELETE_SALE,
+    EPermission.READ_SALE,
+
+    // Permissões de notas fiscais
+    EPermission.CREATE_INVOICE,
+    EPermission.UPDATE_INVOICE,
+    EPermission.DELETE_INVOICE,
+    EPermission.READ_INVOICE,
+    EPermission.ISSUE_INVOICE,
   ],
   [ERole.COMMON_USER]: [
-    // Usuários comuns só podem ler
+    // Usuários comuns podem ler e fazer vendas
     EPermission.READ_TOOL,
     EPermission.READ_PRODUCT,
+    EPermission.CREATE_SALE,
+    EPermission.READ_SALE,
+    EPermission.READ_INVOICE,
     // Usuários comuns não podem gerenciar outros usuários
+    // Usuários comuns não podem gerenciar produtos
+    // Usuários comuns não podem emitir notas fiscais
   ],
 };
 
