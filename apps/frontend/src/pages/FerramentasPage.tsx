@@ -50,6 +50,7 @@ function FerramentasPage() {
       }
       setTools(toolsData);
     } catch (err) {
+      console.error(err);
       setError("Erro ao filtrar ferramentas");
     } finally {
       setLoading(false);

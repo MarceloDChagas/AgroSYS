@@ -3,7 +3,7 @@ import { SalesController } from "./sales.controller";
 import { SalesService } from "./sales.service";
 import { SaleRepositoryPostgres } from "./repositories/Postgres/SaleRepository.postgres";
 import { PrismaService } from "../prisma/prisma.service";
-import { SALE_REPOSITORY } from "./repositories/sale.repository.interface";
+import { SALE_REPOSITORY } from "./repositories/saleToken";
 import { PermissionsGuard } from "@shared/permissions";
 import { ProductsModule } from "../products/products.module";
 

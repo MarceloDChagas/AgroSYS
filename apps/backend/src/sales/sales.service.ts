@@ -4,10 +4,8 @@ import {
   NotFoundException,
   BadRequestException,
 } from "@nestjs/common";
-import {
-  ISaleRepository,
-  SALE_REPOSITORY,
-} from "./repositories/sale.repository.interface";
+import { ISaleRepository } from "./repositories/sale.repository.interface";
+import { SALE_REPOSITORY } from "./repositories/saleToken";
 import { CreateSaleDto } from "@shared/dto/sale/create-sale.dto";
 import { UpdateSaleDto } from "@shared/dto/sale/update-sale.dto";
 import { SaleWithItems } from "@shared/types/product";

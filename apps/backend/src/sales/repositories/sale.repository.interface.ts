@@ -3,8 +3,6 @@ import { UpdateSaleDto } from "@shared/dto/sale/update-sale.dto";
 import { Sale, SaleWithItems } from "@shared/types/product";
 import { ESaleStatus } from "@shared/enums/product.enum";
 
-export const SALE_REPOSITORY = Symbol("SALE_REPOSITORY");
-
 export interface ISaleRepository {
   findAll(): Promise<SaleWithItems[]>;
   findOne(id: string): Promise<SaleWithItems | null>;

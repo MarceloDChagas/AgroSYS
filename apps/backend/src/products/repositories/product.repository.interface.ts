@@ -3,8 +3,6 @@ import { UpdateProductDto } from "@shared/dto/product/update-product.dto";
 import { Product } from "@shared/types/product";
 import { EProductStatus } from "@shared/enums/product.enum";
 
-export const PRODUCT_REPOSITORY = Symbol("PRODUCT_REPOSITORY");
-
 export interface IProductRepository {
   findAll(): Promise<Product[]>;
   findOne(id: string): Promise<Product | null>;

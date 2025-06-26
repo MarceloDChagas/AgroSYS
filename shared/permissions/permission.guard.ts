@@ -11,11 +11,11 @@ import { hasPermission } from "./permission.map";
 
 export const PERMISSIONS_KEY = "permissions";
 
-// Decorator para definir permissões necessárias
 export const RequirePermissions = (...permissions: EPermission[]) => {
   return (
     target: any,
     propertyKey?: string | symbol,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     descriptor?: PropertyDescriptor
   ) => {
     Reflect.defineMetadata(
@@ -38,11 +38,11 @@ export class PermissionsGuard implements CanActivate {
     );
 
     if (!requiredPermissions) {
-      return true; // Se não há permissões específicas requeridas, permite acesso
+      return true;
     }
 
     const request = context.switchToHttp().getRequest();
-    const user = request.user; // Assumindo que o usuário está no request após autenticação
+    const user = request.user;
 
     if (!user || !user.role) {
       throw new ForbiddenException(
@@ -52,7 +52,6 @@ export class PermissionsGuard implements CanActivate {
 
     const userRole: ERole = user.role;
 
-    // Verifica se o usuário tem pelo menos uma das permissões necessárias
     const hasRequiredPermission = requiredPermissions.some((permission) =>
       hasPermission(userRole, permission)
     );
@@ -69,7 +68,6 @@ export class PermissionsGuard implements CanActivate {
   }
 }
 
-// Função utilitária para verificar permissões manualmente
 export function checkUserPermission(
   userRole: ERole,
   requiredPermission: EPermission

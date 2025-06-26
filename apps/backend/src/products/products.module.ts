@@ -3,7 +3,7 @@ import { ProductsController } from "./products.controller";
 import { ProductsService } from "./products.service";
 import { ProductRepositoryPostgres } from "./repositories/Postgres/ProductRepository.postgres";
 import { PrismaService } from "../prisma/prisma.service";
-import { PRODUCT_REPOSITORY } from "./repositories/product.repository.interface";
+import { PRODUCT_REPOSITORY } from "./repositories/productToken";
 import { PermissionsGuard } from "@shared/permissions";
 
 @Module({
