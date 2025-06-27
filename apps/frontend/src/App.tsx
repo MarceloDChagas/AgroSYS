@@ -19,7 +19,13 @@ import VisualizarNotaPage from './pages/VisualizarNotaPage';
 import NotasFiscaisPage from './pages/NotasFiscaisPage';
 import UapPage from './pages/UapPage';
 import CadastroUapPage from './pages/CadastroUapPage';
-
+import InsumosPage from './pages/InsumosPage';
+import CadastroInsumoPage from './pages/CadastroInsumoPage';
+import PerfilPage from './pages/PerfilPage';
+import ListaUsuariosPage from './pages/ListaUsuariosPage';
+import PerfilAdminPage from './pages/PerfilAdminPage';
+import CadastroUsuarioPage from './pages/CadastroUsuarioPage';
+import EditarPermissaoPage from './pages/EditarPermissaoPage';
 
 
 function App() {
@@ -45,6 +51,15 @@ function App() {
         <Route path="/notas" element={<NotasFiscaisPage />} />
         <Route path="/UapPage" element={<UapPage />} />
         <Route path="/uap/cadastro" element={<CadastroUapPage />} />
+        <Route path="/insumos" element={<InsumosPage />} />
+        <Route path="/insumos/cadastro" element={<CadastroInsumoPage />} />
+        <Route path="/perfil" element={<PerfilPage />} />
+        <Route path="/perfil/lista" element={<ListaUsuariosPage />} />
+        <Route path="/perfil/admin" element={<PerfilAdminPage />} />
+        <Route path="/perfil/cadastro" element={<CadastroUsuarioPage />} />
+        <Route path="/perfil/editar" element={<EditarPermissaoPage />} />
+
+        {/* Adicione outras rotas conforme necessário */}
       </Routes>
     </Router>
   );
