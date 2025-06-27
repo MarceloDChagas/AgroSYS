@@ -37,6 +37,14 @@ enum InvoiceStatus {
   CANCELLED
 }
 
+enum EUnit {
+  KG
+  LITRO
+  UNIDADE
+  SACA
+  CAIXA
+}
+
 model User {
   id       String @id @default(uuid())
   email    String @unique
@@ -72,6 +80,8 @@ model Product {
   
   // Relacionamentos
   saleItems   SaleItem[]
+  supplyEntries SupplyEntry[]
+
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -135,3 +145,18 @@ model Invoice {
   
   @@map("invoices")
 }
+
+model SupplyEntry {
+  id         String   @id @default(uuid())
+  date       DateTime
+  amount     Decimal  @db.Decimal(10, 2) 
+  unit       EUnit
+  productId  String
+  product    Product  @relation(fields: [productId], references: [id])
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("supply_entries")
+}
+
