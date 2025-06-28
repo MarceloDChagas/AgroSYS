@@ -1,9 +1,69 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@300;400;700;900&family=Lora:wght@400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-html, body, #root {
+@layer base {
+  html {
+    font-family: "Inter", system-ui, sans-serif;
+  }
+
+  body {
+    @apply bg-neutral-50 text-neutral-900;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-agro-500 text-white px-4 py-2 rounded-lg font-semibold 
+           hover:bg-agro-600 transition-all duration-200 
+           focus:outline-none focus:ring-2 focus:ring-agro-500 focus:ring-offset-2
+           shadow-institutional;
+  }
+
+  .btn-secondary {
+    @apply bg-neutral-200 text-neutral-700 px-4 py-2 rounded-lg font-semibold 
+           hover:bg-neutral-300 transition-all duration-200 
+           focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2
+           shadow-institutional;
+  }
+
+  .card {
+    @apply bg-white rounded-lg shadow-institutional hover:shadow-card-hover 
+           transition-all duration-300 border border-neutral-200;
+  }
+
+  .card-agro {
+    @apply bg-agro-50 border-l-4 border-agro-500 rounded-lg p-4 
+           shadow-institutional hover:shadow-card-hover 
+           transition-all duration-300;
+  }
+
+  .input-field {
+    @apply w-full px-3 py-2 border border-neutral-300 rounded-lg 
+           focus:outline-none focus:ring-2 focus:ring-agro-500 focus:border-transparent 
+           transition-all duration-200 bg-white;
+  }
+
+  .sidebar-item {
+    @apply flex items-center gap-3 px-4 py-3 rounded-lg
+           text-left transition-all duration-200 font-medium
+           focus:outline-none focus:ring-2 focus:ring-agro-500 focus:ring-offset-2;
+  }
+
+  .sidebar-item-active {
+    @apply bg-agro-100 text-agro-700 border-l-4 border-agro-500 shadow-sm;
+  }
+
+  .sidebar-item-inactive {
+    @apply text-neutral-600 hover:bg-agro-50 hover:text-agro-600;
+  }
+}
+
+html,
+body,
+#root {
   width: 100%;
   height: 100%;
   margin: 0;

@@ -1,32 +1,33 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { LoginPage } from './pages/LoginPage';
-import { RegisterPage } from './pages/RegisterPage';
-import './index.css';
-import { HomePage } from './pages/HomePage';
-import { DashboardPage } from './pages/DashboardPage';
-import ColheitaPage from './pages/ColheitaPage';
-import VendasPage from './pages/VendasPage';
-import FerramentasPage from './pages/FerramentasPage';
-import NovaColheitaPage from './pages/NovaColheitaPage';
-import SolicitarFerramentaPage from "./pages/SolicitarFerramentaPage";
-import DevolverFerramentaPage from "./pages/DevolverFerramentaPage";
-import EditarFerramentaPage from "./pages/EditarFerramentaPage";
-import ExcluirFerramentaPage from "./pages/ExcluirFerramentaPage";
-import VendaCadastroPage from './pages/VendaCadastroPage';
-import NotaFiscalPage from './pages/NotaFiscalPage';
-import GerarNotaPage from './pages/GerarNotaPage';
-import VisualizarNotaPage from './pages/VisualizarNotaPage';
-import NotasFiscaisPage from './pages/NotasFiscaisPage';
-import UapPage from './pages/UapPage';
-import CadastroUapPage from './pages/CadastroUapPage';
-import InsumosPage from './pages/InsumosPage';
-import CadastroInsumoPage from './pages/CadastroInsumoPage';
-import PerfilPage from './pages/PerfilPage';
-import ListaUsuariosPage from './pages/ListaUsuariosPage';
-import PerfilAdminPage from './pages/PerfilAdminPage';
-import CadastroUsuarioPage from './pages/CadastroUsuarioPage';
-import EditarPermissaoPage from './pages/EditarPermissaoPage';
-
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { LoginPage } from "./features/auth/pages/LoginPage";
+import { RegisterPage } from "./features/auth/pages/RegisterPage";
+import "./index.css";
+import { HomePage } from "./features/auth/pages/HomePage";
+import { DashboardPage } from "./features/dashboard/pages/DashboardPage";
+import ColheitaPage from "./features/colheitas/pages/ColheitaPage";
+import VendasPage from "./features/vendas/pages/VendasPage";
+import FerramentasPage from "./features/ferramentas/pages/FerramentasPage";
+import NovaColheitaPage from "./features/colheitas/pages/NovaColheitaPage";
+import SolicitarFerramentaPage from "./features/ferramentas/pages/SolicitarFerramentaPage";
+import DevolverFerramentaPage from "./features/ferramentas/pages/DevolverFerramentaPage";
+import EditarFerramentaPage from "./features/ferramentas/pages/EditarFerramentaPage";
+import ExcluirFerramentaPage from "./features/ferramentas/pages/ExcluirFerramentaPage";
+import VendaCadastroPage from "./features/vendas/pages/VendaCadastroPage";
+import NotaFiscalPage from "./features/notas/pages/NotaFiscalPage";
+import GerarNotaPage from "./features/notas/pages/GerarNotaPage";
+import VisualizarNotaPage from "./features/notas/pages/VisualizarNotaPage";
+import NotasFiscaisPage from "./features/notas/pages/NotasFiscaisPage";
+import UapPage from "./features/uaps/pages/UapPage";
+import CadastroUapPage from "./features/uaps/pages/CadastroUapPage";
+import InsumosPage from "./features/insumos/pages/InsumosPage";
+import ProdutosPage from "./features/produtos/pages/ProdutosPage";
+import CadastroInsumoPage from "./features/insumos/pages/CadastroInsumoPage";
+import CadastroProdutoPage from "./features/produtos/pages/CadastroProdutoPage";
+import PerfilPage from "./features/usuarios/pages/PerfilPage";
+import ListaUsuariosPage from "./features/usuarios/pages/ListaUsuariosPage";
+import PerfilAdminPage from "./features/usuarios/pages/PerfilAdminPage";
+import CadastroUsuarioPage from "./features/usuarios/pages/CadastroUsuarioPage";
+import EditarPermissaoPage from "./features/usuarios/pages/EditarPermissaoPage";
 
 function App() {
   return (
@@ -40,10 +41,19 @@ function App() {
         <Route path="/vendas" element={<VendasPage />} />
         <Route path="/ferramentas" element={<FerramentasPage />} />
         <Route path="/colheita/nova" element={<NovaColheitaPage />} />
-        <Route path="/ferramentas/solicitar" element={<SolicitarFerramentaPage />} />
-        <Route path="/ferramentas/devolver" element={<DevolverFerramentaPage />} />
+        <Route
+          path="/ferramentas/solicitar"
+          element={<SolicitarFerramentaPage />}
+        />
+        <Route
+          path="/ferramentas/devolver"
+          element={<DevolverFerramentaPage />}
+        />
         <Route path="/ferramentas/editar" element={<EditarFerramentaPage />} />
-        <Route path="/ferramentas/excluir" element={<ExcluirFerramentaPage />} />
+        <Route
+          path="/ferramentas/excluir"
+          element={<ExcluirFerramentaPage />}
+        />
         <Route path="/vendas/registrar" element={<VendaCadastroPage />} />
         <Route path="/vendas/nota" element={<NotaFiscalPage />} />
         <Route path="/notas/gerar" element={<GerarNotaPage />} />
@@ -52,7 +62,9 @@ function App() {
         <Route path="/UapPage" element={<UapPage />} />
         <Route path="/uap/cadastro" element={<CadastroUapPage />} />
         <Route path="/insumos" element={<InsumosPage />} />
+        <Route path="/produtos" element={<ProdutosPage />} />
         <Route path="/insumos/cadastro" element={<CadastroInsumoPage />} />
+        <Route path="/produtos/cadastro" element={<CadastroProdutoPage />} />
         <Route path="/perfil" element={<PerfilPage />} />
         <Route path="/perfil/lista" element={<ListaUsuariosPage />} />
         <Route path="/perfil/admin" element={<PerfilAdminPage />} />

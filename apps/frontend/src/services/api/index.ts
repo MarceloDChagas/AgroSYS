@@ -2,6 +2,7 @@
 export { authService, AuthService } from "./authService";
 export { toolService, ToolService } from "./toolService";
 export { userService, UserService } from "./userService";
+export { invoiceService, InvoiceService } from "./invoiceService";
 export { apiClient } from "./client";
 
 // Export types
@@ -25,4 +26,4 @@ export type {
 export type { ApiResponse, ApiError } from "./client";
 
 // Convenience exports (import services in components instead)
-// Example: import { authService, toolService } from '@/services/api';
+// Example: import { authService, toolService, invoiceService } from '@/services/api';
