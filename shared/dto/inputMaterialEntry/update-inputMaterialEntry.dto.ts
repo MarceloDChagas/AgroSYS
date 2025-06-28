@@ -7,7 +7,7 @@ import {
 import { Type } from "class-transformer";
 import { QuantityDto } from "./quantity.dto";
 
-export class UpdateSupplyEntryDto {
+export class UpdateInputMaterialEntryDto {
   @IsOptional()
   @IsUUID()
   productId?: string;

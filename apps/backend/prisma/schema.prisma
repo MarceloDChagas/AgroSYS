@@ -146,7 +146,7 @@ model Invoice {
   @@map("invoices")
 }
 
-model SupplyEntry {
+model InputMaterialEntry {
   id         String   @id @default(uuid())
   date       DateTime
   amount     Decimal  @db.Decimal(10, 2) 
@@ -157,6 +157,6 @@ model SupplyEntry {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  @@map("supply_entries")
+  @@map("input_material_entries")
 }
 
