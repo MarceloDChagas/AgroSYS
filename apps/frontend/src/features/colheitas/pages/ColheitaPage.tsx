@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import { SideMenu } from "../components/layout/SideMenu";
-import { PageHeader } from "../components/ui/PageHeader";
-import { FilterBar } from "../components/ui/FilterBar";
-import { DataTable } from "../components/ui/DataTable";
-import { ActionButtons } from "../components/ui/ActionButtons";
+import { SideMenu } from "../../../components/layout/SideMenu";
+import { PageHeader } from "../../../components/ui/PageHeader";
+import { FilterBar } from "../../../components/ui/FilterBar";
+import { DataTable } from "../../../components/ui/DataTable";
+import { ActionButtons } from "../../../components/ui/ActionButtons";
 import { FaPlus, FaEdit, FaTrash, FaEye } from "react-icons/fa";
 
 function ColheitaPage() {
@@ -147,7 +147,10 @@ function ColheitaPage() {
   const actions = [
     {
       label: "VISUALIZAR",
-      onClick: () => {},
+      onClick: () => {
+        // TODO: Implementar visualização da colheita
+        console.log("Visualizar colheita");
+      },
       variant: "primary" as const,
       icon: <FaEye size={14} />,
     },
@@ -159,7 +162,10 @@ function ColheitaPage() {
     },
     {
       label: "EXCLUIR",
-      onClick: () => {},
+      onClick: () => {
+        // TODO: Implementar exclusão da colheita
+        console.log("Excluir colheita");
+      },
       variant: "danger" as const,
       icon: <FaTrash size={14} />,
     },
@@ -183,7 +189,13 @@ function ColheitaPage() {
         </PageHeader>
 
         {/* Filters */}
-        <FilterBar filters={filters} onFilterChange={(key, value) => {}} />
+        <FilterBar
+          filters={filters}
+          onFilterChange={(_key, _value) => {
+            // TODO: Implementar filtros
+            console.log("Filter changed:", _key, _value);
+          }}
+        />
 
         {/* Main Content */}
         <div className="flex gap-6">

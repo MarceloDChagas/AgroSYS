@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import { SideMenu } from "../components/layout/SideMenu";
-import { PageHeader } from "../components/ui/PageHeader";
-import { FilterBar } from "../components/ui/FilterBar";
-import { DataTable } from "../components/ui/DataTable";
-import { ActionButtons } from "../components/ui/ActionButtons";
+import { SideMenu } from "../../../components/layout/SideMenu";
+import { PageHeader } from "../../../components/ui/PageHeader";
+import { FilterBar } from "../../../components/ui/FilterBar";
+import { DataTable } from "../../../components/ui/DataTable";
+import { ActionButtons } from "../../../components/ui/ActionButtons";
 import { FaPlus, FaEdit, FaTrash } from "react-icons/fa";
 
 function InsumosPage() {
@@ -144,9 +144,10 @@ function InsumosPage() {
         {/* Filters */}
         <FilterBar
           filters={filters}
-          onFilterChange={(key, value) =>
-            // Remover console.log("Filter changed:", key, value)
-          }
+          onFilterChange={(key, value) => {
+            // TODO: Implementar filtros
+            console.log("Filter changed:", key, value);
+          }}
         />
 
         {/* Main Content */}

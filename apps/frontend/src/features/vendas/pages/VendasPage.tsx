@@ -1,17 +1,17 @@
-import { SideMenu } from "../components/layout/SideMenu";
 import { useNavigate } from "react-router-dom";
+import { SideMenu } from "../../../components/layout/SideMenu";
+import { PageHeader } from "../../../components/ui/PageHeader";
+import { FilterBar } from "../../../components/ui/FilterBar";
+import { DataTable } from "../../../components/ui/DataTable";
+import { ActionButtons } from "../../../components/ui/ActionButtons";
 import {
   FaPlus,
-  FaSearch,
   FaEye,
   FaFileAlt,
   FaTrash,
+  FaSearch,
   FaDollarSign,
 } from "react-icons/fa";
-import { PageHeader } from "../components/ui/PageHeader";
-import { FilterBar } from "../components/ui/FilterBar";
-import { DataTable } from "../components/ui/DataTable";
-import { ActionButtons } from "../components/ui/ActionButtons";
 
 function VendasPage() {
   const navigate = useNavigate();
@@ -113,7 +113,10 @@ function VendasPage() {
   const actions = [
     {
       label: "Visualizar",
-      onClick: () => {},
+      onClick: () => {
+        // TODO: Implementar visualização da venda
+        console.log("Visualizar venda");
+      },
       variant: "primary" as const,
       icon: <FaEye size={14} />,
     },
@@ -125,7 +128,10 @@ function VendasPage() {
     },
     {
       label: "Excluir",
-      onClick: () => {},
+      onClick: () => {
+        // TODO: Implementar exclusão da venda
+        console.log("Excluir venda");
+      },
       variant: "danger" as const,
       icon: <FaTrash size={14} />,
     },

@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { SideMenu } from "../components/layout/SideMenu";
-import { toolService, authService, type Tool } from "../services/api";
-import { routes } from "../routes/routes";
-import { ActionButtons } from "../components/ui/ActionButtons";
+import { SideMenu } from "../../../components/layout/SideMenu";
+import { toolService, authService, type Tool } from "../../../services/api";
+import { routes } from "../../../routes/routes";
+import { ActionButtons } from "../../../components/ui/ActionButtons";
 import { FaTools, FaEdit, FaTrash, FaHandshake, FaUndo } from "react-icons/fa";
 
 function FerramentasPage() {
@@ -14,10 +14,6 @@ function FerramentasPage() {
   const [filter, setFilter] = useState<string>("");
 
   const canManageTools = authService.hasPermission("CREATE_TOOL");
-
-  useEffect(() => {
-    fetchTools();
-  }, []);
 
   const fetchTools = async () => {
     try {
@@ -32,12 +28,17 @@ function FerramentasPage() {
       }
 
       setTools(toolsData);
-    } catch (err) {
+    } catch (error) {
+      console.error("Erro ao carregar ferramentas:", error);
       setError("Erro ao carregar ferramentas");
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchTools();
+  }, [fetchTools]);
 
   const handleFilterChange = async (newFilter: string) => {
     setFilter(newFilter);
@@ -50,7 +51,8 @@ function FerramentasPage() {
         toolsData = await toolService.getAllTools();
       }
       setTools(toolsData);
-    } catch (err) {
+    } catch (error) {
+      console.error("Erro ao filtrar ferramentas:", error);
       setError("Erro ao filtrar ferramentas");
     } finally {
       setLoading(false);
