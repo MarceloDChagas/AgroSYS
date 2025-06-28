@@ -45,6 +45,12 @@ export const rolePermissions: Record<ERole, EPermission[]> = {
     EPermission.DELETE_INVOICE,
     EPermission.READ_INVOICE,
     EPermission.ISSUE_INVOICE,
+
+    //Permissões para colheita ou entrada de outros produtos
+    EPermission.CREATE_INPUT_MATERIAL_ENTRY,
+    EPermission.READ_INPUT_MATERIAL_ENTRY,
+    EPermission.UPDATE_INPUT_MATERIAL_ENTRY,
+    EPermission.DELETE_INPUT_MATERIAL_ENTRY,
   ],
   [ERole.COMMON_USER]: [
     // Usuários comuns podem ler e fazer vendas
@@ -56,6 +62,10 @@ export const rolePermissions: Record<ERole, EPermission[]> = {
     // Usuários comuns não podem gerenciar outros usuários
     // Usuários comuns não podem gerenciar produtos
     // Usuários comuns não podem emitir notas fiscais
+
+    //Usuários comuns podem registrar colheitas e olhar mas não de modificar ou deletar
+    EPermission.CREATE_INPUT_MATERIAL_ENTRY,
+    EPermission.READ_INPUT_MATERIAL_ENTRY,
   ],
 };
 
