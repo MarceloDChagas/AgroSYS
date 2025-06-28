@@ -21,7 +21,6 @@ export default function LoginForm() {
       await authService.login({ email, password });
       navigate("/dashboard");
     } catch (error) {
-      console.error("Erro no login:", error);
       setError("Credenciais inválidas ou erro no servidor");
     } finally {
       setIsLoading(false);
