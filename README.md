@@ -100,7 +100,8 @@ Hi NOME! You've successfully authenticated, but GitHub does not provide shell ac
 Execute no Git Bash:
 
 ```bash
-# 1. Clonar o repositóriogit clone git@github-agro:MarceloDChagas/Sistema-de-gestao-agropecuaria.git
+# 1. Clonar o repositório
+git clone git@github-agro:MarceloDChagas/Sistema-de-gestao-agropecuaria.git
 cd Sistema-de-gestao-agropecuaria
 
 ```
