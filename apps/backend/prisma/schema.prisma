@@ -80,7 +80,7 @@ model Product {
   
   // Relacionamentos
   saleItems   SaleItem[]
-  supplyEntries SupplyEntry[]
+  supplyEntries InputMaterialEntry[]
 
   
   createdAt DateTime @default(now())
