@@ -100,8 +100,9 @@ Hi NOME! You've successfully authenticated, but GitHub does not provide shell ac
 Execute no Git Bash:
 
 ```bash
-git clone git@github-agro:MarceloDChagas/Sistema-de-gestao-agropecuaria.git
+# 1. Clonar o repositóriogit clone git@github-agro:MarceloDChagas/Sistema-de-gestao-agropecuaria.git
 cd Sistema-de-gestao-agropecuaria
+
 ```
 
 ---
@@ -109,9 +110,23 @@ cd Sistema-de-gestao-agropecuaria
 ## 🚀 6. Instalar dependências e rodar
 
 ```bash
-npm run setup # instala tudo, formata o codigo, aplica o lint e roda o backend e o frontend em paralelo
-npm run dev      # roda os dois
-npm run dev:frontend ou npm run dev:backend # roda separadamente
+
+# 2. Instalar dependências
+npm install
+
+# 3. Configurar banco de dados (MANUAL)
+# - Instalar PostgreSQL
+# - Criar banco 'gestao_agropecuaria'
+# - Criar arquivo .env no backend com DATABASE_URL
+
+# 4. Configurar Prisma
+cd apps/backend
+npx prisma generate
+npx prisma migrate dev
+
+# 5. Voltar para raiz e rodar
+cd ../..
+npm run dev
 ```
 
 ---
