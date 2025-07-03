@@ -1,6 +1,6 @@
-import { SideMenu } from "../components/layout/SideMenu";
-import { FormField } from "../components/ui/FormField";
-import { PageHeader } from "../components/ui/PageHeader";
+import { SideMenu } from "@/components/layout/SideMenu";
+import { FormField } from "@/components/ui/FormField";
+import { PageHeader } from "@/components/ui/PageHeader";
 import {
   FaSave,
   FaTimes,

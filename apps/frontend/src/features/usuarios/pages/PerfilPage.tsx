@@ -1,5 +1,5 @@
-import { SideMenu } from "../components/layout/SideMenu";
-import { ActionButtons } from "../components/ui/ActionButtons";
+import { SideMenu } from "@/components/layout/SideMenu";
+import { ActionButtons } from "@/components/ui/ActionButtons";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
 function PerfilPage() {

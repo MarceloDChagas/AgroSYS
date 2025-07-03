@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import { SideMenu } from "../components/layout/SideMenu";
-import { PageHeader } from "../components/ui/PageHeader";
-import { FormField } from "../components/ui/FormField";
+import { SideMenu } from "@/components/layout/SideMenu";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { FormField } from "@/components/ui/FormField";
 import { FaSave, FaArrowLeft } from "react-icons/fa";
 
 function CadastroProdutoPage() {
