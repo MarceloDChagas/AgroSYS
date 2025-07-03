@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { SideMenu } from "../../../components/layout/SideMenu";
-import { toolService, authService, type Tool } from "../../../services/api";
-import { routes } from "../../../routes/routes";
-import { ActionButtons } from "../../../components/ui/ActionButtons";
+import { useEffect, useCallback, useState } from "react";
+import { SideMenu } from "@/components/layout/SideMenu";
+import { toolService, authService, type Tool } from "@/services/api";
+import { routes } from "@/routes/routes";
+import { ActionButtons } from "@/components/ui/ActionButtons";
 import { FaTools, FaEdit, FaTrash, FaHandshake, FaUndo } from "react-icons/fa";
 
 function FerramentasPage() {
@@ -15,7 +15,7 @@ function FerramentasPage() {
 
   const canManageTools = authService.hasPermission("CREATE_TOOL");
 
-  const fetchTools = async () => {
+  const fetchTools = useCallback(async () => {
     try {
       setLoading(true);
       setError("");
@@ -34,7 +34,7 @@ function FerramentasPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [filter]);
 
   useEffect(() => {
     fetchTools();
