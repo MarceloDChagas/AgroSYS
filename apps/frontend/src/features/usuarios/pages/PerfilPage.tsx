@@ -6,13 +6,17 @@ function PerfilPage() {
   const actions = [
     {
       label: "EDITAR",
-      onClick: () => {},
+      onClick: () => {
+        /* ação futura */
+      },
       variant: "primary" as const,
       icon: <FaEdit size={14} />,
     },
     {
       label: "EXCLUIR",
-      onClick: () => {},
+      onClick: () => {
+        /* ação futura */
+      },
       variant: "danger" as const,
       icon: <FaTrash size={14} />,
     },

@@ -4,7 +4,7 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { FilterBar } from "@/components/ui/FilterBar";
 import { DataTable } from "@/components/ui/DataTable";
 import { ActionButtons } from "@/components/ui/ActionButtons";
-import { FaPlus, FaEdit, FaTrash } from "react-icons/fa";
+import { FaPlus, FaEdit } from "react-icons/fa";
 
 function InsumosPage() {
   const navigate = useNavigate();
@@ -116,12 +116,6 @@ function InsumosPage() {
       variant: "primary" as const,
       icon: <FaEdit size={14} />,
     },
-    {
-      label: "EXCLUIR",
-      onClick: () => {},
-      variant: "danger" as const,
-      icon: <FaTrash size={14} />,
-    },
   ];
 
   return (
@@ -144,9 +138,8 @@ function InsumosPage() {
         {/* Filters */}
         <FilterBar
           filters={filters}
-          onFilterChange={(key, value) => {
-            // TODO: Implementar filtros
-            console.log("Filter changed:", key, value);
+          onFilterChange={() => {
+            /* TODO: Implementar filtros */
           }}
         />
 
