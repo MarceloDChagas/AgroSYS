@@ -6,10 +6,10 @@ import {
   FaWarehouse,
   FaFlask,
 } from "react-icons/fa";
-import { SideMenu } from "../components/layout/SideMenu";
-import { DashboardCard } from "../components/ui/DashboardCard";
-import { StatCard } from "../components/ui/StatCard";
-import { SystemInfo } from "../components/ui/SystemInfo";
+import { SideMenu } from "@/components/layout/SideMenu";
+import { DashboardCard } from "@/components/ui/DashboardCard";
+import { StatCard } from "@/components/ui/StatCard";
+import { SystemInfo } from "@/components/ui/SystemInfo";
 
 export function DashboardPage() {
   const dashboardCards = [

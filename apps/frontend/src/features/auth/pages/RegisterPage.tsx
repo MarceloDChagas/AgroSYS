@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
-import RegisterForm from "../components/RegisterForm";
-import { RotatedTitle } from "../components/RotatedTitle";
-import agroImage from "../assets/agro.jpg";
+import RegisterForm from "@/components/RegisterForm";
+import { RotatedTitle } from "@/components/RotatedTitle";
+import agroImage from "@/assets/agro.jpg";
 import { useNavigate } from "react-router-dom";
-import { authService } from "../services/api";
+import { authService } from "@/services/api";
 import type { RegisterFormData } from "@/types/forms/register-form-data";
 
 export function RegisterPage() {
