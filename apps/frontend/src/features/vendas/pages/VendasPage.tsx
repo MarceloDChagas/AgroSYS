@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { SideMenu } from "../../../components/layout/SideMenu";
 import { PageHeader } from "../../../components/ui/PageHeader";
 import { FilterBar } from "../../../components/ui/FilterBar";
@@ -12,67 +13,47 @@ import {
   FaSearch,
   FaDollarSign,
 } from "react-icons/fa";
+import { useSales } from "../../../hooks/useSales";
 
 function VendasPage() {
   const navigate = useNavigate();
+  const { sales, loading, error, fetchSales, deleteSale } = useSales();
 
-  // Dados reais de vendas agropecuárias
-  const vendasData = [
-    {
-      id: "VDA-2025-001",
-      data: "15/06/2025",
-      cliente: "Fazenda São João Ltda",
-      produto: "Soja Grão",
-      quantidade: "2.500 kg",
-      valor: "R$ 12.500,00",
-      status: "Concluída",
-    },
-    {
-      id: "VDA-2025-002",
-      data: "14/06/2025",
-      cliente: "Cooperativa Agropecuária Central",
-      produto: "Milho Verde",
-      quantidade: "1.800 kg",
-      valor: "R$ 5.400,00",
-      status: "Pendente",
-    },
-    {
-      id: "VDA-2025-003",
-      data: "13/06/2025",
-      cliente: "Sítio Boa Vista",
-      produto: "Feijão Carioca",
-      quantidade: "800 kg",
-      valor: "R$ 4.800,00",
-      status: "Concluída",
-    },
-    {
-      id: "VDA-2025-004",
-      data: "12/06/2025",
-      cliente: "Fazenda Santa Maria",
-      produto: "Arroz Branco",
-      quantidade: "1.200 kg",
-      valor: "R$ 6.000,00",
-      status: "Concluída",
-    },
-    {
-      id: "VDA-2025-005",
-      data: "11/06/2025",
-      cliente: "Produtor Rural Silva",
-      produto: "Trigo",
-      quantidade: "900 kg",
-      valor: "R$ 3.600,00",
-      status: "Cancelada",
-    },
-    {
-      id: "VDA-2025-006",
-      data: "10/06/2025",
-      cliente: "Fazenda Nova Esperança",
-      produto: "Café Arábica",
-      quantidade: "500 kg",
-      valor: "R$ 8.500,00",
-      status: "Concluída",
-    },
-  ];
+  useEffect(() => {
+    fetchSales();
+  }, [fetchSales]);
+
+  const handleDelete = async (saleId: string) => {
+    if (window.confirm("Tem certeza que deseja excluir esta venda?")) {
+      try {
+        await deleteSale(saleId);
+      } catch {
+        // erro tratado
+      }
+    }
+  };
+
+  // Transformar dados das vendas para o formato da tabela
+  const vendasData = sales.map((sale) => ({
+    id: sale.id,
+    data: new Date(sale.saleDate).toLocaleDateString("pt-BR"),
+    cliente: sale.user?.name || "Cliente não identificado",
+    produto: sale.saleItems
+      .map((item) => `${item.product.name} (${item.quantity} un)`)
+      .join(", "),
+    quantidade: sale.saleItems
+      .reduce((total, item) => total + item.quantity, 0)
+      .toString(),
+    valor: `R$ ${sale.totalAmount.toLocaleString("pt-BR", {
+      minimumFractionDigits: 2,
+    })}`,
+    status:
+      sale.status === "COMPLETED"
+        ? "Concluída"
+        : sale.status === "PENDING"
+        ? "Pendente"
+        : "Cancelada",
+  }));
 
   const columns = [
     { key: "id", label: "N° Venda" },
@@ -89,24 +70,11 @@ function VendasPage() {
       key: "status",
       label: "Status",
       options: [
-        { value: "concluida", label: "Concluída" },
-        { value: "pendente", label: "Pendente" },
-        { value: "cancelada", label: "Cancelada" },
+        { value: "COMPLETED", label: "Concluída" },
+        { value: "PENDING", label: "Pendente" },
+        { value: "CANCELLED", label: "Cancelada" },
       ],
       placeholder: "Filtrar por status",
-    },
-    {
-      key: "produto",
-      label: "Produto",
-      options: [
-        { value: "soja", label: "Soja Grão" },
-        { value: "milho", label: "Milho Verde" },
-        { value: "feijao", label: "Feijão Carioca" },
-        { value: "arroz", label: "Arroz Branco" },
-        { value: "trigo", label: "Trigo" },
-        { value: "cafe", label: "Café Arábica" },
-      ],
-      placeholder: "Filtrar por produto",
     },
   ];
 
@@ -136,19 +104,42 @@ function VendasPage() {
   ];
 
   // Cálculos reais baseados nos dados
-  const totalVendas = vendasData
-    .filter((venda) => venda.status === "Concluída")
-    .reduce((total, venda) => {
-      const valor = parseFloat(
-        venda.valor.replace("R$ ", "").replace(".", "").replace(",", ".")
-      );
-      return total + valor;
-    }, 0);
+  const totalVendas = sales
+    .filter((sale) => sale.status === "COMPLETED")
+    .reduce((total, sale) => total + sale.totalAmount, 0);
 
-  const vendasMes = vendasData.filter(
-    (venda) => venda.status === "Concluída"
-  ).length;
+  const vendasMes = sales.filter((sale) => sale.status === "COMPLETED").length;
   const ticketMedio = vendasMes > 0 ? totalVendas / vendasMes : 0;
+
+  if (loading) {
+    return (
+      <SideMenu title="Vendas">
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-agro-600 mx-auto mb-4"></div>
+            <p className="text-neutral-600">Carregando vendas...</p>
+          </div>
+        </div>
+      </SideMenu>
+    );
+  }
+
+  if (error) {
+    return (
+      <SideMenu title="Vendas">
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <p className="text-red-600 mb-4">
+              Erro ao carregar vendas: {error}
+            </p>
+            <button onClick={() => fetchSales()} className="btn-primary">
+              Tentar novamente
+            </button>
+          </div>
+        </div>
+      </SideMenu>
+    );
+  }
 
   return (
     <SideMenu title="Vendas">
@@ -183,6 +174,30 @@ function VendasPage() {
               columns={columns}
               data={vendasData}
               className="border-agro-200"
+              actions={
+                <div className="flex gap-2">
+                  {sales.map((sale) => (
+                    <div key={sale.id} className="flex gap-2">
+                      <button
+                        onClick={() =>
+                          navigate(`/vendas/visualizar/${sale.id}`)
+                        }
+                        className="btn-primary p-1 rounded"
+                        title="Visualizar"
+                      >
+                        <FaEye size={12} />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(sale.id)}
+                        className="bg-red-500 hover:bg-red-600 text-white p-1 rounded"
+                        title="Excluir"
+                      >
+                        <FaTrash size={12} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              }
             />
           </div>
 

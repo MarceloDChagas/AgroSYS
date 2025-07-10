@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { SideMenu } from "@/components/layout/SideMenu";
 import { FormField } from "@/components/ui/FormField";
 import { PageHeader } from "@/components/ui/PageHeader";
@@ -9,8 +11,96 @@ import {
   FaCalendar,
   FaDollarSign,
 } from "react-icons/fa";
+import { useSales } from "@/hooks/useSales";
+import { useProduct } from "@/hooks/useProduct";
 
 function VendaCadastroPage() {
+  const navigate = useNavigate();
+  const { createSale, loading, error } = useSales();
+  const { products, fetchProducts } = useProduct();
+
+  const [formData, setFormData] = useState({
+    cliente: "",
+    produto: "",
+    quantidade: "",
+    precoUnitario: "",
+    formaPagamento: "",
+    condicaoEntrega: "",
+    observacoes: "",
+  });
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+
+    // Calcular valor total quando quantidade ou preço mudar
+    if (field === "quantidade" || field === "precoUnitario") {
+      const quantidade = field === "quantidade" ? value : formData.quantidade;
+      const preco = field === "precoUnitario" ? value : formData.precoUnitario;
+
+      if (quantidade && preco) {
+        const total = parseFloat(quantidade) * parseFloat(preco);
+        setFormData((prev) => ({
+          ...prev,
+          valorTotal: total.toFixed(2),
+        }));
+      }
+    }
+
+    // Atualizar produto selecionado
+    if (field === "produto") {
+      const product = products.find((p) => p.id === value);
+      if (product) {
+        setFormData((prev) => ({
+          ...prev,
+          precoUnitario: product.price.toString(),
+        }));
+      }
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!formData.produto || !formData.quantidade || !formData.precoUnitario) {
+      alert("Por favor, preencha todos os campos obrigatórios");
+      return;
+    }
+
+    try {
+      const saleData = {
+        userId: "user-id", // TODO: Pegar do contexto de autenticação
+        items: [
+          {
+            productId: formData.produto,
+            quantity: parseInt(formData.quantidade),
+            unitPrice: parseFloat(formData.precoUnitario),
+          },
+        ],
+        status: "PENDING",
+        saleDate: new Date().toISOString(),
+      };
+
+      await createSale(saleData);
+      navigate("/vendas");
+    } catch (err) {
+      console.error("Erro ao criar venda:", err);
+    }
+  };
+
+  const valorTotal =
+    formData.quantidade && formData.precoUnitario
+      ? (
+          parseFloat(formData.quantidade) * parseFloat(formData.precoUnitario)
+        ).toFixed(2)
+      : "0,00";
+
   return (
     <SideMenu title="Vendas">
       <div className="max-w-4xl mx-auto space-y-6">
@@ -22,7 +112,7 @@ function VendaCadastroPage() {
 
         {/* Form */}
         <div className="card p-8 border-agro-200">
-          <form className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             {/* Customer and Product Row */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormField label="Cliente" required>
@@ -34,6 +124,10 @@ function VendaCadastroPage() {
                   <input
                     className="input-field pl-10"
                     placeholder="Buscar cliente..."
+                    value={formData.cliente}
+                    onChange={(e) =>
+                      handleInputChange("cliente", e.target.value)
+                    }
                   />
                 </div>
               </FormField>
@@ -44,16 +138,19 @@ function VendaCadastroPage() {
                     className="absolute left-3 top-1/2 transform -translate-y-1/2 text-agro-500"
                     size={14}
                   />
-                  <select className="input-field pl-10">
+                  <select
+                    className="input-field pl-10"
+                    value={formData.produto}
+                    onChange={(e) =>
+                      handleInputChange("produto", e.target.value)
+                    }
+                  >
                     <option value="">Selecionar produto...</option>
-                    <option value="soja">Soja Grão</option>
-                    <option value="milho">Milho Verde</option>
-                    <option value="feijao">Feijão Carioca</option>
-                    <option value="arroz">Arroz Branco</option>
-                    <option value="trigo">Trigo</option>
-                    <option value="cafe">Café Arábica</option>
-                    <option value="algodao">Algodão</option>
-                    <option value="cana">Cana-de-açúcar</option>
+                    {products.map((product) => (
+                      <option key={product.id} value={product.id}>
+                        {product.name} - R$ {product.price.toFixed(2)}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </FormField>
@@ -68,10 +165,14 @@ function VendaCadastroPage() {
                     type="number"
                     placeholder="0"
                     min="0"
-                    step="0.01"
+                    step="1"
+                    value={formData.quantidade}
+                    onChange={(e) =>
+                      handleInputChange("quantidade", e.target.value)
+                    }
                   />
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                    <span className="text-neutral-400 text-sm">kg</span>
+                    <span className="text-neutral-400 text-sm">un</span>
                   </div>
                 </div>
               </FormField>
@@ -105,6 +206,10 @@ function VendaCadastroPage() {
                     step="0.01"
                     min="0"
                     placeholder="0,00"
+                    value={formData.precoUnitario}
+                    onChange={(e) =>
+                      handleInputChange("precoUnitario", e.target.value)
+                    }
                   />
                 </div>
               </FormField>
@@ -118,7 +223,7 @@ function VendaCadastroPage() {
                   <input
                     className="input-field pl-10 bg-neutral-50"
                     type="text"
-                    placeholder="Calculado automaticamente"
+                    value={`R$ ${valorTotal}`}
                     readOnly
                   />
                 </div>
@@ -128,7 +233,13 @@ function VendaCadastroPage() {
             {/* Payment and Delivery */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormField label="Forma de Pagamento" required>
-                <select className="input-field">
+                <select
+                  className="input-field"
+                  value={formData.formaPagamento}
+                  onChange={(e) =>
+                    handleInputChange("formaPagamento", e.target.value)
+                  }
+                >
                   <option value="">Selecione a forma de pagamento</option>
                   <option value="dinheiro">Dinheiro</option>
                   <option value="cheque">Cheque</option>
@@ -140,7 +251,13 @@ function VendaCadastroPage() {
               </FormField>
 
               <FormField label="Condição de Entrega" required>
-                <select className="input-field">
+                <select
+                  className="input-field"
+                  value={formData.condicaoEntrega}
+                  onChange={(e) =>
+                    handleInputChange("condicaoEntrega", e.target.value)
+                  }
+                >
                   <option value="">Selecione a condição</option>
                   <option value="imediata">Entrega Imediata</option>
                   <option value="agendada">Entrega Agendada</option>
@@ -156,6 +273,10 @@ function VendaCadastroPage() {
                 className="input-field"
                 rows={3}
                 placeholder="Informações adicionais sobre a venda..."
+                value={formData.observacoes}
+                onChange={(e) =>
+                  handleInputChange("observacoes", e.target.value)
+                }
               />
             </FormField>
 
@@ -164,18 +285,24 @@ function VendaCadastroPage() {
               <button
                 type="submit"
                 className="btn-primary flex items-center gap-2"
+                disabled={loading}
               >
                 <FaSave size={16} />
-                SALVAR VENDA
+                {loading ? "SALVANDO..." : "SALVAR VENDA"}
               </button>
               <button
                 type="button"
                 className="btn-secondary flex items-center gap-2"
+                onClick={() => navigate("/vendas")}
               >
                 <FaTimes size={16} />
                 CANCELAR
               </button>
             </div>
+
+            {error && (
+              <div className="text-red-600 text-center mt-4">Erro: {error}</div>
+            )}
           </form>
         </div>
 
