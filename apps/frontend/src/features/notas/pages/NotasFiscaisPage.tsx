@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import { SideMenu } from "../../../components/layout/SideMenu";
-import { PageHeader } from "../../../components/ui/PageHeader";
-import { FilterBar } from "../../../components/ui/FilterBar";
-import { DataTable } from "../../../components/ui/DataTable";
-import { ActionButtons } from "../../../components/ui/ActionButtons";
+import { SideMenu } from "@/components/layout/SideMenu";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { FilterBar } from "@/components/ui/FilterBar";
+import { DataTable } from "@/components/ui/DataTable";
+import { ActionButtons } from "@/components/ui/ActionButtons";
 import { FaPlus, FaEye, FaDownload, FaTrash } from "react-icons/fa";
 
 function NotasFiscaisPage() {
@@ -145,7 +145,6 @@ function NotasFiscaisPage() {
       label: "DOWNLOAD",
       onClick: () => {
         // TODO: Implementar download da nota fiscal
-        console.log("Download nota fiscal");
       },
       variant: "primary" as const,
       icon: <FaDownload size={14} />,
@@ -154,7 +153,6 @@ function NotasFiscaisPage() {
       label: "EXCLUIR",
       onClick: () => {
         // TODO: Implementar exclusão da nota fiscal
-        console.log("Excluir nota fiscal");
       },
       variant: "danger" as const,
       icon: <FaTrash size={14} />,

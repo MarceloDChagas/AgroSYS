@@ -29,7 +29,6 @@ function FerramentasPage() {
 
       setTools(toolsData);
     } catch (error) {
-      console.error("Erro ao carregar ferramentas:", error);
       setError("Erro ao carregar ferramentas");
     } finally {
       setLoading(false);
@@ -52,7 +51,6 @@ function FerramentasPage() {
       }
       setTools(toolsData);
     } catch (error) {
-      console.error("Erro ao filtrar ferramentas:", error);
       setError("Erro ao filtrar ferramentas");
     } finally {
       setLoading(false);

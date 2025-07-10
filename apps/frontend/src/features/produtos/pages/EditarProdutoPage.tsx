@@ -1,14 +1,17 @@
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { SideMenu } from "@/components/layout/SideMenu";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { FormField } from "@/components/ui/FormField";
 import { FaSave, FaArrowLeft } from "react-icons/fa";
 import { useProduct } from "@/hooks/useProduct";
+import type { Product } from "@/services/api";
 
-function CadastroProdutoPage() {
+function EditarProdutoPage() {
   const navigate = useNavigate();
-  const { createProduct, loading, error } = useProduct();
+  const { id } = useParams<{ id: string }>();
+  const { updateProduct, getProductById, loading, error } = useProduct();
+  const [product, setProduct] = useState<Product | null>(null);
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -17,6 +20,27 @@ function CadastroProdutoPage() {
     status: "DISPONIVEL",
     category: "",
   });
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      if (id) {
+        const productData = await getProductById(id);
+        if (productData) {
+          setProduct(productData);
+          setFormData({
+            name: productData.name,
+            description: productData.description || "",
+            price: productData.price.toString(),
+            quantity: productData.quantity.toString(),
+            status: productData.status,
+            category: productData.category || "",
+          });
+        }
+      }
+    };
+
+    fetchProduct();
+  }, [id, getProductById]);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({
@@ -28,8 +52,10 @@ function CadastroProdutoPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!id) return;
+
     try {
-      await createProduct({
+      await updateProduct(id, {
         name: formData.name,
         description: formData.description || undefined,
         price: parseFloat(formData.price),
@@ -44,13 +70,31 @@ function CadastroProdutoPage() {
     }
   };
 
+  if (!product && !loading) {
+    return (
+      <SideMenu title="EDITAR PRODUTO">
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <p className="text-red-600 mb-4">Produto não encontrado</p>
+            <button
+              onClick={() => navigate("/produtos")}
+              className="btn-primary"
+            >
+              Voltar para produtos
+            </button>
+          </div>
+        </div>
+      </SideMenu>
+    );
+  }
+
   return (
-    <SideMenu title="CADASTRO DE PRODUTO">
+    <SideMenu title="EDITAR PRODUTO">
       <div className="space-y-6">
         {/* Header */}
         <PageHeader
-          title="Cadastro de Produto"
-          subtitle="Registre um novo produto no sistema"
+          title="Editar Produto"
+          subtitle="Atualize as informações do produto"
         >
           <button
             onClick={() => navigate("/produtos")}
@@ -189,7 +233,7 @@ function CadastroProdutoPage() {
                 disabled={loading}
               >
                 <FaSave size={14} />
-                {loading ? "Cadastrando..." : "Cadastrar Produto"}
+                {loading ? "Salvando..." : "Salvar Alterações"}
               </button>
             </div>
           </form>
@@ -199,4 +243,4 @@ function CadastroProdutoPage() {
   );
 }
 
-export default CadastroProdutoPage;
+export default EditarProdutoPage;

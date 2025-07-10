@@ -31,7 +31,6 @@ export function useTools(initialFilter?: string): UseToolsResult {
       const errorMessage =
         error instanceof Error ? error.message : "Erro ao carregar ferramentas";
       setError(errorMessage);
-      console.error("Erro ao buscar ferramentas:", error);
     } finally {
       setLoading(false);
     }

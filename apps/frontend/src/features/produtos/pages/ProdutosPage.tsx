@@ -1,110 +1,61 @@
 import { useNavigate } from "react-router-dom";
-import { SideMenu } from "../../../components/layout/SideMenu";
-import { PageHeader } from "../../../components/ui/PageHeader";
-import { FilterBar } from "../../../components/ui/FilterBar";
-import { DataTable } from "../../../components/ui/DataTable";
-import { ActionButtons } from "../../../components/ui/ActionButtons";
+import { useEffect } from "react";
+import { SideMenu } from "@/components/layout/SideMenu";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { FilterBar } from "@/components/ui/FilterBar";
+import { DataTable } from "@/components/ui/DataTable";
+import { ActionButtons } from "@/components/ui/ActionButtons";
 import { FaPlus, FaEdit, FaTrash } from "react-icons/fa";
+import { useProduct } from "@/hooks/useProduct";
 
 function ProdutosPage() {
   const navigate = useNavigate();
+  const { products, loading, error, fetchProducts, deleteProduct } =
+    useProduct();
 
-  // Dados reais de produtos agropecuários
-  const produtosData = [
-    {
-      nome: "Semente de Soja RR Intacta",
-      tipo: "Semente",
-      quantidade: "800",
-      unidade: "KG",
-      variedade: "BMX Potência RR",
-      safra: "2025/2026",
-    },
-    {
-      nome: "Semente de Milho Híbrido",
-      tipo: "Semente",
-      quantidade: "1.200",
-      unidade: "KG",
-      variedade: "DKB 390 PRO3",
-      safra: "2025/2026",
-    },
-    {
-      nome: "Semente de Feijão Carioca",
-      tipo: "Semente",
-      quantidade: "600",
-      unidade: "KG",
-      variedade: "BRS Estilo",
-      safra: "2025/2026",
-    },
-    {
-      nome: "Semente de Arroz Irrigado",
-      tipo: "Semente",
-      quantidade: "900",
-      unidade: "KG",
-      variedade: "BRS Pampa",
-      safra: "2025/2026",
-    },
-    {
-      nome: "Semente de Trigo",
-      tipo: "Semente",
-      quantidade: "750",
-      unidade: "KG",
-      variedade: "BRS 264",
-      safra: "2025/2026",
-    },
-    {
-      nome: "Muda de Café Arábica",
-      tipo: "Muda",
-      quantidade: "2.500",
-      unidade: "UNIDADE",
-      variedade: "Catuaí Vermelho",
-      safra: "2025/2026",
-    },
-    {
-      nome: "Semente de Algodão",
-      tipo: "Semente",
-      quantidade: "400",
-      unidade: "KG",
-      variedade: "FM 975 WS",
-      safra: "2025/2026",
-    },
-    {
-      nome: "Muda de Cana-de-açúcar",
-      tipo: "Muda",
-      quantidade: "15.000",
-      unidade: "UNIDADE",
-      variedade: "RB 867515",
-      safra: "2025/2026",
-    },
-  ];
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
+
+  const handleDelete = async (productId: string) => {
+    if (window.confirm("Tem certeza que deseja excluir este produto?")) {
+      try {
+        await deleteProduct(productId);
+      } catch {
+        // erro tratado
+      }
+    }
+  };
 
   const columns = [
-    { key: "nome", label: "NOME" },
-    { key: "tipo", label: "TIPO" },
-    { key: "quantidade", label: "QUANT." },
-    { key: "unidade", label: "UNIDADE" },
-    { key: "variedade", label: "VARIEDADE" },
-    { key: "safra", label: "SAFRA" },
+    { key: "name", label: "NOME" },
+    { key: "category", label: "CATEGORIA" },
+    { key: "quantity", label: "QUANTIDADE" },
+    { key: "price", label: "PREÇO" },
+    { key: "status", label: "STATUS" },
   ];
 
   const filters = [
     {
-      key: "tipo",
-      label: "Tipo",
+      key: "category",
+      label: "Categoria",
       options: [
         { value: "semente", label: "Semente" },
         { value: "muda", label: "Muda" },
+        { value: "fertilizante", label: "Fertilizante" },
+        { value: "defensivo", label: "Defensivo" },
       ],
-      placeholder: "Filtrar por tipo",
+      placeholder: "Filtrar por categoria",
     },
     {
-      key: "safra",
-      label: "Safra",
+      key: "status",
+      label: "Status",
       options: [
-        { value: "2025-2026", label: "2025/2026" },
-        { value: "2024-2025", label: "2024/2025" },
-        { value: "2023-2024", label: "2023/2024" },
+        { value: "DISPONIVEL", label: "Disponível" },
+        { value: "ESGOTADO", label: "Esgotado" },
+        { value: "BAIXO_ESTOQUE", label: "Baixo Estoque" },
       ],
-      placeholder: "Filtrar por safra",
+      placeholder: "Filtrar por status",
     },
   ];
 
@@ -123,13 +74,43 @@ function ProdutosPage() {
     },
   ];
 
+  if (loading) {
+    return (
+      <SideMenu title="PRODUTOS">
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-agro-600 mx-auto mb-4"></div>
+            <p className="text-neutral-600">Carregando produtos...</p>
+          </div>
+        </div>
+      </SideMenu>
+    );
+  }
+
+  if (error) {
+    return (
+      <SideMenu title="PRODUTOS">
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <p className="text-red-600 mb-4">
+              Erro ao carregar produtos: {error}
+            </p>
+            <button onClick={() => fetchProducts()} className="btn-primary">
+              Tentar novamente
+            </button>
+          </div>
+        </div>
+      </SideMenu>
+    );
+  }
+
   return (
     <SideMenu title="PRODUTOS">
       <div className="space-y-6">
         {/* Header */}
         <PageHeader
           title="Produtos Agropecuários"
-          subtitle="Controle de sementes e mudas"
+          subtitle="Controle de produtos do sistema"
         >
           <button
             onClick={() => navigate("/produtos/cadastro")}
@@ -143,9 +124,8 @@ function ProdutosPage() {
         {/* Filters */}
         <FilterBar
           filters={filters}
-          onFilterChange={(key, value) => {
+          onFilterChange={() => {
             // TODO: Implementar filtros
-            console.log("Filter changed:", key, value);
           }}
         />
 
@@ -155,8 +135,38 @@ function ProdutosPage() {
           <div className="flex-1">
             <DataTable
               columns={columns}
-              data={produtosData}
+              data={products.map((product) => ({
+                name: product.name,
+                category: product.category || "N/A",
+                quantity: product.quantity,
+                price: `R$ ${product.price.toFixed(2)}`,
+                status: product.status,
+              }))}
               className="border-agro-200"
+              actions={
+                <div className="flex gap-2">
+                  {products.map((product) => (
+                    <div key={product.id} className="flex gap-2">
+                      <button
+                        onClick={() =>
+                          navigate(`/produtos/editar/${product.id}`)
+                        }
+                        className="btn-primary p-1 rounded"
+                        title="Editar"
+                      >
+                        <FaEdit size={12} />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(product.id)}
+                        className="bg-red-500 hover:bg-red-600 text-white p-1 rounded"
+                        title="Excluir"
+                      >
+                        <FaTrash size={12} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              }
             />
           </div>
 
