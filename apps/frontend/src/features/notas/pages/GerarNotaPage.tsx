@@ -1,9 +1,50 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { SideMenu } from "@/components/layout/SideMenu";
 import { FormField } from "@/components/ui/FormField";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { FaFileInvoice, FaTimes } from "react-icons/fa";
+import { useInvoice } from "@/hooks/useInvoice";
+import type { CreateInvoiceRequest } from "@/types/invoice";
 
 function GerarNotaPage() {
+  const navigate = useNavigate();
+  const { createInvoice, loading, error } = useInvoice();
+  const [formData, setFormData] = useState<Partial<CreateInvoiceRequest>>({
+    type: "SAIDA",
+    issueDate: new Date().toISOString().split("T")[0],
+    items: [],
+  });
+
+  const handleInputChange = (field: string, value: string | number) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!formData.type || !formData.items || formData.items.length === 0) {
+      alert(
+        "Por favor, preencha todos os campos obrigatórios e adicione pelo menos um item."
+      );
+      return;
+    }
+
+    try {
+      await createInvoice(formData as CreateInvoiceRequest);
+      navigate("/notas");
+    } catch (error) {
+      console.error("Erro ao criar nota fiscal:", error);
+    }
+  };
+
+  const handleCancel = () => {
+    navigate("/notas");
+  };
+
   return (
     <SideMenu title="NOTAS FISCAIS">
       <div className="max-w-4xl mx-auto space-y-6">
@@ -14,76 +55,61 @@ function GerarNotaPage() {
         />
 
         {/* Form */}
-        <div className="card p-8 border-agro-200">
+        <form onSubmit={handleSubmit} className="card p-8 border-agro-200">
+          {error && (
+            <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+              {error}
+            </div>
+          )}
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FormField label="TIPO DE NOTA" required>
-              <select className="input-field">
+              <select
+                className="input-field"
+                value={formData.type || ""}
+                onChange={(e) => handleInputChange("type", e.target.value)}
+              >
                 <option value="">Selecione o tipo</option>
-                <option value="NF">Nota Fiscal (NF)</option>
-                <option value="NFS-e">
-                  Nota Fiscal de Serviços Eletrônica (NFS-e)
-                </option>
-                <option value="NFA-e">
-                  Nota Fiscal Avulsa Eletrônica (NFA-e)
+                <option value="SAIDA">Nota Fiscal de Saída</option>
+                <option value="ENTRADA">Nota Fiscal de Entrada</option>
+                <option value="TRANSFERENCIA">
+                  Nota Fiscal de Transferência
                 </option>
               </select>
             </FormField>
 
-            <FormField label="DESTINO" required>
-              <select className="input-field">
-                <option value="">Selecione o destino</option>
-                <option value="consumidor">Consumidor Final</option>
-                <option value="revenda">Revenda</option>
-                <option value="industria">Indústria</option>
-                <option value="cooperativa">Cooperativa</option>
-                <option value="exportacao">Exportação</option>
-              </select>
-            </FormField>
-
-            <FormField label="VALOR TOTAL" required>
-              <div className="relative">
-                <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-500">
-                  R$
-                </span>
-                <input
-                  className="input-field pl-10"
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  placeholder="0,00"
-                />
-              </div>
+            <FormField label="CLIENTE/FORNECEDOR" required>
+              <input
+                className="input-field"
+                type="text"
+                placeholder="Nome do cliente ou fornecedor"
+                value={formData.customer || formData.supplier || ""}
+                onChange={(e) => {
+                  if (formData.type === "ENTRADA") {
+                    handleInputChange("supplier", e.target.value);
+                  } else {
+                    handleInputChange("customer", e.target.value);
+                  }
+                }}
+              />
             </FormField>
 
             <FormField label="DATA DE EMISSÃO" required>
               <input
                 className="input-field"
                 type="date"
-                defaultValue={new Date().toISOString().split("T")[0]}
+                value={formData.issueDate || ""}
+                onChange={(e) => handleInputChange("issueDate", e.target.value)}
               />
             </FormField>
 
-            <FormField label="NATUREZA DA OPERAÇÃO" required>
-              <select className="input-field">
-                <option value="">Selecione a natureza</option>
-                <option value="venda">Venda</option>
-                <option value="transferencia">Transferência</option>
-                <option value="devolucao">Devolução</option>
-                <option value="remessa">Remessa</option>
-                <option value="consignacao">Consignação</option>
-              </select>
-            </FormField>
-
-            <FormField label="FORMA DE PAGAMENTO" required>
-              <select className="input-field">
-                <option value="">Selecione a forma</option>
-                <option value="dinheiro">Dinheiro</option>
-                <option value="cheque">Cheque</option>
-                <option value="cartao">Cartão de Crédito/Débito</option>
-                <option value="boleto">Boleto Bancário</option>
-                <option value="pix">PIX</option>
-                <option value="transferencia">Transferência Bancária</option>
-              </select>
+            <FormField label="DATA DE VENCIMENTO">
+              <input
+                className="input-field"
+                type="date"
+                value={formData.dueDate || ""}
+                onChange={(e) => handleInputChange("dueDate", e.target.value)}
+              />
             </FormField>
 
             <div className="md:col-span-2">
@@ -92,23 +118,51 @@ function GerarNotaPage() {
                   className="input-field"
                   rows={3}
                   placeholder="Informações adicionais sobre a operação..."
+                  value={formData.notes || ""}
+                  onChange={(e) => handleInputChange("notes", e.target.value)}
                 />
               </FormField>
+            </div>
+
+            <div className="md:col-span-2">
+              <div className="border border-agro-200 rounded-lg p-4">
+                <h3 className="font-semibold text-agro-700 mb-4">
+                  ITENS DA NOTA FISCAL
+                </h3>
+                <div className="text-sm text-agro-600">
+                  <p>
+                    Para adicionar itens, você precisará implementar a
+                    funcionalidade de gerenciamento de itens.
+                  </p>
+                  <p className="mt-2">
+                    Por enquanto, a nota será criada com uma lista vazia de
+                    itens.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
 
           {/* Action Buttons */}
           <div className="flex justify-center gap-4 mt-8">
-            <button className="btn-primary flex items-center gap-2">
+            <button
+              type="submit"
+              disabled={loading}
+              className="btn-primary flex items-center gap-2 disabled:opacity-50"
+            >
               <FaFileInvoice size={16} />
-              GERAR NOTA
+              {loading ? "GERANDO..." : "GERAR NOTA"}
             </button>
-            <button className="btn-secondary flex items-center gap-2">
+            <button
+              type="button"
+              onClick={handleCancel}
+              className="btn-secondary flex items-center gap-2"
+            >
               <FaTimes size={16} />
               CANCELAR
             </button>
           </div>
-        </div>
+        </form>
       </div>
     </SideMenu>
   );

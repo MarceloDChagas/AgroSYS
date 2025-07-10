@@ -4,86 +4,38 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { FilterBar } from "@/components/ui/FilterBar";
 import { DataTable } from "@/components/ui/DataTable";
 import { ActionButtons } from "@/components/ui/ActionButtons";
-import { FaPlus, FaEye, FaDownload, FaTrash } from "react-icons/fa";
+import {
+  FaPlus,
+  FaEye,
+  FaDownload,
+  FaTrash,
+  FaFileInvoice,
+} from "react-icons/fa";
+import { useInvoice } from "@/hooks/useInvoice";
 
 function NotasFiscaisPage() {
   const navigate = useNavigate();
+  const { invoices, loading, error, fetchInvoices } = useInvoice();
 
-  // Dados mockados de notas fiscais agropecuárias
-  const notasFiscaisData = [
-    {
-      numero: "NF-2025-001",
-      tipo: "NF-e",
-      destino: "Cooperativa Agropecuária do Sul",
-      valorTotal: "R$ 15.750,00",
-      data: "15/06/2025",
-      status: "Emitida",
-      produtos: "Soja Grão - 2.500 kg",
-    },
-    {
-      numero: "NF-2025-002",
-      tipo: "NF-e",
-      destino: "Indústria de Óleos Vegetais Ltda",
-      valorTotal: "R$ 8.900,00",
-      data: "12/06/2025",
-      status: "Emitida",
-      produtos: "Milho Verde - 1.800 kg",
-    },
-    {
-      numero: "NF-2025-003",
-      tipo: "NF-e",
-      destino: "Distribuidora de Grãos Central",
-      valorTotal: "R$ 3.200,00",
-      data: "10/06/2025",
-      status: "Emitida",
-      produtos: "Feijão Carioca - 800 kg",
-    },
-    {
-      numero: "NF-2025-004",
-      tipo: "NF-e",
-      destino: "Cooperativa Agropecuária do Sul",
-      valorTotal: "R$ 4.800,00",
-      data: "08/06/2025",
-      status: "Emitida",
-      produtos: "Arroz Branco - 1.200 kg",
-    },
-    {
-      numero: "NF-2025-005",
-      tipo: "NF-e",
-      destino: "Moinho de Trigo Industrial",
-      valorTotal: "R$ 2.700,00",
-      data: "05/06/2025",
-      status: "Pendente",
-      produtos: "Trigo - 900 kg",
-    },
-    {
-      numero: "NF-2025-006",
-      tipo: "NF-e",
-      destino: "Torrefação de Café Premium",
-      valorTotal: "R$ 12.500,00",
-      data: "03/06/2025",
-      status: "Emitida",
-      produtos: "Café Arábica - 500 kg",
-    },
-    {
-      numero: "NF-2025-007",
-      tipo: "NF-e",
-      destino: "Indústria Têxtil Nacional",
-      valorTotal: "R$ 6.600,00",
-      data: "01/06/2025",
-      status: "Emitida",
-      produtos: "Algodão - 600 kg",
-    },
-    {
-      numero: "NF-2025-008",
-      tipo: "NF-e",
-      destino: "Usina de Açúcar e Etanol",
-      valorTotal: "R$ 45.000,00",
-      data: "30/05/2025",
-      status: "Pendente",
-      produtos: "Cana-de-açúcar - 15.000 kg",
-    },
-  ];
+  // Transform invoices data to match the table structure
+  const notasFiscaisData = invoices.map((invoice) => ({
+    numero: invoice.invoiceNumber,
+    tipo:
+      invoice.type === "SAIDA"
+        ? "NF-e"
+        : invoice.type === "ENTRADA"
+        ? "NF-e Entrada"
+        : "NF-e Transferência",
+    destino: invoice.customer || invoice.supplier || "N/A",
+    valorTotal: `R$ ${invoice.finalAmount.toLocaleString("pt-BR", {
+      minimumFractionDigits: 2,
+    })}`,
+    data: new Date(invoice.issueDate).toLocaleDateString("pt-BR"),
+    status: invoice.status,
+    produtos: invoice.items
+      .map((item) => `${item.productName} - ${item.quantity} ${item.unit}`)
+      .join(", "),
+  }));
 
   const columns = [
     { key: "numero", label: "Nº NOTA" },
@@ -99,9 +51,9 @@ function NotasFiscaisPage() {
       key: "tipo",
       label: "Tipo",
       options: [
-        { value: "nfe", label: "NF-e" },
-        { value: "nfs", label: "NFS-e" },
-        { value: "cte", label: "CT-e" },
+        { value: "SAIDA", label: "NF-e Saída" },
+        { value: "ENTRADA", label: "NF-e Entrada" },
+        { value: "TRANSFERENCIA", label: "NF-e Transferência" },
       ],
       placeholder: "Filtrar por tipo",
     },
@@ -109,30 +61,22 @@ function NotasFiscaisPage() {
       key: "status",
       label: "Status",
       options: [
-        { value: "emitida", label: "Emitida" },
-        { value: "pendente", label: "Pendente" },
-        { value: "cancelada", label: "Cancelada" },
+        { value: "PENDENTE", label: "Pendente" },
+        { value: "APROVADA", label: "Aprovada" },
+        { value: "FINALIZADA", label: "Finalizada" },
+        { value: "CANCELADA", label: "Cancelada" },
       ],
       placeholder: "Filtrar por status",
     },
-    {
-      key: "destino",
-      label: "Destino",
-      options: [
-        { value: "cooperativa-sul", label: "Cooperativa Agropecuária do Sul" },
-        { value: "industria-oleos", label: "Indústria de Óleos Vegetais Ltda" },
-        {
-          value: "distribuidora-central",
-          label: "Distribuidora de Grãos Central",
-        },
-        { value: "moinho-trigo", label: "Moinho de Trigo Industrial" },
-        { value: "torrefacao-cafe", label: "Torrefação de Café Premium" },
-        { value: "industria-textil", label: "Indústria Têxtil Nacional" },
-        { value: "usina-acucar", label: "Usina de Açúcar e Etanol" },
-      ],
-      placeholder: "Filtrar por destino",
-    },
   ];
+
+  const handleFilterChange = (key: string, value: string) => {
+    if (value) {
+      fetchInvoices(value);
+    } else {
+      fetchInvoices();
+    }
+  };
 
   const actions = [
     {
@@ -152,12 +96,75 @@ function NotasFiscaisPage() {
     {
       label: "EXCLUIR",
       onClick: () => {
-        // TODO: Implementar exclusão da nota fiscal
+        // For now, we'll handle deletion through the table row actions
+        // This can be enhanced later to work with selected items
       },
       variant: "danger" as const,
       icon: <FaTrash size={14} />,
     },
   ];
+
+  if (loading) {
+    return (
+      <SideMenu title="NOTAS FISCAIS">
+        <div className="flex justify-center items-center h-64">
+          <div className="text-lg">Carregando notas fiscais...</div>
+        </div>
+      </SideMenu>
+    );
+  }
+
+  if (error) {
+    return (
+      <SideMenu title="NOTAS FISCAIS">
+        <div className="flex justify-center items-center h-64">
+          <div className="text-red-600 text-lg">Erro: {error}</div>
+        </div>
+      </SideMenu>
+    );
+  }
+
+  // Empty state when no invoices are found
+  if (!invoices || invoices.length === 0) {
+    return (
+      <SideMenu title="NOTAS FISCAIS">
+        <div className="space-y-6">
+          {/* Header */}
+          <PageHeader
+            title="Notas Fiscais"
+            subtitle="Gestão e emissão de documentos fiscais"
+          >
+            <button
+              onClick={() => navigate("/notas/gerar")}
+              className="btn-primary flex items-center gap-2"
+            >
+              <FaPlus size={14} />
+              Gerar Nota Fiscal
+            </button>
+          </PageHeader>
+
+          {/* Empty State */}
+          <div className="flex flex-col items-center justify-center h-64 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
+            <FaFileInvoice size={64} className="text-gray-400 mb-4" />
+            <h3 className="text-lg font-semibold text-gray-600 mb-2">
+              Nenhuma nota fiscal encontrada
+            </h3>
+            <p className="text-gray-500 text-center mb-6 max-w-md">
+              Você ainda não possui notas fiscais cadastradas. Clique no botão
+              abaixo para criar sua primeira nota fiscal.
+            </p>
+            <button
+              onClick={() => navigate("/notas/gerar")}
+              className="btn-primary flex items-center gap-2"
+            >
+              <FaPlus size={14} />
+              Criar Primeira Nota Fiscal
+            </button>
+          </div>
+        </div>
+      </SideMenu>
+    );
+  }
 
   return (
     <SideMenu title="NOTAS FISCAIS">
@@ -177,7 +184,7 @@ function NotasFiscaisPage() {
         </PageHeader>
 
         {/* Filters */}
-        <FilterBar filters={filters} />
+        <FilterBar filters={filters} onFilterChange={handleFilterChange} />
 
         {/* Main Content */}
         <div className="flex gap-6">
