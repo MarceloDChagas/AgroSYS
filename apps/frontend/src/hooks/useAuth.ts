@@ -25,8 +25,7 @@ export function useAuth(): UseAuthResult {
 
       setUser(currentUser);
       setIsAuthenticated(authenticated);
-    } catch (error) {
-      console.error("Erro ao verificar autenticação:", error);
+    } catch {
       setUser(null);
       setIsAuthenticated(false);
     } finally {
@@ -37,8 +36,7 @@ export function useAuth(): UseAuthResult {
   const hasPermission = (permission: string): boolean => {
     try {
       return authService.hasPermission(permission);
-    } catch (error) {
-      console.error("Erro ao verificar permissão:", error);
+    } catch {
       return false;
     }
   };

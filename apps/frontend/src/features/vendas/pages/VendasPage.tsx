@@ -115,7 +115,6 @@ function VendasPage() {
       label: "Visualizar",
       onClick: () => {
         // TODO: Implementar visualização da venda
-        console.log("Visualizar venda");
       },
       variant: "primary" as const,
       icon: <FaEye size={14} />,
@@ -130,7 +129,6 @@ function VendasPage() {
       label: "Excluir",
       onClick: () => {
         // TODO: Implementar exclusão da venda
-        console.log("Excluir venda");
       },
       variant: "danger" as const,
       icon: <FaTrash size={14} />,

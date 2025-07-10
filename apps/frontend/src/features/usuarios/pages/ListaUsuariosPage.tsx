@@ -1,5 +1,5 @@
-import { SideMenu } from "../../../components/layout/SideMenu";
-import { ActionButtons } from "../../../components/ui/ActionButtons";
+import { SideMenu } from "@/components/layout/SideMenu";
+import { ActionButtons } from "@/components/ui/ActionButtons";
 import { FaEdit, FaUserPlus, FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 

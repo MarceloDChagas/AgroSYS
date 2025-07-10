@@ -109,7 +109,6 @@ function UapPage() {
           filters={filters}
           onFilterChange={(key, value) => {
             // TODO: Implementar filtros
-            console.log("Filter changed:", key, value);
           }}
         />
 

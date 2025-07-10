@@ -73,7 +73,6 @@ export class AuthService {
       }
       return JSON.parse(userStr);
     } catch (error) {
-      console.error("Erro ao parsear dados do usuário:", error);
       // Limpar dados corrompidos
       this.clearAuthData();
       return null;
