@@ -5,6 +5,7 @@ export { userService, UserService } from "./userService";
 export { invoiceService, InvoiceService } from "./invoiceService";
 export { productService, ProductService } from "./productService";
 export { harvestService, HarvestService } from "./harvestService";
+export { salesService, SalesService } from "./salesService";
 export { apiClient } from "./client";
 
 // Export types
@@ -36,6 +37,12 @@ export type {
   CreateHarvestRequest,
   UpdateHarvestRequest,
 } from "./harvestService";
+export type {
+  SaleWithItems,
+  CreateSaleRequest,
+  UpdateSaleRequest,
+  SaleFilters,
+} from "./salesService";
 export type { ApiResponse, ApiError } from "./client";
 
 // Convenience exports (import services in components instead)
