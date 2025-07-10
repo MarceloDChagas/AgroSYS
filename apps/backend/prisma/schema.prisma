@@ -45,6 +45,13 @@ enum EUnit {
   CAIXA
 }
 
+enum HarvestStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
 model User {
   id       String @id @default(uuid())
   email    String @unique
@@ -158,5 +165,24 @@ model InputMaterialEntry {
   updatedAt  DateTime @updatedAt
 
   @@map("input_material_entries")
+}
+
+model Harvest {
+  id            String        @id @default(uuid())
+  harvestDate   DateTime
+  product       String
+  quantity      Decimal       @db.Decimal(10, 2)
+  unit          String
+  uap           String
+  responsible   String
+  cycle         String
+  status        HarvestStatus @default(SCHEDULED)
+  equipment     String?
+  observations  String?
+
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@map("harvests")
 }
 

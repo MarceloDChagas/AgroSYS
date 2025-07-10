@@ -9,15 +9,9 @@ import {
   UseGuards,
   ParseUUIDPipe,
 } from "@nestjs/common";
-import { InputMaterialEntryService } from "./input-material-entry.service";
-import {
-  CreateInputMaterialEntryDto,
-  RawCreateInputMaterialEntryDto,
-} from "@shared/dto/inputMaterialEntry/create-inputMaterialEntry.dto";
-import {
-  UpdateInputMaterialEntryDto,
-  RawUpdateInputMaterialEntryDto,
-} from "@shared/dto/inputMaterialEntry/update-inputMaterialEntry.dto";
+import { InputMaterialEntryService } from "./inputMaterialEntry.service";
+import { CreateInputMaterialEntryDto } from "@shared/dto/inputMaterialEntry/create-inputMaterialEntry.dto";
+import { UpdateInputMaterialEntryDto } from "@shared/dto/inputMaterialEntry/update-inputMaterialEntry.dto";
 import {
   PermissionsGuard,
   RequirePermissions,
@@ -44,12 +38,7 @@ export class InputMaterialEntryController {
   @RequirePermissions(EPermission.CREATE_INPUT_MATERIAL_ENTRY)
   @ApiOperation({ summary: "Criar nova entrada de insumo/material" })
   @ApiResponse({ status: 201, description: "Entrada criada com sucesso" })
-  async create(@Body() rawDto: RawCreateInputMaterialEntryDto) {
-    const dto = new CreateInputMaterialEntryDto(
-      rawDto.date,
-      rawDto.quantity,
-      rawDto.productId
-    );
+  async create(@Body() dto: CreateInputMaterialEntryDto) {
     return this.inputMaterialEntryService.create(dto);
   }
 
@@ -79,13 +68,8 @@ export class InputMaterialEntryController {
   @ApiOperation({ summary: "Atualizar entrada de material" })
   async update(
     @Param("id", ParseUUIDPipe) id: string,
-    @Body() rawDto: RawUpdateInputMaterialEntryDto
+    @Body() dto: UpdateInputMaterialEntryDto
   ) {
-    const dto = new UpdateInputMaterialEntryDto(
-      rawDto.date,
-      rawDto.quantity,
-      rawDto.productId
-    );
     return this.inputMaterialEntryService.update(id, dto);
   }
 

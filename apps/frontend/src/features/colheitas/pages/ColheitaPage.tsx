@@ -1,97 +1,31 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { SideMenu } from "@/components/layout/SideMenu";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { FilterBar } from "@/components/ui/FilterBar";
 import { DataTable } from "@/components/ui/DataTable";
 import { ActionButtons } from "@/components/ui/ActionButtons";
 import { FaPlus, FaEdit, FaTrash, FaEye } from "react-icons/fa";
+import { useHarvest } from "@/hooks/useHarvest";
 
 function ColheitaPage() {
   const navigate = useNavigate();
+  const { harvests, loading, error, fetchHarvests, deleteHarvest } =
+    useHarvest();
 
-  // Dados mockados de colheitas agropecuárias
-  const colheitasData = [
-    {
-      id: "COL-2025-001",
-      data: "15/06/2025",
-      produto: "Soja Grão",
-      quantidade: "2.500 kg",
-      uap: "UAP-001",
-      responsavel: "João Silva",
-      ciclo: "Verão",
-      status: "Concluída",
-    },
-    {
-      id: "COL-2025-002",
-      data: "12/06/2025",
-      produto: "Milho Verde",
-      quantidade: "1.800 kg",
-      uap: "UAP-002",
-      responsavel: "Maria Santos",
-      ciclo: "Verão",
-      status: "Concluída",
-    },
-    {
-      id: "COL-2025-003",
-      data: "10/06/2025",
-      produto: "Feijão Carioca",
-      quantidade: "800 kg",
-      uap: "UAP-003",
-      responsavel: "Pedro Costa",
-      ciclo: "Verão",
-      status: "Concluída",
-    },
-    {
-      id: "COL-2025-004",
-      data: "08/06/2025",
-      produto: "Arroz Branco",
-      quantidade: "1.200 kg",
-      uap: "UAP-004",
-      responsavel: "Ana Oliveira",
-      ciclo: "Verão",
-      status: "Concluída",
-    },
-    {
-      id: "COL-2025-005",
-      data: "05/06/2025",
-      produto: "Trigo",
-      quantidade: "900 kg",
-      uap: "UAP-005",
-      responsavel: "Carlos Ferreira",
-      ciclo: "Inverno",
-      status: "Em Andamento",
-    },
-    {
-      id: "COL-2025-006",
-      data: "03/06/2025",
-      produto: "Café Arábica",
-      quantidade: "500 kg",
-      uap: "UAP-006",
-      responsavel: "Lucia Mendes",
-      ciclo: "Perene",
-      status: "Concluída",
-    },
-    {
-      id: "COL-2025-007",
-      data: "01/06/2025",
-      produto: "Algodão",
-      quantidade: "600 kg",
-      uap: "UAP-001",
-      responsavel: "João Silva",
-      ciclo: "Verão",
-      status: "Concluída",
-    },
-    {
-      id: "COL-2025-008",
-      data: "30/05/2025",
-      produto: "Cana-de-açúcar",
-      quantidade: "15.000 kg",
-      uap: "UAP-002",
-      responsavel: "Maria Santos",
-      ciclo: "Perene",
-      status: "Em Andamento",
-    },
-  ];
+  useEffect(() => {
+    fetchHarvests();
+  }, [fetchHarvests]);
+
+  const handleDelete = async (harvestId: string) => {
+    if (window.confirm("Tem certeza que deseja excluir esta colheita?")) {
+      try {
+        await deleteHarvest(harvestId);
+      } catch {
+        // erro tratado
+      }
+    }
+  };
 
   const columns = [
     { key: "id", label: "N° COLHEITA" },
@@ -169,6 +103,36 @@ function ColheitaPage() {
     },
   ];
 
+  if (loading) {
+    return (
+      <SideMenu title="COLHEITA">
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-agro-600 mx-auto mb-4"></div>
+            <p className="text-neutral-600">Carregando colheitas...</p>
+          </div>
+        </div>
+      </SideMenu>
+    );
+  }
+
+  if (error) {
+    return (
+      <SideMenu title="COLHEITA">
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <p className="text-red-600 mb-4">
+              Erro ao carregar colheitas: {error}
+            </p>
+            <button onClick={() => fetchHarvests()} className="btn-primary">
+              Tentar novamente
+            </button>
+          </div>
+        </div>
+      </SideMenu>
+    );
+  }
+
   return (
     <SideMenu title="COLHEITA">
       <div className="space-y-6">
@@ -189,8 +153,9 @@ function ColheitaPage() {
         {/* Filters */}
         <FilterBar
           filters={filters}
-          onFilterChange={(_key, _value) => {
-            // TODO: Implementar filtros
+          onFilterChange={(key, value) => {
+            // TODO: Implementar filtros baseados em key e value
+            console.log(`Filtrando por ${key}: ${value}`);
           }}
         />
 
@@ -200,8 +165,50 @@ function ColheitaPage() {
           <div className="flex-1">
             <DataTable
               columns={columns}
-              data={colheitasData}
+              data={harvests.map((harvest) => ({
+                id: harvest.id,
+                data: new Date(harvest.harvestDate).toLocaleDateString("pt-BR"),
+                produto: harvest.product,
+                quantidade: `${harvest.quantity} ${harvest.unit}`,
+                uap: harvest.uap,
+                responsavel: harvest.responsible,
+                ciclo: harvest.cycle,
+                status: harvest.status,
+              }))}
               className="border-agro-200"
+              actions={
+                <div className="flex gap-2">
+                  {harvests.map((harvest) => (
+                    <div key={harvest.id} className="flex gap-2">
+                      <button
+                        onClick={() =>
+                          navigate(`/colheita/visualizar/${harvest.id}`)
+                        }
+                        className="btn-primary p-1 rounded"
+                        title="Visualizar"
+                      >
+                        <FaEye size={12} />
+                      </button>
+                      <button
+                        onClick={() =>
+                          navigate(`/colheita/editar/${harvest.id}`)
+                        }
+                        className="btn-primary p-1 rounded"
+                        title="Editar"
+                      >
+                        <FaEdit size={12} />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(harvest.id)}
+                        className="bg-red-500 hover:bg-red-600 text-white p-1 rounded"
+                        title="Excluir"
+                      >
+                        <FaTrash size={12} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              }
             />
           </div>
 

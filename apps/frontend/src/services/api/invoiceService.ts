@@ -6,6 +6,14 @@ import type {
   InvoiceFilters,
 } from "../../types/invoice";
 
+export interface UseInvoiceResult {
+  invoices: Invoice[];
+  loading: boolean;
+  error: string;
+  fetchInvoices: (filter?: string) => Promise<void>;
+  refreshInvoices: () => Promise<void>;
+}
+
 export class InvoiceService {
   async getAllInvoices(): Promise<Invoice[]> {
     return await apiClient.get<Invoice[]>("/invoices");
