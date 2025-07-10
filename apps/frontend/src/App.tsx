@@ -23,6 +23,7 @@ import InsumosPage from "./features/insumos/pages/InsumosPage";
 import ProdutosPage from "./features/produtos/pages/ProdutosPage";
 import CadastroInsumoPage from "./features/insumos/pages/CadastroInsumoPage";
 import CadastroProdutoPage from "./features/produtos/pages/CadastroProdutoPage";
+import EditarProdutoPage from "./features/produtos/pages/EditarProdutoPage";
 import PerfilPage from "./features/usuarios/pages/PerfilPage";
 import ListaUsuariosPage from "./features/usuarios/pages/ListaUsuariosPage";
 import PerfilAdminPage from "./features/usuarios/pages/PerfilAdminPage";
@@ -65,6 +66,7 @@ function App() {
         <Route path="/produtos" element={<ProdutosPage />} />
         <Route path="/insumos/cadastro" element={<CadastroInsumoPage />} />
         <Route path="/produtos/cadastro" element={<CadastroProdutoPage />} />
+        <Route path="/produtos/editar/:id" element={<EditarProdutoPage />} />
         <Route path="/perfil" element={<PerfilPage />} />
         <Route path="/perfil/lista" element={<ListaUsuariosPage />} />
         <Route path="/perfil/admin" element={<PerfilAdminPage />} />
