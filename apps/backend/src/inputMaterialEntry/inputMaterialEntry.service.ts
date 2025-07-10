@@ -1,6 +1,6 @@
 import { Injectable, Inject, NotFoundException } from "@nestjs/common";
 import { IInputMaterialEntryRepository } from "./repositories/inputMaterialEntry.repository.interface";
-import { INPUT_MATERIAL_ENTRY_REPOSITORY } from "./repositories/inputMaterialEntry.token";
+import { INPUT_MATERIAL_ENTRY_REPOSITORY } from "./repositories/inputMaterialEntryToken";
 import { CreateInputMaterialEntryDto } from "@shared/dto/inputMaterialEntry/create-inputMaterialEntry.dto";
 import { UpdateInputMaterialEntryDto } from "@shared/dto/inputMaterialEntry/update-inputMaterialEntry.dto";
 import { InputMaterialEntry } from "@shared/types/inputMaterialEntry";
