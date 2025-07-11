@@ -51,6 +51,12 @@ export const rolePermissions: Record<ERole, EPermission[]> = {
     EPermission.READ_INPUT_MATERIAL_ENTRY,
     EPermission.UPDATE_INPUT_MATERIAL_ENTRY,
     EPermission.DELETE_INPUT_MATERIAL_ENTRY,
+
+    // Permissões de UAP
+    EPermission.CREATE_UAP,
+    EPermission.UPDATE_UAP,
+    EPermission.DELETE_UAP,
+    EPermission.READ_UAP,
   ],
   [ERole.COMMON_USER]: [
     // Usuários comuns podem ler e fazer vendas
@@ -66,6 +72,9 @@ export const rolePermissions: Record<ERole, EPermission[]> = {
     //Usuários comuns podem registrar colheitas e olhar mas não de modificar ou deletar
     EPermission.CREATE_INPUT_MATERIAL_ENTRY,
     EPermission.READ_INPUT_MATERIAL_ENTRY,
+
+    // Usuários comuns podem ler UAPs mas não modificar
+    EPermission.READ_UAP,
   ],
 };
 

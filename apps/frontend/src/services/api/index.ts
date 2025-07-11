@@ -6,6 +6,8 @@ export { invoiceService, InvoiceService } from "./invoiceService";
 export { productService, ProductService } from "./productService";
 export { harvestService, HarvestService } from "./harvestService";
 export { salesService, SalesService } from "./salesService";
+export { uapService } from "./uapService";
+export { inputMaterialService } from "./inputMaterialService";
 export { apiClient } from "./client";
 
 // Export types

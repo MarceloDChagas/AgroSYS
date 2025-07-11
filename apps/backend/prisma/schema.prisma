@@ -186,3 +186,18 @@ model Harvest {
   @@map("harvests")
 }
 
+model UAP {
+  id          String   @id @default(uuid())
+  name        String
+  location    String
+  area        Decimal  @db.Decimal(10, 2)
+  cropType    String
+  responsible String
+  observations String?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("uaps")
+}
+

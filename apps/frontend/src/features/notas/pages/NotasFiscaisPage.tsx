@@ -70,7 +70,7 @@ function NotasFiscaisPage() {
     },
   ];
 
-  const handleFilterChange = (key: string, value: string) => {
+  const handleFilterChange = (_key: string, value: string) => {
     if (value) {
       fetchInvoices(value);
     } else {

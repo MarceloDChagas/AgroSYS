@@ -1,0 +1,1 @@
+export const UAP_REPOSITORY = "UAP_REPOSITORY";
