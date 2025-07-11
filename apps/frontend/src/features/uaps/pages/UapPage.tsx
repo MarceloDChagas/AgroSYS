@@ -1,65 +1,42 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { SideMenu } from "../../../components/layout/SideMenu";
 import { PageHeader } from "../../../components/ui/PageHeader";
 import { FilterBar } from "../../../components/ui/FilterBar";
 import { DataTable } from "../../../components/ui/DataTable";
 import { ActionButtons } from "../../../components/ui/ActionButtons";
 import { FaPlus, FaEdit, FaTrash } from "react-icons/fa";
+import { useUap } from "@/hooks/useUap";
 
 function UapPage() {
   const navigate = useNavigate();
+  const { uaps, loading, error, fetchUaps, deleteUap } = useUap();
 
-  // Dados reais de unidades de produção agropecuária
-  const uapData = [
-    {
-      uap: "UAP-001",
-      secao: "Seção Norte",
-      area: "45,2 ha",
-      responsavel: "João Silva",
-    },
-    {
-      uap: "UAP-002",
-      secao: "Seção Sul",
-      area: "32,8 ha",
-      responsavel: "Maria Santos",
-    },
-    {
-      uap: "UAP-003",
-      secao: "Seção Leste",
-      area: "28,5 ha",
-      responsavel: "Pedro Costa",
-    },
-    {
-      uap: "UAP-004",
-      secao: "Seção Oeste",
-      area: "51,3 ha",
-      responsavel: "Ana Oliveira",
-    },
-    {
-      uap: "UAP-005",
-      secao: "Seção Central",
-      area: "38,7 ha",
-      responsavel: "Carlos Ferreira",
-    },
-    {
-      uap: "UAP-006",
-      secao: "Seção Nordeste",
-      area: "42,1 ha",
-      responsavel: "Lucia Mendes",
-    },
-  ];
+  useEffect(() => {
+    fetchUaps();
+  }, [fetchUaps]);
+
+  const handleDelete = async (uapId: string) => {
+    if (window.confirm("Tem certeza que deseja excluir esta UAP?")) {
+      try {
+        await deleteUap(uapId);
+      } catch {
+        // erro tratado pelo hook
+      }
+    }
+  };
 
   const columns = [
-    { key: "uap", label: "UAP" },
-    { key: "secao", label: "SEÇÃO" },
+    { key: "name", label: "UAP" },
+    { key: "location", label: "LOCALIZAÇÃO" },
     { key: "area", label: "ÁREA" },
-    { key: "responsavel", label: "RESPONSÁVEL" },
+    { key: "responsible", label: "RESPONSÁVEL" },
   ];
 
   const filters = [
     {
-      key: "secao",
-      label: "Seção",
+      key: "location",
+      label: "Localização",
       options: [
         { value: "norte", label: "Seção Norte" },
         { value: "sul", label: "Seção Sul" },
@@ -68,7 +45,7 @@ function UapPage() {
         { value: "central", label: "Seção Central" },
         { value: "nordeste", label: "Seção Nordeste" },
       ],
-      placeholder: "Filtrar por seção",
+      placeholder: "Filtrar por localização",
     },
   ];
 
@@ -81,11 +58,39 @@ function UapPage() {
     },
     {
       label: "EXCLUIR",
-      onClick: () => {},
+      onClick: () => {}, // Necessário para satisfazer o tipo ActionButton, mas ação real é por linha
       variant: "danger" as const,
       icon: <FaTrash size={14} />,
     },
   ];
+
+  if (loading) {
+    return (
+      <SideMenu title="UNIDADES DE PRODUÇÃO">
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-agro-600 mx-auto mb-4"></div>
+            <p className="text-neutral-600">Carregando UAPs...</p>
+          </div>
+        </div>
+      </SideMenu>
+    );
+  }
+
+  if (error) {
+    return (
+      <SideMenu title="UNIDADES DE PRODUÇÃO">
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <p className="text-red-600 mb-4">Erro ao carregar UAPs: {error}</p>
+            <button onClick={() => fetchUaps()} className="btn-primary">
+              Tentar novamente
+            </button>
+          </div>
+        </div>
+      </SideMenu>
+    );
+  }
 
   return (
     <SideMenu title="UNIDADES DE PRODUÇÃO">
@@ -107,7 +112,7 @@ function UapPage() {
         {/* Filters */}
         <FilterBar
           filters={filters}
-          onFilterChange={(key, value) => {
+          onFilterChange={() => {
             // TODO: Implementar filtros
           }}
         />
@@ -118,8 +123,35 @@ function UapPage() {
           <div className="flex-1">
             <DataTable
               columns={columns}
-              data={uapData}
+              data={uaps.map((uap) => ({
+                name: uap.name,
+                location: uap.location,
+                area: `${uap.area} ha`,
+                responsible: uap.responsible,
+              }))}
               className="border-agro-200"
+              actions={
+                <div className="flex gap-2">
+                  {uaps.map((uap) => (
+                    <div key={uap.id} className="flex gap-2">
+                      <button
+                        onClick={() => navigate(`/uap/editar/${uap.id}`)}
+                        className="btn-primary p-1 rounded"
+                        title="Editar"
+                      >
+                        <FaEdit size={12} />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(uap.id)}
+                        className="bg-red-500 hover:bg-red-600 text-white p-1 rounded"
+                        title="Excluir"
+                      >
+                        <FaTrash size={12} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              }
             />
           </div>
 

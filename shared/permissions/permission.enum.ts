@@ -42,5 +42,11 @@ export enum EPermission {
   DELETE_HARVEST = "DELETE_HARVEST",
   READ_HARVEST = "READ_HARVEST",
 
+  // Permissões de UAP
+  CREATE_UAP = "CREATE_UAP",
+  UPDATE_UAP = "UPDATE_UAP",
+  DELETE_UAP = "DELETE_UAP",
+  READ_UAP = "READ_UAP",
+
   // Ir adicionando conforme necessário
 }
