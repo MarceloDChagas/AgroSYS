@@ -24,11 +24,6 @@ import ProdutosPage from "./features/produtos/pages/ProdutosPage";
 import CadastroInsumoPage from "./features/insumos/pages/CadastroInsumoPage";
 import CadastroProdutoPage from "./features/produtos/pages/CadastroProdutoPage";
 import EditarProdutoPage from "./features/produtos/pages/EditarProdutoPage";
-import PerfilPage from "./features/usuarios/pages/PerfilPage";
-import ListaUsuariosPage from "./features/usuarios/pages/ListaUsuariosPage";
-import PerfilAdminPage from "./features/usuarios/pages/PerfilAdminPage";
-import CadastroUsuarioPage from "./features/usuarios/pages/CadastroUsuarioPage";
-import EditarPermissaoPage from "./features/usuarios/pages/EditarPermissaoPage";
 
 function App() {
   return (
@@ -67,11 +62,6 @@ function App() {
         <Route path="/insumos/cadastro" element={<CadastroInsumoPage />} />
         <Route path="/produtos/cadastro" element={<CadastroProdutoPage />} />
         <Route path="/produtos/editar/:id" element={<EditarProdutoPage />} />
-        <Route path="/perfil" element={<PerfilPage />} />
-        <Route path="/perfil/lista" element={<ListaUsuariosPage />} />
-        <Route path="/perfil/admin" element={<PerfilAdminPage />} />
-        <Route path="/perfil/cadastro" element={<CadastroUsuarioPage />} />
-        <Route path="/perfil/editar" element={<EditarPermissaoPage />} />
 
         {/* Adicione outras rotas conforme necessário */}
       </Routes>
