@@ -6,21 +6,23 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import {
   FaSave,
   FaTimes,
-  FaUser,
   FaBox,
   FaCalendar,
   FaDollarSign,
+  FaMapMarkerAlt,
 } from "react-icons/fa";
 import { useSales } from "@/hooks/useSales";
 import { useProduct } from "@/hooks/useProduct";
+import { useUap } from "@/hooks/useUap";
 
 function VendaCadastroPage() {
   const navigate = useNavigate();
   const { createSale, loading, error } = useSales();
   const { products, fetchProducts } = useProduct();
+  const { uaps, fetchUaps } = useUap();
 
   const [formData, setFormData] = useState({
-    cliente: "",
+    uapId: "",
     produto: "",
     quantidade: "",
     precoUnitario: "",
@@ -31,7 +33,8 @@ function VendaCadastroPage() {
 
   useEffect(() => {
     fetchProducts();
-  }, [fetchProducts]);
+    fetchUaps();
+  }, [fetchProducts, fetchUaps]);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({
@@ -68,14 +71,19 @@ function VendaCadastroPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.produto || !formData.quantidade || !formData.precoUnitario) {
+    if (
+      !formData.uapId ||
+      !formData.produto ||
+      !formData.quantidade ||
+      !formData.precoUnitario
+    ) {
       alert("Por favor, preencha todos os campos obrigatórios");
       return;
     }
 
     try {
       const saleData = {
-        userId: "user-id", // TODO: Pegar do contexto de autenticação
+        uapId: formData.uapId,
         items: [
           {
             productId: formData.produto,
@@ -113,22 +121,26 @@ function VendaCadastroPage() {
         {/* Form */}
         <div className="card p-8 border-agro-200">
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Customer and Product Row */}
+            {/* UAP and Product Row */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <FormField label="Cliente" required>
+              <FormField label="UAP" required>
                 <div className="relative">
-                  <FaUser
+                  <FaMapMarkerAlt
                     className="absolute left-3 top-1/2 transform -translate-y-1/2 text-agro-500"
                     size={14}
                   />
-                  <input
+                  <select
                     className="input-field pl-10"
-                    placeholder="Buscar cliente..."
-                    value={formData.cliente}
-                    onChange={(e) =>
-                      handleInputChange("cliente", e.target.value)
-                    }
-                  />
+                    value={formData.uapId}
+                    onChange={(e) => handleInputChange("uapId", e.target.value)}
+                  >
+                    <option value="">Selecionar UAP...</option>
+                    {uaps.map((uap) => (
+                      <option key={uap.id} value={uap.id}>
+                        {uap.name} - {uap.location}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </FormField>
 
@@ -312,7 +324,7 @@ function VendaCadastroPage() {
             💡 Dicas para uma venda eficiente
           </h3>
           <ul className="text-sm text-blue-800 space-y-1">
-            <li>• Verifique se o cliente está cadastrado no sistema</li>
+            <li>• Verifique se a UAP está cadastrada no sistema</li>
             <li>• Confirme a disponibilidade do produto em estoque</li>
             <li>• Revise os valores antes de finalizar a venda</li>
             <li>• Adicione observações relevantes para o controle</li>

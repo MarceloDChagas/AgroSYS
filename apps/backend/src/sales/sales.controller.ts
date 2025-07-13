@@ -48,7 +48,7 @@ export class SalesController {
   @ApiResponse({ status: 201, description: "Venda criada com sucesso" })
   async create(@Body() rawDto: RawCreateSaleDto, @Request() req: any) {
     const dto = new CreateSaleDto(
-      rawDto.userId || req.user.id, // Se não especificado, usar o usuário logado
+      rawDto.uapId, // UAP ID is required
       rawDto.items,
       rawDto.status || ESaleStatus.PENDING,
       rawDto.saleDate ? new Date(rawDto.saleDate) : new Date()
@@ -64,11 +64,7 @@ export class SalesController {
     description: "Lista de vendas retornada com sucesso",
   })
   async findAll(@Request() req: any) {
-    // Se for usuário comum, mostrar apenas suas vendas
-    if (req.user.role === "COMMON_USER" || req.user.role === "COMMON") {
-      return this.salesService.findByUserId(req.user.id);
-    }
-    // Se for admin, mostrar todas as vendas
+    // For now, show all sales for all users since sales are now linked to UAPs
     return this.salesService.findAll();
   }
 
@@ -79,32 +75,17 @@ export class SalesController {
     @Query("status") status: ESaleStatus,
     @Request() req: any
   ) {
-    const sales = await this.salesService.findByStatus(status);
-
-    // Se for usuário comum, filtrar apenas suas vendas
-    if (req.user.role === "COMMON_USER" || req.user.role === "COMMON") {
-      return sales.filter((sale) => sale.userId === req.user.id);
-    }
-
-    return sales;
+    return await this.salesService.findByStatus(status);
   }
 
-  @Get("user/:userId")
+  @Get("uap/:uapId")
   @RequirePermissions(EPermission.READ_SALE)
-  @ApiOperation({ summary: "Buscar vendas por usuário" })
-  async findByUserId(
-    @Param("userId", ParseUUIDPipe) userId: string,
+  @ApiOperation({ summary: "Buscar vendas por UAP" })
+  async findByUapId(
+    @Param("uapId", ParseUUIDPipe) uapId: string,
     @Request() req: any
   ) {
-    // Usuários comuns só podem ver suas próprias vendas
-    if (
-      (req.user.role === "COMMON_USER" || req.user.role === "COMMON") &&
-      req.user.id !== userId
-    ) {
-      return [];
-    }
-
-    return this.salesService.findByUserId(userId);
+    return this.salesService.findByUapId(uapId);
   }
 
   @Get(":id")
@@ -114,15 +95,6 @@ export class SalesController {
   @ApiResponse({ status: 404, description: "Venda não encontrada" })
   async findOne(@Param("id", ParseUUIDPipe) id: string, @Request() req: any) {
     const sale = await this.salesService.findOne(id);
-
-    // Usuários comuns só podem ver suas próprias vendas
-    if (
-      (req.user.role === "COMMON_USER" || req.user.role === "COMMON") &&
-      sale.userId !== req.user.id
-    ) {
-      return null;
-    }
-
     return sale;
   }
 

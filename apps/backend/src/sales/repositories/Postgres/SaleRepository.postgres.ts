@@ -21,17 +21,18 @@ const reverseStatusMap = {
 
 const saleSelect = {
   id: true,
-  userId: true,
+  uapId: true,
   totalAmount: true,
   status: true,
   saleDate: true,
   createdAt: true,
   updatedAt: true,
-  user: {
+  uap: {
     select: {
       id: true,
       name: true,
-      email: true,
+      location: true,
+      responsible: true,
     },
   },
   saleItems: {
@@ -92,9 +93,9 @@ export class SaleRepositoryPostgres implements ISaleRepository {
     return this.findOne(id);
   }
 
-  async findByUserId(userId: string): Promise<SaleWithItems[]> {
+  async findByUapId(uapId: string): Promise<SaleWithItems[]> {
     const sales = await this.prisma.sale.findMany({
-      where: { userId },
+      where: { uapId },
       select: saleSelect,
       orderBy: { createdAt: "desc" },
     });
@@ -113,7 +114,7 @@ export class SaleRepositoryPostgres implements ISaleRepository {
   async create(data: CreateSaleDto): Promise<SaleWithItems> {
     const sale = await this.prisma.sale.create({
       data: {
-        userId: data.userId,
+        uapId: data.uapId,
         totalAmount: data.totalAmount,
         status: reverseStatusMap[data.status],
         saleDate: data.saleDate,

@@ -18,7 +18,7 @@ export interface Product {
 
 export interface Sale {
   id: string;
-  userId: string;
+  uapId: string;
   totalAmount: number;
   status: ESaleStatus;
   saleDate: Date;
@@ -39,17 +39,18 @@ export interface SaleItem {
 
 export interface SaleWithItems extends Sale {
   saleItems: SaleItem[];
-  user?: {
+  uap?: {
     id: string;
     name: string;
-    email: string;
+    location: string;
+    responsible: string;
   };
 }
 
 export interface Invoice {
   id: string;
   saleId: string;
-  userId: string;
+  uapId: string;
   invoiceNumber: string;
   totalAmount: number;
   status: EInvoiceStatus;
@@ -62,9 +63,10 @@ export interface Invoice {
 
 export interface InvoiceWithSale extends Invoice {
   sale?: SaleWithItems;
-  user?: {
+  uap?: {
     id: string;
     name: string;
-    email: string;
+    location: string;
+    responsible: string;
   };
 }

@@ -2,7 +2,7 @@ import { apiClient } from "./client";
 
 export interface SaleWithItems {
   id: string;
-  userId: string;
+  uapId: string;
   totalAmount: number;
   status: string;
   saleDate: Date;
@@ -23,15 +23,16 @@ export interface SaleWithItems {
       price: number;
     };
   }[];
-  user?: {
+  uap?: {
     id: string;
     name: string;
-    email: string;
+    location: string;
+    responsible: string;
   };
 }
 
 export interface CreateSaleRequest {
-  userId: string;
+  uapId: string;
   items: {
     productId: string;
     quantity: number;
@@ -48,7 +49,7 @@ export interface UpdateSaleRequest {
 
 export interface SaleFilters {
   status?: string;
-  userId?: string;
+  uapId?: string;
 }
 
 export class SalesService {
@@ -81,8 +82,8 @@ export class SalesService {
     );
   }
 
-  async getSalesByUserId(userId: string): Promise<SaleWithItems[]> {
-    return await apiClient.get<SaleWithItems[]>(`/sales/user/${userId}`);
+  async getSalesByUapId(uapId: string): Promise<SaleWithItems[]> {
+    return await apiClient.get<SaleWithItems[]>(`/sales/uap/${uapId}`);
   }
 
   async completeSale(id: string): Promise<SaleWithItems> {
@@ -96,8 +97,8 @@ export class SalesService {
       params.append("status", filters.status);
     }
 
-    if (filters.userId) {
-      params.append("userId", filters.userId);
+    if (filters.uapId) {
+      params.append("uapId", filters.uapId);
     }
 
     return await apiClient.get<SaleWithItems[]>(`/sales?${params.toString()}`);
