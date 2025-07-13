@@ -50,11 +50,6 @@ const menuItems = [
     route: "/produtos",
     icon: "🌱",
   },
-  {
-    label: "Perfil",
-    route: "/perfil",
-    icon: "👤",
-  },
 ];
 
 export function SideMenu({ children }: SideMenuProps) {

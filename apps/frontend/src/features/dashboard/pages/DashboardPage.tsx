@@ -10,8 +10,11 @@ import { SideMenu } from "@/components/layout/SideMenu";
 import { DashboardCard } from "@/components/ui/DashboardCard";
 import { StatCard } from "@/components/ui/StatCard";
 import { SystemInfo } from "@/components/ui/SystemInfo";
+import { useDashboard } from "@/hooks/useDashboard";
 
 export function DashboardPage() {
+  const { statistics, loading, error, refreshStatistics } = useDashboard();
+
   const dashboardCards = [
     {
       icon: <FaLeaf />,
@@ -71,17 +74,35 @@ export function DashboardPage() {
     },
   ];
 
-  // Dados reais de estatísticas agropecuárias
-  const estatisticas = {
-    colheitas: 18,
-    vendas: "R$ 41.200,00",
-    ferramentas: 24,
-    uaps: 6,
-    areaTotal: "238,6 ha",
-    producaoMes: "R$ 12.800,00",
-    insumos: 8,
-    notasEmitidas: 15,
-  };
+  if (loading) {
+    return (
+      <SideMenu title="Dashboard">
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-agro-600 mx-auto mb-4"></div>
+            <p className="text-neutral-600">Carregando estatísticas...</p>
+          </div>
+        </div>
+      </SideMenu>
+    );
+  }
+
+  if (error) {
+    return (
+      <SideMenu title="Dashboard">
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <p className="text-red-600 mb-4">
+              Erro ao carregar estatísticas: {error}
+            </p>
+            <button onClick={() => refreshStatistics()} className="btn-primary">
+              Tentar novamente
+            </button>
+          </div>
+        </div>
+      </SideMenu>
+    );
+  }
 
   return (
     <SideMenu title="Dashboard">
@@ -102,7 +123,7 @@ export function DashboardPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <StatCard
             title="Colheitas"
-            value={estatisticas.colheitas.toString()}
+            value={statistics.harvests.toString()}
             icon={<FaLeaf />}
             iconBgColor="bg-agro-100"
             iconColor="text-agro-600"
@@ -110,7 +131,7 @@ export function DashboardPage() {
 
           <StatCard
             title="Vendas"
-            value={estatisticas.vendas}
+            value={statistics.sales}
             icon={<FaDollarSign />}
             iconBgColor="bg-wheat-100"
             iconColor="text-wheat-600"
@@ -118,7 +139,7 @@ export function DashboardPage() {
 
           <StatCard
             title="Ferramentas"
-            value={estatisticas.ferramentas.toString()}
+            value={statistics.tools.toString()}
             icon={<FaTools />}
             iconBgColor="bg-earth-100"
             iconColor="text-earth-600"
@@ -126,7 +147,7 @@ export function DashboardPage() {
 
           <StatCard
             title="UAPs"
-            value={estatisticas.uaps.toString()}
+            value={statistics.uaps.toString()}
             icon={<FaWarehouse />}
             iconBgColor="bg-earth-100"
             iconColor="text-earth-600"
@@ -165,7 +186,7 @@ export function DashboardPage() {
                   Área Total
                 </p>
                 <p className="text-2xl font-bold text-agro-700">
-                  {estatisticas.areaTotal}
+                  {statistics.areaTotal}
                 </p>
               </div>
               <div className="p-3 bg-agro-100 rounded-lg border border-agro-200">
@@ -181,7 +202,7 @@ export function DashboardPage() {
                   Produção do Mês
                 </p>
                 <p className="text-2xl font-bold text-agro-700">
-                  {estatisticas.producaoMes}
+                  {statistics.productionMonth}
                 </p>
               </div>
               <div className="p-3 bg-wheat-100 rounded-lg border border-wheat-200">
@@ -197,7 +218,7 @@ export function DashboardPage() {
                   Notas Emitidas
                 </p>
                 <p className="text-2xl font-bold text-agro-700">
-                  {estatisticas.notasEmitidas}
+                  {statistics.invoices}
                 </p>
               </div>
               <div className="p-3 bg-earth-100 rounded-lg border border-earth-200">
