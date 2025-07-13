@@ -8,7 +8,7 @@ export interface SaleItemDto {
 
 export class CreateSaleDto {
   constructor(
-    public readonly userId: string,
+    public readonly uapId: string,
     public readonly items: SaleItemDto[],
     public readonly status: ESaleStatus = ESaleStatus.PENDING,
     public readonly saleDate: Date = new Date()
@@ -22,7 +22,7 @@ export class CreateSaleDto {
 }
 
 export interface RawCreateSaleDto {
-  userId: string;
+  uapId: string;
   items: SaleItemDto[];
   status?: ESaleStatus;
   saleDate?: string | Date;

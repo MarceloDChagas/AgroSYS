@@ -7,7 +7,7 @@ export interface ISaleRepository {
   findAll(): Promise<SaleWithItems[]>;
   findOne(id: string): Promise<SaleWithItems | null>;
   findById(id: string): Promise<SaleWithItems | null>;
-  findByUserId(userId: string): Promise<SaleWithItems[]>;
+  findByUapId(uapId: string): Promise<SaleWithItems[]>;
   findByStatus(status: ESaleStatus): Promise<SaleWithItems[]>;
   create(data: CreateSaleDto): Promise<SaleWithItems>;
   update(id: string, data: UpdateSaleDto): Promise<SaleWithItems | null>;

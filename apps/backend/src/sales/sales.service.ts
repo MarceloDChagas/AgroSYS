@@ -55,8 +55,8 @@ export class SalesService {
     return sale;
   }
 
-  async findByUserId(userId: string): Promise<SaleWithItems[]> {
-    return await this.saleRepository.findByUserId(userId);
+  async findByUapId(uapId: string): Promise<SaleWithItems[]> {
+    return await this.saleRepository.findByUapId(uapId);
   }
 
   async findByStatus(status: ESaleStatus): Promise<SaleWithItems[]> {
