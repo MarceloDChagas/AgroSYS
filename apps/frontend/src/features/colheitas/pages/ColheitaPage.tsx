@@ -155,7 +155,6 @@ function ColheitaPage() {
           filters={filters}
           onFilterChange={(_key, _value) => {
             // TODO: Implementar filtros baseados em key e value
-            // console.log(`Filtrando por ${key}: ${value}`);
           }}
         />
 
