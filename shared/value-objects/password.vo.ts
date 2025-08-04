@@ -1,4 +1,4 @@
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from "bcrypt";
 
 export class Password {
   private readonly password: string;
@@ -43,7 +43,7 @@ export class Password {
 
   private static validateEmpty(password: string): void {
     if (!password) {
-      throw new Error('A senha não pode estar vazia.');
+      throw new Error("A senha não pode estar vazia.");
     }
   }
 
@@ -60,7 +60,7 @@ export class Password {
     const hasNumber = /\d/.test(password);
 
     if (!hasLetter || !hasNumber) {
-      throw new Error('A senha deve conter letras e números.');
+      throw new Error("A senha deve conter letras e números.");
     }
   }
 
@@ -75,7 +75,7 @@ export class Password {
 
   public async compare(plainPassword: string): Promise<boolean> {
     if (!this.isHashed) {
-      throw new Error('Senha precisa estar com hash para comparar.');
+      throw new Error("Senha precisa estar com hash para comparar.");
     }
     return bcrypt.compare(plainPassword, this.password);
   }

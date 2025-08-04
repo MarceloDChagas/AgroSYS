@@ -15,7 +15,6 @@ import { SalesService } from "./sales.service";
 import {
   CreateSaleDto,
   RawCreateSaleDto,
-  SaleItemDto,
 } from "@shared/dto/sale/create-sale.dto";
 import {
   UpdateSaleDto,
@@ -46,7 +45,7 @@ export class SalesController {
   @RequirePermissions(EPermission.CREATE_SALE)
   @ApiOperation({ summary: "Criar nova venda" })
   @ApiResponse({ status: 201, description: "Venda criada com sucesso" })
-  async create(@Body() rawDto: RawCreateSaleDto, @Request() req: any) {
+  async create(@Body() rawDto: RawCreateSaleDto, @Request() _req: any) {
     const dto = new CreateSaleDto(
       rawDto.uapId, // UAP ID is required
       rawDto.items,
@@ -63,7 +62,7 @@ export class SalesController {
     status: 200,
     description: "Lista de vendas retornada com sucesso",
   })
-  async findAll(@Request() req: any) {
+  async findAll(@Request() _req: any) {
     // For now, show all sales for all users since sales are now linked to UAPs
     return this.salesService.findAll();
   }
@@ -73,7 +72,7 @@ export class SalesController {
   @ApiOperation({ summary: "Buscar vendas por status" })
   async findByStatus(
     @Query("status") status: ESaleStatus,
-    @Request() req: any
+    @Request() _req: any
   ) {
     return await this.salesService.findByStatus(status);
   }
@@ -83,7 +82,7 @@ export class SalesController {
   @ApiOperation({ summary: "Buscar vendas por UAP" })
   async findByUapId(
     @Param("uapId", ParseUUIDPipe) uapId: string,
-    @Request() req: any
+    @Request() _req: any
   ) {
     return this.salesService.findByUapId(uapId);
   }
@@ -93,7 +92,7 @@ export class SalesController {
   @ApiOperation({ summary: "Buscar venda por ID" })
   @ApiResponse({ status: 200, description: "Venda encontrada com sucesso" })
   @ApiResponse({ status: 404, description: "Venda não encontrada" })
-  async findOne(@Param("id", ParseUUIDPipe) id: string, @Request() req: any) {
+  async findOne(@Param("id", ParseUUIDPipe) id: string, @Request() _req: any) {
     const sale = await this.salesService.findOne(id);
     return sale;
   }

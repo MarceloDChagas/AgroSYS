@@ -1,5 +1,5 @@
-import { IsEnum, IsOptional } from 'class-validator';
-import { EStatusTool, EToolName } from '@shared/enums/tool.enum';
+import { IsEnum, IsOptional } from "class-validator";
+import { EStatusTool, EToolName } from "@shared/enums/tool.enum";
 
 export class UpdateToolDto {
   @IsOptional()

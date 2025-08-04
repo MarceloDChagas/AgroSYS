@@ -5,9 +5,9 @@ import { FilterBar } from "../../components/FilterBar";
 
 const InsumosPage: React.FC = () => {
   const navigate = useNavigate();
-  const [filters, setFilters] = useState<Record<string, string>>({});
+  const [filters, _setFilters] = useState<Record<string, string>>({});
 
-  const actions = [
+  const _actions = [
     {
       label: "EDITAR",
       onClick: () => navigate("/insumos/editar"),
@@ -20,7 +20,7 @@ const InsumosPage: React.FC = () => {
     <div>
       <FilterBar
         filters={filters}
-        onFilterChange={(key, value) => {
+        onFilterChange={(_key, _value) => {
           /* TODO: Implementar filtros */
         }}
       />

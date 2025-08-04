@@ -1,11 +1,11 @@
-import { Role } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 
 export type UserPrismaSelected = {
   id: string;
   email: string;
   password: string;
   name: string;
-  role: Role;
+  role: Prisma.UserGetPayload<Record<string, never>>["role"];
 };
 
 export const userSelect = {

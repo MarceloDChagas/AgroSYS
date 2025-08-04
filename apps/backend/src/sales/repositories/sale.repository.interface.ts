@@ -1,6 +1,6 @@
 import { CreateSaleDto } from "@shared/dto/sale/create-sale.dto";
 import { UpdateSaleDto } from "@shared/dto/sale/update-sale.dto";
-import { Sale, SaleWithItems } from "@shared/types/product";
+import { SaleWithItems } from "@shared/types/product";
 import { ESaleStatus } from "@shared/enums/product.enum";
 
 export interface ISaleRepository {

@@ -16,7 +16,7 @@ export function RegisterPage() {
       // console.log("Enviando para registro:", data);
       await authService.register(data);
       navigate("/login");
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       // console.error("Erro no registro:", error);
     }

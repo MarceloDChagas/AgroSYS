@@ -61,7 +61,9 @@ function InsumosPage() {
     },
     {
       label: "EXCLUIR",
-      onClick: () => {}, // Necessário para satisfazer o tipo ActionButton, mas ação real é por linha
+      onClick: () => {
+        // TODO: Implementar ação de exclusão
+      },
       variant: "danger" as const,
       icon: <FaTrash size={14} />,
     },

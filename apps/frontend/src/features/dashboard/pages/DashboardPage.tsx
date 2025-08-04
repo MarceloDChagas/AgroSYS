@@ -1,78 +1,185 @@
 import {
-  FaLeaf,
-  FaTools,
   FaDollarSign,
-  FaFileInvoice,
-  FaWarehouse,
-  FaFlask,
+  FaExclamationTriangle,
+  FaChartLine,
+  FaCalendarAlt,
+  FaClipboardList,
+  FaRocket,
+  FaBox,
+  FaSeedling,
+  FaWrench,
+  FaTint,
 } from "react-icons/fa";
 import { SideMenu } from "@/components/layout/SideMenu";
-import { DashboardCard } from "@/components/ui/DashboardCard";
 import { StatCard } from "@/components/ui/StatCard";
+import { ChartCard, PeriodSelector } from "@/components/ui/ChartCard";
+import { AlertCard, type AlertPriority } from "@/components/ui/AlertCard";
+import { EmptyState } from "@/components/ui/EmptyState";
+import { DonutChart } from "@/components/ui/DonutChart";
 import { SystemInfo } from "@/components/ui/SystemInfo";
 import { useDashboard } from "@/hooks/useDashboard";
+import { useState } from "react";
 
 export function DashboardPage() {
   const { statistics, loading, error, refreshStatistics } = useDashboard();
+  const [selectedPeriod, setSelectedPeriod] = useState("6months");
 
-  const dashboardCards = [
+  // Simular se é um novo usuário (em produção, isso viria do backend)
+  const isNewUser = statistics.harvests === 2 && statistics.sales === "R$ 0,00";
+
+  // Passos para novos usuários
+  const setupSteps = [
     {
-      icon: <FaLeaf />,
-      label: "Colheita",
-      description: "Gerencie suas colheitas e acompanhe a produção",
-      route: "/colheita",
-      color: "text-agro-600",
-      bgColor: "bg-agro-100",
+      id: "1",
+      title: "Cadastre sua primeira Unidade de Produção",
+      description: "Configure suas áreas de plantio e produção",
+      route: "/uap/cadastro",
+      completed: statistics.uaps > 0,
     },
     {
-      icon: <FaTools />,
-      label: "Ferramentas",
-      description: "Controle de ferramentas e equipamentos",
+      id: "2",
+      title: "Adicione seus Insumos ao Estoque",
+      description: "Registre fertilizantes, defensivos e outros insumos",
+      route: "/insumos/cadastro",
+      completed: false, // Seria verificado pelo backend
+    },
+    {
+      id: "3",
+      title: "Agende sua primeira atividade",
+      description: "Programe colheitas, aplicações e manutenções",
+      route: "/colheita/nova",
+      completed: statistics.harvests > 0,
+    },
+    {
+      id: "4",
+      title: "Configure suas ferramentas",
+      description: "Registre tratores, implementos e equipamentos",
       route: "/ferramentas",
-      color: "text-earth-600",
-      bgColor: "bg-earth-100",
-    },
-    {
-      icon: <FaDollarSign />,
-      label: "Vendas",
-      description: "Acompanhe vendas e receita",
-      route: "/vendas",
-      color: "text-wheat-600",
-      bgColor: "bg-wheat-100",
-    },
-    {
-      icon: <FaFileInvoice />,
-      label: "Notas Fiscais",
-      description: "Emissão e gestão de documentos fiscais",
-      route: "/notas",
-      color: "text-agro-600",
-      bgColor: "bg-agro-100",
-    },
-    {
-      icon: <FaWarehouse />,
-      label: "Unidades de Produção",
-      description: "Gerencie suas unidades de produção",
-      route: "/UapPage",
-      color: "text-earth-600",
-      bgColor: "bg-earth-100",
-    },
-    {
-      icon: <FaFlask />,
-      label: "Insumos",
-      description: "Controle de fertilizantes e defensivos",
-      route: "/insumos",
-      color: "text-wheat-600",
-      bgColor: "bg-wheat-100",
-    },
-    {
-      icon: <FaLeaf />,
-      label: "Produtos",
-      description: "Gestão de sementes e mudas",
-      route: "/produtos",
-      color: "text-agro-600",
-      bgColor: "bg-agro-100",
+      completed: statistics.tools > 0,
     },
   ];
+
+  // Dados de exemplo para alertas
+  const alerts = [
+    {
+      id: "1",
+      title: "Estoque Crítico",
+      description: "Fertilizante NPK: Restam apenas 2 sacas",
+      priority: "urgent" as AlertPriority,
+      action: {
+        label: "Pedir",
+        onClick: () => console.log("Criar pedido de fertilizante"),
+      },
+    },
+    {
+      id: "2",
+      title: "Manutenção Pendente",
+      description: "Trator John Deere: Manutenção agendada para amanhã",
+      priority: "warning" as AlertPriority,
+      action: {
+        label: "Ver",
+        onClick: () => console.log("Ver detalhes da manutenção"),
+      },
+    },
+    {
+      id: "3",
+      title: "Colheita Programada",
+      description: "Soja: Colheita programada para próxima semana",
+      priority: "info" as AlertPriority,
+      action: {
+        label: "Detalhes",
+        onClick: () => console.log("Ver detalhes da colheita"),
+      },
+    },
+  ];
+
+  // Dados de exemplo para próximas atividades
+  const upcomingActivities = [
+    {
+      id: "1",
+      title: "Colheita da Soja",
+      location: "UAP Norte",
+      date: "15/01/2024",
+      daysLeft: 3,
+      type: "harvest",
+    },
+    {
+      id: "2",
+      title: "Aplicação de Fertilizante",
+      location: "UAP Sul",
+      date: "12/01/2024",
+      daysLeft: 0,
+      type: "fertilizer",
+    },
+    {
+      id: "3",
+      title: "Manutenção do Trator",
+      location: "Garagem",
+      date: "18/01/2024",
+      daysLeft: 6,
+      type: "maintenance",
+    },
+  ];
+
+  // Dados de exemplo para distribuição de custos
+  const costDistribution = [
+    { category: "Insumos", value: 45, color: "#10b981" },
+    { category: "Mão de Obra", value: 25, color: "#3b82f6" },
+    { category: "Manutenção", value: 15, color: "#f59e0b" },
+    { category: "Combustível", value: 10, color: "#ef4444" },
+    { category: "Outros", value: 5, color: "#8b5cf6" },
+  ];
+
+  // Dados de exemplo para atividades recentes
+  const recentActivities = [
+    {
+      id: "1",
+      title: "Aplicação de fertilizante concluída",
+      type: "fertilizer",
+      time: "Hoje",
+    },
+    {
+      id: "2",
+      title: "Nova colheita registrada",
+      type: "harvest",
+      time: "Hoje",
+    },
+    {
+      id: "3",
+      title: "Manutenção do trator realizada",
+      type: "maintenance",
+      time: "Ontem",
+    },
+    {
+      id: "4",
+      title: "Estoque de insumos atualizado",
+      type: "inventory",
+      time: "Ontem",
+    },
+  ];
+
+  const periodOptions = [
+    { value: "1month", label: "Último mês" },
+    { value: "3months", label: "Últimos 3 meses" },
+    { value: "6months", label: "Últimos 6 meses" },
+    { value: "1year", label: "Este ano" },
+  ];
+
+  // Função para obter ícone baseado no tipo de atividade
+  const getActivityIcon = (type: string) => {
+    switch (type) {
+      case "harvest":
+        return <FaSeedling className="text-green-600" />;
+      case "fertilizer":
+        return <FaTint className="text-blue-600" />;
+      case "maintenance":
+        return <FaWrench className="text-orange-600" />;
+      case "inventory":
+        return <FaBox className="text-purple-600" />;
+      default:
+        return <FaClipboardList className="text-neutral-600" />;
+    }
+  };
 
   if (loading) {
     return (
@@ -104,131 +211,210 @@ export function DashboardPage() {
     );
   }
 
+  // Se for um novo usuário, mostrar o EmptyState
+  if (isNewUser) {
+    return (
+      <SideMenu title="Dashboard">
+        <div className="max-w-4xl mx-auto">
+          <EmptyState
+            title="Bem-vindo ao AgroSys! 🚀"
+            description="Vamos configurar seu sistema para começar a gerenciar sua propriedade de forma eficiente."
+            steps={setupSteps}
+            icon={<FaRocket />}
+          />
+        </div>
+      </SideMenu>
+    );
+  }
+
   return (
     <SideMenu title="Dashboard">
-      <div className="space-y-8">
-        {/* Welcome Section - Mais institucional */}
-        <div className="bg-gradient-to-r from-agro-600 to-agro-700 rounded-lg p-6 text-white shadow-institutional border border-agro-500">
-          <h2 className="text-2xl font-display font-bold mb-2">
-            Bem-vindo ao AgroSys! 🌱
-          </h2>
-          <p className="text-agro-100 font-medium">
-            Sistema robusto para gestão completa de suas operações
-            agropecuárias.
-          </p>
-          <div className="mt-3 w-16 h-1 bg-white rounded"></div>
-        </div>
-
-        {/* Quick Stats - Mais robustos */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="space-y-6">
+        {/* KPIs Principais - Linha do Topo */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <StatCard
-            title="Colheitas"
+            title="FATURAMENTO DO MÊS"
+            value="R$ 28.450,00"
+            icon={<FaDollarSign className="text-green-600" />}
+            trend={{ value: 12, isPositive: true, period: "mês anterior" }}
+          />
+
+          <StatCard
+            title="CUSTOS DO MÊS"
+            value="R$ 15.200,00"
+            icon={<FaDollarSign className="text-red-600" />}
+            trend={{ value: 8, isPositive: false, period: "mês anterior" }}
+          />
+
+          <StatCard
+            title="COLHEITAS ATIVAS"
             value={statistics.harvests.toString()}
-            icon={<FaLeaf />}
-            iconBgColor="bg-agro-100"
-            iconColor="text-agro-600"
+            icon={<FaSeedling className="text-green-600" />}
+            trend={{ value: 5, isPositive: true, period: "mês anterior" }}
           />
 
           <StatCard
-            title="Vendas"
-            value={statistics.sales}
-            icon={<FaDollarSign />}
-            iconBgColor="bg-wheat-100"
-            iconColor="text-wheat-600"
-          />
-
-          <StatCard
-            title="Ferramentas"
-            value={statistics.tools.toString()}
-            icon={<FaTools />}
-            iconBgColor="bg-earth-100"
-            iconColor="text-earth-600"
-          />
-
-          <StatCard
-            title="UAPs"
-            value={statistics.uaps.toString()}
-            icon={<FaWarehouse />}
-            iconBgColor="bg-earth-100"
-            iconColor="text-earth-600"
+            title="ALERTAS DE ESTOQUE"
+            value="3"
+            icon={<FaBox className="text-orange-600" />}
           />
         </div>
 
-        {/* Main Navigation Cards */}
-        <div>
-          <div className="flex items-center gap-3 mb-6">
-            <h3 className="text-xl font-display font-bold text-agro-700">
-              Módulos do Sistema
-            </h3>
-            <div className="flex-1 h-px bg-agro-200"></div>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {dashboardCards.map((card, index) => (
-              <DashboardCard
-                key={index}
-                icon={card.icon}
-                label={card.label}
-                description={card.description}
-                route={card.route}
-                color={card.color}
-                bgColor={card.bgColor}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Resumo Operacional */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="card-agro">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-semibold text-agro-600">
-                  Área Total
-                </p>
-                <p className="text-2xl font-bold text-agro-700">
-                  {statistics.areaTotal}
-                </p>
+        {/* Layout Principal - 2/3 + 1/3 */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Coluna Esquerda - 2/3 da tela */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Gráfico de Produção Mensal */}
+            <ChartCard
+              title="Produção Mensal (Últimos 6 meses)"
+              periodSelector={
+                <PeriodSelector
+                  value={selectedPeriod}
+                  onChange={setSelectedPeriod}
+                  options={periodOptions}
+                />
+              }
+            >
+              <div className="h-64 bg-neutral-50 rounded-lg flex items-center justify-center">
+                <div className="text-center text-neutral-500">
+                  <FaChartLine className="text-4xl mx-auto mb-2" />
+                  <p>Gráfico de Produção Mensal</p>
+                  <p className="text-sm">
+                    Período:{" "}
+                    {
+                      periodOptions.find((opt) => opt.value === selectedPeriod)
+                        ?.label
+                    }
+                  </p>
+                  <p className="text-xs mt-2 text-neutral-400">
+                    Seus dados de produção aparecerão aqui
+                  </p>
+                </div>
               </div>
-              <div className="p-3 bg-agro-100 rounded-lg border border-agro-200">
-                <FaWarehouse className="text-agro-600" size={20} />
+            </ChartCard>
+
+            {/* Próximas Atividades/Cronograma */}
+            <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral-100">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-lg font-semibold text-neutral-900">
+                  Próximas Atividades
+                </h3>
+                <FaCalendarAlt className="text-neutral-400" />
+              </div>
+
+              <div className="space-y-4">
+                {upcomingActivities.map((activity) => (
+                  <div
+                    key={activity.id}
+                    className="flex items-center p-4 bg-neutral-50 rounded-lg hover:bg-neutral-100 transition-all duration-200 cursor-pointer group"
+                  >
+                    <div className="mr-4">
+                      <div className="w-3 h-3 bg-agro-500 rounded-full group-hover:scale-110 transition-transform duration-200"></div>
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-medium text-neutral-900 group-hover:text-agro-700 transition-colors duration-200">
+                        {activity.title}
+                      </h4>
+                      <p className="text-sm text-neutral-600">
+                        {activity.location} • {activity.date}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-xs font-medium text-neutral-500">
+                        {activity.daysLeft === 0
+                          ? "Hoje"
+                          : `${activity.daysLeft} dias`}
+                      </span>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
 
-          <div className="card-agro">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-semibold text-agro-600">
-                  Produção do Mês
-                </p>
-                <p className="text-2xl font-bold text-agro-700">
-                  {statistics.productionMonth}
-                </p>
+          {/* Coluna Direita - 1/3 da tela */}
+          <div className="space-y-6">
+            {/* Alertas Importantes */}
+            <AlertCard
+              title="Alertas Importantes"
+              icon={<FaExclamationTriangle />}
+              alerts={alerts}
+            />
+
+            {/* Distribuição de Custos */}
+            <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral-100">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-lg font-semibold text-neutral-900">
+                  Distribuição de Custos
+                </h3>
+                <FaChartLine className="text-neutral-400" />
               </div>
-              <div className="p-3 bg-wheat-100 rounded-lg border border-wheat-200">
-                <FaLeaf className="text-wheat-600" size={20} />
+
+              <div className="flex items-center space-x-6">
+                {/* Gráfico de Rosca */}
+                <div className="flex-shrink-0">
+                  <DonutChart data={costDistribution} size={120} />
+                </div>
+
+                {/* Legenda */}
+                <div className="flex-1 space-y-3">
+                  {costDistribution.map((item, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between"
+                    >
+                      <div className="flex items-center">
+                        <div
+                          className="w-3 h-3 rounded-full mr-3"
+                          style={{ backgroundColor: item.color }}
+                        ></div>
+                        <span className="text-sm text-neutral-700">
+                          {item.category}
+                        </span>
+                      </div>
+                      <span className="text-sm font-medium text-neutral-900">
+                        {item.value}%
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="card-agro">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-semibold text-agro-600">
-                  Notas Emitidas
-                </p>
-                <p className="text-2xl font-bold text-agro-700">
-                  {statistics.invoices}
-                </p>
+            {/* Atividades Recentes */}
+            <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral-100">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-lg font-semibold text-neutral-900">
+                  Atividades Recentes
+                </h3>
+                <FaClipboardList className="text-neutral-400" />
               </div>
-              <div className="p-3 bg-earth-100 rounded-lg border border-earth-200">
-                <FaFileInvoice className="text-earth-600" size={20} />
+
+              <div className="space-y-4">
+                {recentActivities.map((activity) => (
+                  <div
+                    key={activity.id}
+                    className="flex items-start space-x-3 p-3 rounded-lg hover:bg-neutral-50 transition-colors duration-200"
+                  >
+                    <div className="flex-shrink-0 mt-0.5">
+                      {getActivityIcon(activity.type)}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm text-neutral-900 font-medium">
+                        {activity.title}
+                      </p>
+                      <p className="text-xs text-neutral-500">
+                        {activity.time}
+                      </p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
         </div>
 
-        {/* System Info - Mais institucional */}
+        {/* System Info */}
         <SystemInfo />
       </div>
     </SideMenu>

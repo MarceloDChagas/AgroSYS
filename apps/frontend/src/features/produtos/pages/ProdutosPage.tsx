@@ -68,7 +68,9 @@ function ProdutosPage() {
     },
     {
       label: "EXCLUIR",
-      onClick: () => {},
+      onClick: () => {
+        // TODO: Implementar ação de exclusão
+      },
       variant: "danger" as const,
       icon: <FaTrash size={14} />,
     },

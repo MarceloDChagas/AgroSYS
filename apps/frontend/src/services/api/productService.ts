@@ -98,7 +98,7 @@ export class ProductService {
     return await this.getProductsByStatus("DISPONIVEL");
   }
 
-  async getLowStockProducts(threshold: number = 10): Promise<Product[]> {
+  async getLowStockProducts(threshold = 10): Promise<Product[]> {
     return await apiClient.get<Product[]>(
       `/products/low-stock?threshold=${threshold}`
     );

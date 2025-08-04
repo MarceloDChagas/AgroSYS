@@ -4,7 +4,6 @@ import { CreateInputMaterialEntryDto } from "@shared/dto/inputMaterialEntry/crea
 import { UpdateInputMaterialEntryDto } from "@shared/dto/inputMaterialEntry/update-inputMaterialEntry.dto";
 import { IInputMaterialEntryRepository } from "../inputMaterialEntry.repository.interface";
 import { InputMaterialEntry } from "@shared/types/inputMaterialEntry";
-import { Quantity } from "@shared/value-objects/quantity.vo";
 
 function toDomainInputMaterialEntry(prismaEntry: any): InputMaterialEntry {
   return {

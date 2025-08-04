@@ -24,7 +24,7 @@ const reverseStatusMap = {
 const invoiceSelect = {
   id: true,
   saleId: true,
-  userId: true,
+  uapId: true,
   invoiceNumber: true,
   totalAmount: true,
   status: true,
@@ -57,11 +57,12 @@ const invoiceSelect = {
       },
     },
   },
-  user: {
+  uap: {
     select: {
       id: true,
       name: true,
-      email: true,
+      location: true,
+      responsible: true,
     },
   },
 };
@@ -107,9 +108,9 @@ export class InvoiceRepositoryPostgres implements IInvoiceRepository {
     return this.findOne(id);
   }
 
-  async findByUserId(userId: string): Promise<InvoiceWithSale[]> {
+  async findByUapId(uapId: string): Promise<InvoiceWithSale[]> {
     const invoices = await this.prisma.invoice.findMany({
-      where: { userId },
+      where: { uapId },
       select: invoiceSelect,
       orderBy: { createdAt: "desc" },
     });
@@ -137,7 +138,7 @@ export class InvoiceRepositoryPostgres implements IInvoiceRepository {
     const invoice = await this.prisma.invoice.create({
       data: {
         saleId: data.saleId,
-        userId: data.userId,
+        uapId: data.uapId,
         invoiceNumber: data.invoiceNumber,
         totalAmount: data.totalAmount,
         status: reverseStatusMap[data.status],

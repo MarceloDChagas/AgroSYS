@@ -14,12 +14,7 @@ import {
   EPermission,
 } from "@shared/permissions";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiBearerAuth,
-} from "@nestjs/swagger";
+import { ApiTags, ApiOperation, ApiBearerAuth } from "@nestjs/swagger";
 
 @ApiTags("invoices")
 @ApiBearerAuth()

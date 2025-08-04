@@ -5,8 +5,6 @@ interface DashboardCardProps {
   label: string;
   description: string;
   route: string;
-  color: string;
-  bgColor: string;
   className?: string;
 }
 
@@ -15,8 +13,6 @@ export function DashboardCard({
   label,
   description,
   route,
-  color,
-  bgColor,
   className = "",
 }: DashboardCardProps) {
   const navigate = useNavigate();
@@ -25,37 +21,40 @@ export function DashboardCard({
     <div
       onClick={() => navigate(route)}
       className={`
-        group relative overflow-hidden rounded-lg p-6 cursor-pointer
-        bg-white shadow-institutional hover:shadow-card-hover transition-all duration-300
-        border-2 border-neutral-200 hover:border-agro-300
-        transform hover:-translate-y-1
+        group relative overflow-hidden rounded-xl p-6 cursor-pointer
+        bg-white shadow-sm hover:shadow-md transition-all duration-300
+        border border-neutral-100 hover:border-agro-200
+        transform hover:-translate-y-1 hover:scale-[1.02]
         ${className}
       `}
     >
-      {/* Background accent - Mais sutil */}
-      <div
-        className={`absolute top-0 right-0 w-16 h-16 ${bgColor} opacity-5 rounded-bl-full`}
-      ></div>
+      {/* Background accent sutil */}
+      <div className="absolute top-0 right-0 w-20 h-20 bg-agro-50 opacity-30 rounded-bl-full"></div>
 
       {/* Content */}
       <div className="relative z-10">
-        <div
-          className={`inline-flex p-3 rounded-lg ${bgColor} mb-4 group-hover:scale-105 transition-transform duration-200`}
-        >
-          <div className={`text-2xl ${color}`}>{icon}</div>
+        {/* Header com ícone */}
+        <div className="flex items-start justify-between mb-4">
+          <div className="flex-1">
+            <h3 className="text-lg font-semibold text-neutral-900 mb-2 group-hover:text-agro-700 transition-colors">
+              {label}
+            </h3>
+          </div>
+          <div className="p-3 bg-agro-50 rounded-lg group-hover:bg-agro-100 transition-colors">
+            <div className="text-agro-600 text-xl group-hover:text-agro-700 transition-colors">
+              {icon}
+            </div>
+          </div>
         </div>
 
-        <h3 className="text-lg font-bold text-neutral-900 mb-2 group-hover:text-agro-700 transition-colors">
-          {label}
-        </h3>
-
+        {/* Descrição */}
         <p className="text-sm text-neutral-600 leading-relaxed font-medium">
           {description}
         </p>
 
-        {/* Hover indicator - Mais tradicional */}
+        {/* Indicador de hover */}
         <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-          <div className={`w-3 h-3 rounded-full ${bgColor}`}></div>
+          <div className="w-2 h-2 bg-agro-500 rounded-full"></div>
         </div>
       </div>
     </div>

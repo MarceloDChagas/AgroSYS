@@ -1,39 +1,39 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Button } from '../ui/Button';
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import { Button } from "../ui/Button";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginForm() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setError('');
+    setError("");
 
     try {
-      const response = await fetch('http://localhost:3000/auth/login', {
-        method: 'POST',
+      const response = await fetch("http://localhost:3000/auth/login", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password }),
       });
 
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem('token', data.access_token);
-        navigate('/home');
+        localStorage.setItem("token", data.access_token);
+        navigate("/home");
       } else {
-        setError('Credenciais inválidas');
+        setError("Credenciais inválidas");
       }
     } catch {
-      setError('Erro ao conectar com o servidor');
+      setError("Erro ao conectar com o servidor");
     } finally {
       setIsLoading(false);
     }
@@ -79,7 +79,7 @@ export default function LoginForm() {
         className="w-full"
         disabled={isLoading}
       >
-        {isLoading ? 'Entrando...' : 'Entrar'}
+        {isLoading ? "Entrando..." : "Entrar"}
       </Button>
 
       {error && <div className="text-red-600 text-sm text-center">{error}</div>}
