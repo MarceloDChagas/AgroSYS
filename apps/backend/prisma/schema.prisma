@@ -52,6 +52,56 @@ enum HarvestStatus {
   CANCELLED
 }
 
+enum AlertPriority {
+  URGENT
+  WARNING
+  INFO
+}
+
+enum AlertStatus {
+  ACTIVE
+  RESOLVED
+  DISMISSED
+}
+
+enum ActivityType {
+  HARVEST
+  FERTILIZER
+  MAINTENANCE
+  INVENTORY
+  PLANTING
+  IRRIGATION
+  PESTICIDE
+}
+
+enum ActivityStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum MaintenanceType {
+  PREVENTIVE
+  CORRECTIVE
+  PREDICTIVE
+}
+
+enum MaintenanceStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum CostCategory {
+  INPUTS
+  LABOR
+  MAINTENANCE
+  FUEL
+  OTHER
+}
+
 model User {
   id       String @id @default(uuid())
   email    String @unique
@@ -199,5 +249,116 @@ model UAP {
   updatedAt   DateTime @updatedAt
 
   @@map("uaps")
+}
+
+// Novas tabelas para funcionalidades do dashboard
+
+model Alert {
+  id          String       @id @default(uuid())
+  title       String
+  description String
+  priority    AlertPriority
+  status      AlertStatus  @default(ACTIVE)
+  type        String       // inventory, maintenance, harvest, etc.
+  entityId    String?      // ID da entidade relacionada (produto, ferramenta, etc.)
+  entityType  String?      // Tipo da entidade (product, tool, harvest, etc.)
+  
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @default(now()) @updatedAt
+  
+  @@map("alerts")
+}
+
+model Activity {
+  id          String        @id @default(uuid())
+  title       String
+  description String?
+  type        ActivityType
+  status      ActivityStatus @default(SCHEDULED)
+  scheduledDate DateTime
+  completedDate DateTime?
+  location    String
+  responsible String
+  uapId       String?
+  toolId      String?
+  productId   String?
+  quantity    Decimal?      @db.Decimal(10, 2)
+  unit        String?
+  observations String?
+  
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @default(now()) @updatedAt
+  
+  @@map("activities")
+}
+
+model Maintenance {
+  id          String           @id @default(uuid())
+  title       String
+  description String?
+  type        MaintenanceType
+  status      MaintenanceStatus @default(SCHEDULED)
+  scheduledDate DateTime
+  completedDate DateTime?
+  toolId      String
+  responsible String
+  cost        Decimal?         @db.Decimal(10, 2)
+  observations String?
+  
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @default(now()) @updatedAt
+  
+  @@map("maintenances")
+}
+
+model FertilizerApplication {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  applicationDate DateTime
+  uapId       String
+  productId   String
+  quantity    Decimal  @db.Decimal(10, 2)
+  unit        String
+  responsible String
+  method      String?  // Aplicação foliar, solo, etc.
+  observations String?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+  
+  @@map("fertilizer_applications")
+}
+
+model Cost {
+  id          String       @id @default(uuid())
+  title       String
+  description String?
+  amount      Decimal      @db.Decimal(10, 2)
+  category    CostCategory
+  date        DateTime
+  uapId       String?
+  activityId  String?
+  maintenanceId String?
+  
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @default(now()) @updatedAt
+  
+  @@map("costs")
+}
+
+model ActivityLog {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  type        ActivityType
+  entityId    String?  // ID da entidade relacionada
+  entityType  String?  // Tipo da entidade
+  userId      String?  // Usuário que realizou a ação
+  metadata    Json?     // Dados adicionais em formato JSON
+  
+  createdAt   DateTime @default(now())
+  
+  @@map("activity_logs")
 }
 

@@ -1,11 +1,19 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import {
   dashboardService,
   type DashboardStatistics,
+  type Alert,
+  type UpcomingActivity,
+  type RecentActivity,
+  type CostDistribution,
 } from "../services/api/dashboardService";
 
 export interface UseDashboardResult {
   statistics: DashboardStatistics;
+  alerts: Alert[];
+  upcomingActivities: UpcomingActivity[];
+  recentActivities: RecentActivity[];
+  costDistribution: CostDistribution[];
   loading: boolean;
   error: string | null;
   refreshStatistics: () => Promise<void>;
@@ -22,18 +30,34 @@ export function useDashboard(): UseDashboardResult {
     inputMaterials: 0,
     invoices: 0,
   });
+  const [alerts, setAlerts] = useState<Alert[]>([]);
+  const [upcomingActivities, setUpcomingActivities] = useState<
+    UpcomingActivity[]
+  >([]);
+  const [recentActivities, setRecentActivities] = useState<RecentActivity[]>(
+    []
+  );
+  const [costDistribution, setCostDistribution] = useState<CostDistribution[]>(
+    []
+  );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchStatistics = useCallback(async () => {
+  const fetchDashboardData = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
-      const data = await dashboardService.getStatistics();
-      setStatistics(data);
+      const data = await dashboardService.getDashboardData();
+      setStatistics(data.statistics);
+      setAlerts(data.alerts);
+      setUpcomingActivities(data.upcomingActivities);
+      setRecentActivities(data.recentActivities);
+      setCostDistribution(data.costDistribution);
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Erro ao carregar estatísticas"
+        err instanceof Error
+          ? err.message
+          : "Erro ao carregar dados do dashboard"
       );
     } finally {
       setLoading(false);
@@ -41,15 +65,19 @@ export function useDashboard(): UseDashboardResult {
   }, []);
 
   const refreshStatistics = useCallback(async () => {
-    await fetchStatistics();
-  }, [fetchStatistics]);
+    await fetchDashboardData();
+  }, [fetchDashboardData]);
 
   useEffect(() => {
-    fetchStatistics();
-  }, [fetchStatistics]);
+    fetchDashboardData();
+  }, [fetchDashboardData]);
 
   return {
     statistics,
+    alerts,
+    upcomingActivities,
+    recentActivities,
+    costDistribution,
     loading,
     error,
     refreshStatistics,

@@ -13,7 +13,7 @@ import {
 import { SideMenu } from "@/components/layout/SideMenu";
 import { StatCard } from "@/components/ui/StatCard";
 import { ChartCard, PeriodSelector } from "@/components/ui/ChartCard";
-import { AlertCard, type AlertPriority } from "@/components/ui/AlertCard";
+import { AlertCard } from "@/components/ui/AlertCard";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { DonutChart } from "@/components/ui/DonutChart";
 import { SystemInfo } from "@/components/ui/SystemInfo";
@@ -21,7 +21,16 @@ import { useDashboard } from "@/hooks/useDashboard";
 import { useState } from "react";
 
 export function DashboardPage() {
-  const { statistics, loading, error, refreshStatistics } = useDashboard();
+  const {
+    statistics,
+    alerts,
+    upcomingActivities,
+    recentActivities,
+    costDistribution,
+    loading,
+    error,
+    refreshStatistics,
+  } = useDashboard();
   const [selectedPeriod, setSelectedPeriod] = useState("6months");
 
   // Simular se é um novo usuário (em produção, isso viria do backend)
@@ -56,105 +65,6 @@ export function DashboardPage() {
       description: "Registre tratores, implementos e equipamentos",
       route: "/ferramentas",
       completed: statistics.tools > 0,
-    },
-  ];
-
-  // Dados de exemplo para alertas
-  const alerts = [
-    {
-      id: "1",
-      title: "Estoque Crítico",
-      description: "Fertilizante NPK: Restam apenas 2 sacas",
-      priority: "urgent" as AlertPriority,
-      action: {
-        label: "Pedir",
-        onClick: () => console.log("Criar pedido de fertilizante"),
-      },
-    },
-    {
-      id: "2",
-      title: "Manutenção Pendente",
-      description: "Trator John Deere: Manutenção agendada para amanhã",
-      priority: "warning" as AlertPriority,
-      action: {
-        label: "Ver",
-        onClick: () => console.log("Ver detalhes da manutenção"),
-      },
-    },
-    {
-      id: "3",
-      title: "Colheita Programada",
-      description: "Soja: Colheita programada para próxima semana",
-      priority: "info" as AlertPriority,
-      action: {
-        label: "Detalhes",
-        onClick: () => console.log("Ver detalhes da colheita"),
-      },
-    },
-  ];
-
-  // Dados de exemplo para próximas atividades
-  const upcomingActivities = [
-    {
-      id: "1",
-      title: "Colheita da Soja",
-      location: "UAP Norte",
-      date: "15/01/2024",
-      daysLeft: 3,
-      type: "harvest",
-    },
-    {
-      id: "2",
-      title: "Aplicação de Fertilizante",
-      location: "UAP Sul",
-      date: "12/01/2024",
-      daysLeft: 0,
-      type: "fertilizer",
-    },
-    {
-      id: "3",
-      title: "Manutenção do Trator",
-      location: "Garagem",
-      date: "18/01/2024",
-      daysLeft: 6,
-      type: "maintenance",
-    },
-  ];
-
-  // Dados de exemplo para distribuição de custos
-  const costDistribution = [
-    { category: "Insumos", value: 45, color: "#10b981" },
-    { category: "Mão de Obra", value: 25, color: "#3b82f6" },
-    { category: "Manutenção", value: 15, color: "#f59e0b" },
-    { category: "Combustível", value: 10, color: "#ef4444" },
-    { category: "Outros", value: 5, color: "#8b5cf6" },
-  ];
-
-  // Dados de exemplo para atividades recentes
-  const recentActivities = [
-    {
-      id: "1",
-      title: "Aplicação de fertilizante concluída",
-      type: "fertilizer",
-      time: "Hoje",
-    },
-    {
-      id: "2",
-      title: "Nova colheita registrada",
-      type: "harvest",
-      time: "Hoje",
-    },
-    {
-      id: "3",
-      title: "Manutenção do trator realizada",
-      type: "maintenance",
-      time: "Ontem",
-    },
-    {
-      id: "4",
-      title: "Estoque de insumos atualizado",
-      type: "inventory",
-      time: "Ontem",
     },
   ];
 
@@ -234,7 +144,7 @@ export function DashboardPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <StatCard
             title="FATURAMENTO DO MÊS"
-            value="R$ 28.450,00"
+            value={statistics.productionMonth}
             icon={<FaDollarSign className="text-green-600" />}
             trend={{ value: 12, isPositive: true, period: "mês anterior" }}
           />
@@ -255,7 +165,7 @@ export function DashboardPage() {
 
           <StatCard
             title="ALERTAS DE ESTOQUE"
-            value="3"
+            value={alerts.length.toString()}
             icon={<FaBox className="text-orange-600" />}
           />
         </div>
@@ -303,31 +213,40 @@ export function DashboardPage() {
               </div>
 
               <div className="space-y-4">
-                {upcomingActivities.map((activity) => (
-                  <div
-                    key={activity.id}
-                    className="flex items-center p-4 bg-neutral-50 rounded-lg hover:bg-neutral-100 transition-all duration-200 cursor-pointer group"
-                  >
-                    <div className="mr-4">
-                      <div className="w-3 h-3 bg-agro-500 rounded-full group-hover:scale-110 transition-transform duration-200"></div>
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="font-medium text-neutral-900 group-hover:text-agro-700 transition-colors duration-200">
-                        {activity.title}
-                      </h4>
-                      <p className="text-sm text-neutral-600">
-                        {activity.location} • {activity.date}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <span className="text-xs font-medium text-neutral-500">
-                        {activity.daysLeft === 0
-                          ? "Hoje"
-                          : `${activity.daysLeft} dias`}
-                      </span>
-                    </div>
+                {upcomingActivities.length === 0 ? (
+                  <div className="text-center py-8">
+                    <div className="text-4xl mb-2">📅</div>
+                    <p className="text-neutral-500 text-sm">
+                      Nenhuma atividade programada
+                    </p>
                   </div>
-                ))}
+                ) : (
+                  upcomingActivities.map((activity) => (
+                    <div
+                      key={activity.id}
+                      className="flex items-center p-4 bg-neutral-50 rounded-lg hover:bg-neutral-100 transition-all duration-200 cursor-pointer group"
+                    >
+                      <div className="mr-4">
+                        <div className="w-3 h-3 bg-agro-500 rounded-full group-hover:scale-110 transition-transform duration-200"></div>
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-medium text-neutral-900 group-hover:text-agro-700 transition-colors duration-200">
+                          {activity.title}
+                        </h4>
+                        <p className="text-sm text-neutral-600">
+                          {activity.location} • {activity.date}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-xs font-medium text-neutral-500">
+                          {activity.daysLeft === 0
+                            ? "Hoje"
+                            : `${activity.daysLeft} dias`}
+                        </span>
+                      </div>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
           </div>
@@ -391,24 +310,33 @@ export function DashboardPage() {
               </div>
 
               <div className="space-y-4">
-                {recentActivities.map((activity) => (
-                  <div
-                    key={activity.id}
-                    className="flex items-start space-x-3 p-3 rounded-lg hover:bg-neutral-50 transition-colors duration-200"
-                  >
-                    <div className="flex-shrink-0 mt-0.5">
-                      {getActivityIcon(activity.type)}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm text-neutral-900 font-medium">
-                        {activity.title}
-                      </p>
-                      <p className="text-xs text-neutral-500">
-                        {activity.time}
-                      </p>
-                    </div>
+                {recentActivities.length === 0 ? (
+                  <div className="text-center py-8">
+                    <div className="text-4xl mb-2">📝</div>
+                    <p className="text-neutral-500 text-sm">
+                      Nenhuma atividade recente
+                    </p>
                   </div>
-                ))}
+                ) : (
+                  recentActivities.map((activity) => (
+                    <div
+                      key={activity.id}
+                      className="flex items-start space-x-3 p-3 rounded-lg hover:bg-neutral-50 transition-colors duration-200"
+                    >
+                      <div className="flex-shrink-0 mt-0.5">
+                        {getActivityIcon(activity.type)}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm text-neutral-900 font-medium">
+                          {activity.title}
+                        </p>
+                        <p className="text-xs text-neutral-500">
+                          {activity.time}
+                        </p>
+                      </div>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
           </div>
