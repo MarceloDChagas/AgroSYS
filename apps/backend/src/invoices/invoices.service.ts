@@ -29,7 +29,7 @@ export class InvoicesService {
 
     const dto = new CreateInvoiceDto(
       saleId,
-      sale.userId,
+      sale.uapId,
       invoiceNumber,
       sale.totalAmount,
       EInvoiceStatus.DRAFT

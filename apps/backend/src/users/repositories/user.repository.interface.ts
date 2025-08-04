@@ -1,7 +1,7 @@
-import { ERole } from '@shared/enums/user.enum';
-import { CreateUserDto } from '@shared/dto/user/create.user.dto';
-import { UpdateUserDto } from '@shared/dto/user/update-user.dto';
-import { User } from '@shared/types/user';
+import { ERole } from "@shared/enums/user.enum";
+import { CreateUserDto } from "@shared/dto/user/create.user.dto";
+import { UpdateUserDto } from "@shared/dto/user/update-user.dto";
+import { User } from "@shared/types/user";
 
 export interface IUserRepository {
   findOne(id: string): Promise<User | null>;

@@ -229,7 +229,6 @@ export function smartSort<T extends SortableItem>(
   array: T[],
   options: SortOptions<T>
 ): T[] {
-  const { field, direction } = options;
   const n = array.length;
 
   // Para arrays pequenos, usar bubble sort (simples e estável)

@@ -3,7 +3,7 @@ import { EInvoiceStatus } from "@shared/enums/product.enum";
 export class CreateInvoiceDto {
   constructor(
     public readonly saleId: string,
-    public readonly userId: string,
+    public readonly uapId: string,
     public readonly invoiceNumber: string,
     public readonly totalAmount: number,
     public readonly status: EInvoiceStatus = EInvoiceStatus.DRAFT,
@@ -14,7 +14,7 @@ export class CreateInvoiceDto {
 
 export interface RawCreateInvoiceDto {
   saleId: string;
-  userId: string;
+  uapId: string;
   invoiceNumber: string;
   totalAmount: number;
   status?: EInvoiceStatus;

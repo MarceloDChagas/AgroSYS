@@ -6,13 +6,17 @@ function PerfilAdminPage() {
   const actions = [
     {
       label: "EDITAR",
-      onClick: () => {},
+      onClick: () => {
+        // TODO: Implementar ação de edição
+      },
       variant: "primary" as const,
       icon: <FaEdit size={14} />,
     },
     {
       label: "EXCLUIR",
-      onClick: () => {},
+      onClick: () => {
+        // TODO: Implementar ação de exclusão
+      },
       variant: "danger" as const,
       icon: <FaTrash size={14} />,
     },

@@ -153,9 +153,9 @@ function ColheitaPage() {
         {/* Filters */}
         <FilterBar
           filters={filters}
-          onFilterChange={(key, value) => {
+          onFilterChange={(_key, _value) => {
             // TODO: Implementar filtros baseados em key e value
-            console.log(`Filtrando por ${key}: ${value}`);
+            // console.log(`Filtrando por ${key}: ${value}`);
           }}
         />
 

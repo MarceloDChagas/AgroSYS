@@ -4,8 +4,11 @@ interface StatCardProps {
   title: string;
   value: string | number;
   icon: ReactNode;
-  iconBgColor: string;
-  iconColor: string;
+  trend?: {
+    value: number;
+    isPositive: boolean;
+    period: string;
+  };
   className?: string;
 }
 
@@ -13,24 +16,51 @@ export function StatCard({
   title,
   value,
   icon,
-  iconBgColor,
-  iconColor,
+  trend,
   className = "",
 }: StatCardProps) {
   return (
-    <div className={`card-agro ${className}`}>
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-sm font-semibold text-agro-600">{title}</p>
-          <p className="text-2xl font-bold text-agro-700">{value}</p>
+    <div
+      className={`
+        bg-white rounded-xl p-6 shadow-sm border border-neutral-100
+        hover:shadow-md hover:border-agro-200 hover:-translate-y-1
+        transition-all duration-300 cursor-pointer group
+        ${className}
+      `}
+    >
+      <div className="flex items-start justify-between">
+        <div className="flex-1">
+          {/* Título */}
+          <p className="text-xs font-medium text-neutral-500 uppercase tracking-wide mb-2">
+            {title}
+          </p>
+
+          {/* Valor Principal */}
+          <div className="text-2xl font-bold text-neutral-900 mb-2 group-hover:text-agro-700 transition-colors duration-200">
+            {value}
+          </div>
+
+          {/* Indicador de Tendência */}
+          {trend && (
+            <div className="flex items-center">
+              <span
+                className={`text-sm font-medium ${
+                  trend.isPositive ? "text-green-600" : "text-red-600"
+                }`}
+              >
+                <span className="mr-1">{trend.isPositive ? "▲" : "▼"}</span>
+                {Math.abs(trend.value)}%
+              </span>
+              <span className="text-xs text-neutral-500 ml-1">
+                vs. {trend.period}
+              </span>
+            </div>
+          )}
         </div>
-        <div
-          className={`p-3 ${iconBgColor} rounded-lg border ${iconBgColor.replace(
-            "bg-",
-            "border-"
-          )}`}
-        >
-          <div className={iconColor} style={{ fontSize: "20px" }}>
+
+        {/* Ícone */}
+        <div className="p-2 bg-agro-50 rounded-lg group-hover:bg-agro-100 transition-colors duration-200">
+          <div className="text-agro-600 text-lg group-hover:scale-110 transition-transform duration-200">
             {icon}
           </div>
         </div>
