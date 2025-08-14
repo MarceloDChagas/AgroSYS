@@ -3,19 +3,19 @@ import RegisterForm from "@/components/RegisterForm";
 import { RotatedTitle } from "@/components/RotatedTitle";
 import agroImage from "@/assets/agro.jpg";
 import { useNavigate } from "react-router-dom";
-import { authService } from "@/services/api";
+import { useAuth } from "@/hooks/useAuth";
 import type { RegisterFormData } from "@/types/forms/register-form-data";
 
 export function RegisterPage() {
   const navigate = useNavigate();
+  const { signUp } = useAuth();
 
   const handleRegister = async (
     data: Omit<RegisterFormData, "confirmPassword">
   ) => {
     try {
-      // console.log("Enviando para registro:", data);
-      await authService.register(data);
-      navigate("/login");
+      await signUp(data);
+      navigate("/dashboard");
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       // console.error("Erro no registro:", error);

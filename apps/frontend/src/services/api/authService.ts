@@ -46,6 +46,15 @@ export class AuthService {
     return await apiClient.post<User>("/auth/register", userData);
   }
 
+  async signUp(userData: RegisterRequest): Promise<LoginResponse> {
+    await this.register(userData);
+
+    return await this.login({
+      email: userData.email,
+      password: userData.password,
+    });
+  }
+
   async getProfile(): Promise<User> {
     return await apiClient.get<User>("/auth/profile");
   }
