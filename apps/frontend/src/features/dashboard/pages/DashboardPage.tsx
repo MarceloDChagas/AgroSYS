@@ -17,14 +17,30 @@ import { AlertCard, type AlertPriority } from "@/components/ui/AlertCard";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { DonutChart } from "@/components/ui/DonutChart";
 import { SystemInfo } from "@/components/ui/SystemInfo";
+import { AlertStats } from "@/components/ui/AlertStats";
 import { useDashboard } from "@/hooks/useDashboard";
+import { useAlerts } from "@/hooks/useAlerts";
 import { useState } from "react";
 
 export function DashboardPage() {
   const { statistics, loading, error, refreshStatistics } = useDashboard();
+  const { alerts, recentActivities, markAlertAsRead } = useAlerts();
   const [selectedPeriod, setSelectedPeriod] = useState("6months");
 
-  // Simular se é um novo usuário (em produção, isso viria do backend)
+  // Função para formatar tempo relativo
+  const formatTimeAgo = (date: Date) => {
+    const now = new Date();
+    const diffInHours = Math.floor(
+      (now.getTime() - new Date(date).getTime()) / (1000 * 60 * 60)
+    );
+
+    if (diffInHours < 1) return "Agora mesmo";
+    if (diffInHours < 24) return `${diffInHours}h atrás`;
+    if (diffInHours < 48) return "Ontem";
+    return `${Math.floor(diffInHours / 24)} dias atrás`;
+  };
+
+  // Simular se é um novo usuário
   const isNewUser = statistics.harvests === 2 && statistics.sales === "R$ 0,00";
 
   // Passos para novos usuários
@@ -59,39 +75,24 @@ export function DashboardPage() {
     },
   ];
 
-  // Dados de exemplo para alertas
-  const alerts = [
-    {
-      id: "1",
-      title: "Estoque Crítico",
-      description: "Fertilizante NPK: Restam apenas 2 sacas",
-      priority: "urgent" as AlertPriority,
-      action: {
-        label: "Pedir",
-        onClick: () => console.log("Criar pedido de fertilizante"),
-      },
-    },
-    {
-      id: "2",
-      title: "Manutenção Pendente",
-      description: "Trator John Deere: Manutenção agendada para amanhã",
-      priority: "warning" as AlertPriority,
-      action: {
-        label: "Ver",
-        onClick: () => console.log("Ver detalhes da manutenção"),
-      },
-    },
-    {
-      id: "3",
-      title: "Colheita Programada",
-      description: "Soja: Colheita programada para próxima semana",
-      priority: "info" as AlertPriority,
-      action: {
-        label: "Detalhes",
-        onClick: () => console.log("Ver detalhes da colheita"),
-      },
-    },
-  ];
+  // Converter alertas do backend para o formato do componente
+  const alertItems = alerts.map((alert) => ({
+    id: alert.id,
+    title: alert.title,
+    description: alert.description,
+    priority: alert.priority as AlertPriority,
+    action: alert.action
+      ? {
+          label: alert.action.label,
+          onClick: () => {
+            if (alert.action?.route) {
+              window.location.href = alert.action.route;
+            }
+            markAlertAsRead(alert.id);
+          },
+        }
+      : undefined,
+  }));
 
   // Dados de exemplo para próximas atividades
   const upcomingActivities = [
@@ -130,33 +131,13 @@ export function DashboardPage() {
     { category: "Outros", value: 5, color: "#8b5cf6" },
   ];
 
-  // Dados de exemplo para atividades recentes
-  const recentActivities = [
-    {
-      id: "1",
-      title: "Aplicação de fertilizante concluída",
-      type: "fertilizer",
-      time: "Hoje",
-    },
-    {
-      id: "2",
-      title: "Nova colheita registrada",
-      type: "harvest",
-      time: "Hoje",
-    },
-    {
-      id: "3",
-      title: "Manutenção do trator realizada",
-      type: "maintenance",
-      time: "Ontem",
-    },
-    {
-      id: "4",
-      title: "Estoque de insumos atualizado",
-      type: "inventory",
-      time: "Ontem",
-    },
-  ];
+  // Converter atividades recentes do backend para o formato do componente
+  const recentActivityItems = recentActivities.map((activity) => ({
+    id: activity.id,
+    title: activity.title,
+    type: activity.type,
+    time: formatTimeAgo(activity.createdAt),
+  }));
 
   const periodOptions = [
     { value: "1month", label: "Último mês" },
@@ -237,6 +218,7 @@ export function DashboardPage() {
             value="R$ 28.450,00"
             icon={<FaDollarSign className="text-green-600" />}
             trend={{ value: 12, isPositive: true, period: "mês anterior" }}
+            onClick={() => (window.location.href = "/financeiro/relatorio")}
           />
 
           <StatCard
@@ -244,19 +226,22 @@ export function DashboardPage() {
             value="R$ 15.200,00"
             icon={<FaDollarSign className="text-red-600" />}
             trend={{ value: 8, isPositive: false, period: "mês anterior" }}
+            onClick={() => (window.location.href = "/custos/analise")}
           />
 
           <StatCard
             title="COLHEITAS ATIVAS"
             value={statistics.harvests.toString()}
             icon={<FaSeedling className="text-green-600" />}
-            trend={{ value: 5, isPositive: true, period: "mês anterior" }}
+            trend={{ value: 0, isPositive: true, period: "mês anterior" }}
+            onClick={() => (window.location.href = "/colheitas")}
           />
 
           <StatCard
-            title="ALERTAS DE ESTOQUE"
-            value="3"
-            icon={<FaBox className="text-orange-600" />}
+            title="ALERTAS ATIVOS"
+            value={alerts.length.toString()}
+            icon={<FaExclamationTriangle className="text-orange-600" />}
+            onClick={() => (window.location.href = "/alertas")}
           />
         </div>
 
@@ -278,17 +263,25 @@ export function DashboardPage() {
               <div className="h-64 bg-neutral-50 rounded-lg flex items-center justify-center">
                 <div className="text-center text-neutral-500">
                   <FaChartLine className="text-4xl mx-auto mb-2" />
-                  <p>Gráfico de Produção Mensal</p>
-                  <p className="text-sm">
+                  <p className="font-semibold text-neutral-700">
+                    Gráfico de Produção Mensal
+                  </p>
+                  <p className="text-sm mt-1">
                     Período:{" "}
                     {
                       periodOptions.find((opt) => opt.value === selectedPeriod)
                         ?.label
                     }
                   </p>
-                  <p className="text-xs mt-2 text-neutral-400">
-                    Seus dados de produção aparecerão aqui
+                  <p className="text-sm mt-4 text-neutral-500">
+                    Ainda não há dados de produção.
                   </p>
+                  <button
+                    className="mt-3 px-3 py-1.5 text-sm rounded-lg bg-agro-500 text-white hover:bg-agro-600 transition-colors"
+                    onClick={() => (window.location.href = "/colheitas/nova")}
+                  >
+                    Adicionar primeira produção
+                  </button>
                 </div>
               </div>
             </ChartCard>
@@ -334,12 +327,32 @@ export function DashboardPage() {
 
           {/* Coluna Direita - 1/3 da tela */}
           <div className="space-y-6">
-            {/* Alertas Importantes */}
-            <AlertCard
-              title="Alertas Importantes"
-              icon={<FaExclamationTriangle />}
-              alerts={alerts}
-            />
+            {/* Centro de Alertas & Notificações */}
+            <div className="space-y-4">
+              <AlertStats
+                urgentCount={
+                  alerts.filter((a) => a.priority === "urgent").length
+                }
+                warningCount={
+                  alerts.filter((a) => a.priority === "warning").length
+                }
+                infoCount={alerts.filter((a) => a.priority === "info").length}
+                totalCount={alerts.length}
+              />
+              {alerts.length > 0 ? (
+                <AlertCard
+                  title="Alertas e Notificações"
+                  icon={<FaExclamationTriangle />}
+                  alerts={alertItems}
+                />
+              ) : (
+                <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral-100">
+                  <p className="text-sm text-neutral-600 text-center">
+                    Nenhum alerta no momento. Bom trabalho!
+                  </p>
+                </div>
+              )}
+            </div>
 
             {/* Distribuição de Custos */}
             <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral-100">
@@ -391,7 +404,7 @@ export function DashboardPage() {
               </div>
 
               <div className="space-y-4">
-                {recentActivities.map((activity) => (
+                {recentActivityItems.map((activity) => (
                   <div
                     key={activity.id}
                     className="flex items-start space-x-3 p-3 rounded-lg hover:bg-neutral-50 transition-colors duration-200"

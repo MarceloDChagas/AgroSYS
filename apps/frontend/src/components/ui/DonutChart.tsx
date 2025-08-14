@@ -1,5 +1,3 @@
-import type { ReactNode } from "react";
-
 interface DonutChartData {
   category: string;
   value: number;
@@ -36,22 +34,54 @@ export function DonutChart({
           currentOffset += strokeDasharray;
 
           return (
-            <circle
-              key={index}
-              cx={size / 2}
-              cy={size / 2}
-              r={radius}
-              fill="none"
-              stroke={item.color}
-              strokeWidth={strokeWidth}
-              strokeDasharray={strokeDasharray}
-              strokeDashoffset={strokeDashoffset}
-              strokeLinecap="round"
-              style={{
-                transformOrigin: "center",
-                transform: `rotate(${(offset / circumference) * 360}deg)`,
-              }}
-            />
+            <g key={index}>
+              <circle
+                cx={size / 2}
+                cy={size / 2}
+                r={radius}
+                fill="none"
+                stroke={item.color}
+                strokeWidth={strokeWidth}
+                strokeDasharray={strokeDasharray}
+                strokeDashoffset={strokeDashoffset}
+                strokeLinecap="round"
+                style={{
+                  transformOrigin: "center",
+                  transform: `rotate(${(offset / circumference) * 360}deg)`,
+                }}
+              />
+              {/* Optional labels around the donut */}
+              {percentage >= 8 && (
+                <text
+                  x={size / 2}
+                  y={size / 2}
+                  fill={item.color}
+                  textAnchor="middle"
+                  dominantBaseline="middle"
+                  className="text-[10px] font-semibold rotate-90"
+                  style={{
+                    transformOrigin: "center",
+                    transform: `translate(${
+                      (radius - strokeWidth) *
+                      Math.cos(
+                        ((offset + strokeDasharray / 2) / circumference) *
+                          2 *
+                          Math.PI
+                      )
+                    }px, ${
+                      (radius - strokeWidth) *
+                      Math.sin(
+                        ((offset + strokeDasharray / 2) / circumference) *
+                          2 *
+                          Math.PI
+                      )
+                    }px) rotate(90deg)`,
+                  }}
+                >
+                  {`${item.category} ${Math.round(percentage)}%`}
+                </text>
+              )}
+            </g>
           );
         })}
       </svg>

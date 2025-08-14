@@ -28,7 +28,7 @@ export class DashboardService {
           apiClient.get<Tool[]>("/tools").catch(() => []),
           apiClient.get<UAP[]>("/uaps").catch(() => []),
           apiClient
-            .get<InputMaterialEntry[]>("/input-materials")
+            .get<InputMaterialEntry[]>("/input-material-entries")
             .catch(() => []),
           apiClient.get<Invoice[]>("/invoices").catch(() => []),
         ]);

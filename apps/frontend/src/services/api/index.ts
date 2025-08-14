@@ -9,6 +9,7 @@ export { salesService, SalesService } from "./salesService";
 export { uapService } from "./uapService";
 export { inputMaterialService } from "./inputMaterialService";
 export { dashboardService, DashboardService } from "./dashboardService";
+export { alertService, AlertService } from "./alertService";
 export { apiClient } from "./client";
 
 // Export types
@@ -47,6 +48,7 @@ export type {
   SaleFilters,
 } from "./salesService";
 export type { DashboardStatistics } from "./dashboardService";
+export type { Alert, RecentActivity } from "./alertService";
 export type { ApiResponse, ApiError } from "./client";
 
 // Convenience exports (import services in components instead)

@@ -4,6 +4,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Centralized color variables */
+:root {
+  --color-brand-primary: #193a3c;
+  --color-brand-accent: #d5e6ab;
+}
+
 @layer base {
   html {
     font-family: "Inter", system-ui, sans-serif;
@@ -17,8 +23,8 @@
 @layer components {
   .btn-primary {
     @apply bg-agro-500 text-white px-4 py-2 rounded-lg font-semibold 
-           hover:bg-agro-600 transition-all duration-200 
-           focus:outline-none focus:ring-2 focus:ring-agro-500 focus:ring-offset-2
+       hover:bg-agro-600 transition-all duration-200 
+       focus:outline-none focus:ring-2 focus:ring-agro-500 focus:ring-offset-2
            shadow-institutional;
   }
 
@@ -59,6 +65,26 @@
   .sidebar-item-inactive {
     @apply text-neutral-600 hover:bg-agro-50 hover:text-agro-600;
   }
+}
+
+/* Optional direct CSS usage of brand variables */
+.bg-brand-primary {
+  background-color: var(--color-brand-primary);
+}
+.text-brand-primary {
+  color: var(--color-brand-primary);
+}
+.border-brand-primary {
+  border-color: var(--color-brand-primary);
+}
+.bg-brand-accent {
+  background-color: var(--color-brand-accent);
+}
+.text-brand-accent {
+  color: var(--color-brand-accent);
+}
+.border-brand-accent {
+  border-color: var(--color-brand-accent);
 }
 
 html,

@@ -4,10 +4,8 @@ export interface InputMaterialEntry {
   id: string;
   date: string;
   productId: string;
-  quantityKg: {
-    amount: number;
-    unit: string;
-  };
+  amount: number;
+  unit: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -15,19 +13,15 @@ export interface InputMaterialEntry {
 export interface CreateInputMaterialEntryDto {
   productId: string;
   date: string;
-  quantityKg: {
-    amount: number;
-    unit: string;
-  };
+  amount: number;
+  unit: string;
 }
 
 export interface UpdateInputMaterialEntryDto {
   productId?: string;
   date?: string;
-  quantityKg?: {
-    amount: number;
-    unit: string;
-  };
+  amount?: number;
+  unit?: string;
 }
 
 class InputMaterialService {

@@ -37,7 +37,7 @@ function VendasPage() {
   const vendasData = sales.map((sale) => ({
     id: sale.id,
     data: new Date(sale.saleDate).toLocaleDateString("pt-BR"),
-    cliente: sale.user?.name || "Cliente não identificado",
+    cliente: sale.uap?.responsible || "Cliente não identificado",
     produto: sale.saleItems
       .map((item) => `${item.product.name} (${item.quantity} un)`)
       .join(", "),

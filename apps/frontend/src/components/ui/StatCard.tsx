@@ -10,6 +10,7 @@ interface StatCardProps {
     period: string;
   };
   className?: string;
+  onClick?: () => void;
 }
 
 export function StatCard({
@@ -18,6 +19,7 @@ export function StatCard({
   icon,
   trend,
   className = "",
+  onClick,
 }: StatCardProps) {
   return (
     <div
@@ -27,6 +29,16 @@ export function StatCard({
         transition-all duration-300 cursor-pointer group
         ${className}
       `}
+      role={onClick ? "button" : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onClick={onClick}
+      onKeyDown={(e) => {
+        if (!onClick) return;
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onClick();
+        }
+      }}
     >
       <div className="flex items-start justify-between">
         <div className="flex-1">
@@ -43,14 +55,20 @@ export function StatCard({
           {/* Indicador de Tendência */}
           {trend && (
             <div className="flex items-center">
-              <span
-                className={`text-sm font-medium ${
-                  trend.isPositive ? "text-green-600" : "text-red-600"
-                }`}
-              >
-                <span className="mr-1">{trend.isPositive ? "▲" : "▼"}</span>
-                {Math.abs(trend.value)}%
-              </span>
+              {trend.value === 0 ? (
+                <span className="text-sm font-medium text-neutral-500">
+                  — 0%
+                </span>
+              ) : (
+                <span
+                  className={`text-sm font-medium ${
+                    trend.isPositive ? "text-green-600" : "text-red-600"
+                  }`}
+                >
+                  <span className="mr-1">{trend.isPositive ? "▲" : "▼"}</span>
+                  {Math.abs(trend.value)}%
+                </span>
+              )}
               <span className="text-xs text-neutral-500 ml-1">
                 vs. {trend.period}
               </span>

@@ -136,8 +136,8 @@ function InsumosPage() {
               data={inputMaterials.map((inputMaterial) => ({
                 date: new Date(inputMaterial.date).toLocaleDateString("pt-BR"),
                 productId: inputMaterial.productId,
-                quantity: inputMaterial.quantityKg.amount,
-                unit: inputMaterial.quantityKg.unit,
+                quantity: inputMaterial.amount,
+                unit: inputMaterial.unit,
               }))}
               className="border-agro-200"
               actions={

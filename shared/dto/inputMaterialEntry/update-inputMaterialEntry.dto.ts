@@ -1,11 +1,11 @@
 import {
   IsOptional,
   IsUUID,
-  ValidateNested,
   IsDateString,
+  IsNumber,
+  IsEnum,
 } from "class-validator";
-import { Type } from "class-transformer";
-import { QuantityDto } from "./quantity.dto";
+import { EUnit } from "../../enums/unit.enum";
 
 export class UpdateInputMaterialEntryDto {
   @IsOptional()
@@ -17,7 +17,10 @@ export class UpdateInputMaterialEntryDto {
   date?: string;
 
   @IsOptional()
-  @ValidateNested()
-  @Type(() => QuantityDto)
-  quantityKg?: QuantityDto;
+  @IsNumber()
+  amount?: number;
+
+  @IsOptional()
+  @IsEnum(EUnit)
+  unit?: EUnit;
 }
