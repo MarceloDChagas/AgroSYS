@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FaBell, FaExclamationTriangle } from "react-icons/fa";
 import { useAlerts } from "@/hooks/useAlerts";
+import { AlertTooltip } from "./AlertTooltip";
 
 export function NotificationButton() {
   const [isOpen, setIsOpen] = useState(false);
@@ -54,16 +55,18 @@ export function NotificationButton() {
                 >
                   <div className="flex items-start space-x-3">
                     <div className="flex-shrink-0 mt-1">
-                      <FaExclamationTriangle
-                        className={`${
-                          alert.priority === "urgent"
-                            ? "text-red-500"
-                            : alert.priority === "warning"
-                            ? "text-yellow-500"
-                            : "text-blue-500"
-                        }`}
-                        size={16}
-                      />
+                      <AlertTooltip priority={alert.priority}>
+                        <FaExclamationTriangle
+                          className={`${
+                            alert.priority === "urgent"
+                              ? "text-red-500"
+                              : alert.priority === "warning"
+                              ? "text-yellow-500"
+                              : "text-blue-500"
+                          }`}
+                          size={16}
+                        />
+                      </AlertTooltip>
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-neutral-900">

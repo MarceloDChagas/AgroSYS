@@ -11,6 +11,7 @@ import { HarvestsModule } from "./harvests/harvests.module";
 import { UapsModule } from "./uaps/uaps.module";
 import { InputMaterialEntryModule } from "./inputMaterialEntry/inputMaterialEntry.module";
 import { AlertsModule } from "./alerts/alerts.module";
+import { InsumosModule } from "./insumos/insumos.module";
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { AlertsModule } from "./alerts/alerts.module";
     UapsModule,
     InputMaterialEntryModule,
     AlertsModule,
+    InsumosModule,
   ],
 })
 export class AppModule {}

@@ -12,6 +12,7 @@ import SolicitarFerramentaPage from "./features/ferramentas/pages/SolicitarFerra
 import DevolverFerramentaPage from "./features/ferramentas/pages/DevolverFerramentaPage";
 import EditarFerramentaPage from "./features/ferramentas/pages/EditarFerramentaPage";
 import ExcluirFerramentaPage from "./features/ferramentas/pages/ExcluirFerramentaPage";
+import CadastroFerramentaPage from "./features/ferramentas/pages/CadastroFerramentaPage";
 import VendaCadastroPage from "./features/vendas/pages/VendaCadastroPage";
 import NotaFiscalPage from "./features/notas/pages/NotaFiscalPage";
 import GerarNotaPage from "./features/notas/pages/GerarNotaPage";
@@ -41,6 +42,10 @@ function App() {
         <Route path="/colheita" element={<ColheitaPage />} />
         <Route path="/vendas" element={<VendasPage />} />
         <Route path="/ferramentas" element={<FerramentasPage />} />
+        <Route
+          path="/ferramentas/cadastro"
+          element={<CadastroFerramentaPage />}
+        />
         <Route path="/colheita/nova" element={<NovaColheitaPage />} />
         <Route
           path="/ferramentas/solicitar"

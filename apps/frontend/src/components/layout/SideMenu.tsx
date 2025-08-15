@@ -2,11 +2,11 @@ import type { ReactNode } from "react";
 import { MainHeader } from "./MainHeader";
 import { useNavigate, useLocation } from "react-router-dom"; // Importe useLocation
 import { useState } from "react";
+import { authService } from "@/services/api";
 import { FaBars, FaTimes, FaSignOutAlt } from "react-icons/fa";
 
 interface SideMenuProps {
   children: ReactNode;
-  title: string; // Você pode remover esta prop se não estiver usando-a no SideMenu, já que o título agora é dinâmico no Header.
 }
 
 const menuItems = [
@@ -133,17 +133,23 @@ export function SideMenu({ children }: SideMenuProps) {
             <div className="p-4 border-t-2 border-neutral-200 bg-neutral-50">
               <div className="flex items-center gap-3 p-3 rounded-lg bg-white border border-neutral-200 shadow-sm">
                 <div className="w-10 h-10 bg-agro-500 rounded-lg flex items-center justify-center shadow-institutional">
-                  <span className="text-white text-sm font-bold">U</span>
+                  <span className="text-white text-sm font-bold">
+                    {authService.getCurrentUser()?.name?.charAt(0) || "U"}
+                  </span>
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-bold text-neutral-900 truncate">
-                    Usuário Administrador
+                    {authService.getCurrentUser()?.name || "Usuário"}
                   </p>
                   <p className="text-xs text-neutral-500 truncate font-medium">
-                    Nível: Administrador
+                    Nível:{" "}
+                    {authService.getCurrentUser()?.role === "ADMIN"
+                      ? "Administrador"
+                      : "Usuário Comum"}
                   </p>
                 </div>
                 <button
+                  onClick={() => authService.logout()}
                   className="p-2 text-neutral-400 hover:text-red-600 transition-colors"
                   title="Sair do sistema"
                 >
