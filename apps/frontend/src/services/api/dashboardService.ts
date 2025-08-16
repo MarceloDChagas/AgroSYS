@@ -2,8 +2,8 @@ import { apiClient } from "./index";
 import type { SaleWithItems } from "./salesService";
 import type { UAP } from "./uapService";
 import type { Tool } from "./toolService";
-import type { InputMaterialEntry } from "./inputMaterialService";
-import type { Invoice } from "../../types/invoice";
+import type { Insumo } from "@/types/insumo";
+import type { Invoice } from "@/types/invoice";
 import type { Harvest } from "./harvestService";
 
 export interface DashboardStatistics {
@@ -21,15 +21,13 @@ export class DashboardService {
   async getStatistics(): Promise<DashboardStatistics> {
     try {
       // Fetch data from different endpoints and aggregate
-      const [harvests, sales, tools, uaps, inputMaterials, invoices] =
+      const [harvests, sales, tools, uaps, insumos, invoices] =
         await Promise.all([
           apiClient.get<Harvest[]>("/harvests").catch(() => []),
           apiClient.get<SaleWithItems[]>("/sales").catch(() => []),
           apiClient.get<Tool[]>("/tools").catch(() => []),
           apiClient.get<UAP[]>("/uaps").catch(() => []),
-          apiClient
-            .get<InputMaterialEntry[]>("/input-materials")
-            .catch(() => []),
+          apiClient.get<Insumo[]>("/insumos").catch(() => []),
           apiClient.get<Invoice[]>("/invoices").catch(() => []),
         ]);
 
@@ -71,7 +69,7 @@ export class DashboardService {
         productionMonth: `R$ ${monthlyProduction.toLocaleString("pt-BR", {
           minimumFractionDigits: 2,
         })}`,
-        inputMaterials: inputMaterials.length,
+        inputMaterials: insumos.length,
         invoices: invoices.length,
       };
     } catch {

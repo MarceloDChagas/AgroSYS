@@ -10,10 +10,8 @@ function toDomainInputMaterialEntry(prismaEntry: any): InputMaterialEntry {
     id: prismaEntry.id,
     date: prismaEntry.date,
     productId: prismaEntry.productId,
-    quantityKg: {
-      amount: prismaEntry.amount,
-      unit: prismaEntry.unit,
-    },
+    amount: prismaEntry.amount,
+    unit: prismaEntry.unit,
   };
 }
 
@@ -50,8 +48,8 @@ export class InputMaterialEntryRepositoryPostgres
       data: {
         date: data.date,
         productId: data.productId,
-        amount: data.quantityKg.amount,
-        unit: data.quantityKg.unit as any,
+        amount: data.amount,
+        unit: data.unit as any,
       },
     });
     return toDomainInputMaterialEntry(entry);
@@ -66,8 +64,8 @@ export class InputMaterialEntryRepositoryPostgres
       data: {
         date: data.date,
         productId: data.productId,
-        amount: data.quantityKg?.amount,
-        unit: data.quantityKg?.unit as any,
+        amount: data.amount,
+        unit: data.unit as any,
       },
     });
     return updated ? toDomainInputMaterialEntry(updated) : null;

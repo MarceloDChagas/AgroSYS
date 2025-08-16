@@ -1,47 +1,110 @@
-import { useState, useRef, useEffect } from "react";
-import { FaBell } from "react-icons/fa";
+import { useState } from "react";
+import { FaBell, FaExclamationTriangle } from "react-icons/fa";
+import { useAlerts } from "@/hooks/useAlerts";
+import { AlertTooltip } from "./AlertTooltip";
 
 export function NotificationButton() {
-  const [open, setOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const { alerts, markAlertAsRead } = useAlerts();
+  const unreadCount = alerts.filter((alert) => !alert.isRead).length;
 
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setOpen(false);
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  const handleAlertClick = async (alertId: string) => {
+    await markAlertAsRead(alertId);
+    setIsOpen(false);
+  };
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative">
       <button
-        onClick={() => setOpen(!open)}
-        className="relative p-2 text-agro-600 hover:text-agro-700 transition-colors group bg-agro-50 rounded-lg border border-agro-200"
+        onClick={() => setIsOpen(!isOpen)}
+        className="relative p-2 text-neutral-600 hover:text-neutral-900 transition-colors duration-200"
       >
-        <FaBell size={18} />
-        <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white" />
-        <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 bg-neutral-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-          Notificações
-        </span>
+        <FaBell size={20} />
+        {unreadCount > 0 && (
+          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+            {unreadCount > 9 ? "9+" : unreadCount}
+          </span>
+        )}
       </button>
 
-      {open && (
-        <div className="absolute right-0 mt-2 w-64 bg-white border border-agro-200 rounded-lg shadow-lg z-50">
-          <div className="p-4 text-sm text-agro-700">
-            <p className="text-center text-agro-400">
-              Nenhuma notificação no momento.
+      {isOpen && (
+        <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-neutral-200 z-50">
+          <div className="p-4 border-b border-neutral-200">
+            <h3 className="text-lg font-semibold text-neutral-900">
+              Notificações
+            </h3>
+            <p className="text-sm text-neutral-500">
+              {unreadCount} não lida{unreadCount !== 1 ? "s" : ""}
             </p>
           </div>
+
+          <div className="max-h-96 overflow-y-auto">
+            {alerts.length === 0 ? (
+              <div className="p-4 text-center text-neutral-500">
+                <FaBell className="mx-auto mb-2 text-neutral-300" size={24} />
+                <p>Nenhuma notificação</p>
+              </div>
+            ) : (
+              alerts.map((alert) => (
+                <div
+                  key={alert.id}
+                  className={`p-4 border-b border-neutral-100 hover:bg-neutral-50 cursor-pointer transition-colors duration-200 ${
+                    !alert.isRead ? "bg-blue-50" : ""
+                  }`}
+                  onClick={() => handleAlertClick(alert.id)}
+                >
+                  <div className="flex items-start space-x-3">
+                    <div className="flex-shrink-0 mt-1">
+                      <AlertTooltip priority={alert.priority}>
+                        <FaExclamationTriangle
+                          className={`${
+                            alert.priority === "urgent"
+                              ? "text-red-500"
+                              : alert.priority === "warning"
+                              ? "text-yellow-500"
+                              : "text-blue-500"
+                          }`}
+                          size={16}
+                        />
+                      </AlertTooltip>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-neutral-900">
+                        {alert.title}
+                      </p>
+                      <p className="text-xs text-neutral-600 mt-1">
+                        {alert.description}
+                      </p>
+                      {alert.action && (
+                        <button
+                          className="text-xs text-blue-600 hover:text-blue-800 mt-2 font-medium"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (alert.action?.route) {
+                              window.location.href = alert.action.route;
+                            }
+                          }}
+                        >
+                          {alert.action.label}
+                        </button>
+                      )}
+                    </div>
+                    {!alert.isRead && (
+                      <div className="flex-shrink-0">
+                        <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
         </div>
+      )}
+
+      {/* Overlay para fechar ao clicar fora */}
+      {isOpen && (
+        <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
       )}
     </div>
   );

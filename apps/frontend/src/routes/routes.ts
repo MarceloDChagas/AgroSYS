@@ -41,6 +41,7 @@ export const routes = {
 
     // Ferramentas
     ferramentas: "/ferramentas",
+    cadastroFerramenta: "/ferramentas/cadastro",
     editarFerramenta: "/ferramentas/editar",
     excluirFerramenta: "/ferramentas/excluir",
     solicitarFerramenta: "/ferramentas/solicitar",

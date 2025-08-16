@@ -1,8 +1,5 @@
 import { useNavigate } from "react-router-dom";
-<<<<<<< HEAD
 import { useEffect } from "react";
-=======
->>>>>>> 30a273d (chore: remove todos os console.log/console.error e corrige erros de linter relacionados a variáveis não usadas em catch)
 import { SideMenu } from "@/components/layout/SideMenu";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { FilterBar } from "@/components/ui/FilterBar";
@@ -156,20 +153,8 @@ function ColheitaPage() {
         {/* Filters */}
         <FilterBar
           filters={filters}
-<<<<<<< HEAD
-<<<<<<< HEAD
-          onFilterChange={(key, value) => {
-            // TODO: Implementar filtros baseados em key e value
-            console.log(`Filtrando por ${key}: ${value}`);
-=======
-          onFilterChange={(_key, _value) => {
-            // TODO: Implementar filtros
->>>>>>> 30a273d (chore: remove todos os console.log/console.error e corrige erros de linter relacionados a variáveis não usadas em catch)
-=======
           onFilterChange={(_key, _value) => {
             // TODO: Implementar filtros baseados em key e value
-            // console.log(`Filtrando por ${key}: ${value}`);
->>>>>>> d3bcd42 (Refactors and enhances backend and frontend code)
           }}
         />
 

@@ -152,7 +152,8 @@ export function useSales(initialFilter?: string): UseSalesResult {
     try {
       setLoading(true);
       setError("");
-      const result = await salesService.getSalesByUserId(userId);
+      // Mapping to UAP for now as service exposes getSalesByUapId
+      const result = await salesService.getSalesByUapId(userId);
       setSales(result);
     } catch (err) {
       const errorMessage =

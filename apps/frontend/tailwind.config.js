@@ -8,17 +8,24 @@ module.exports = {
         serif: ["Lora", "Georgia", "serif"],
       },
       colors: {
+        // Central brand colors
+        brand: {
+          DEFAULT: "#193A3C", // primary brand
+          primary: "#193A3C",
+          accent: "#D5E6AB",
+        },
+        // Map existing palettes to new brand colors so current classes work
         agro: {
-          50: "#f4f1ed",
-          100: "#e8e0d6",
-          200: "#d1c0ad",
-          300: "#b39a7d",
-          400: "#8f7a5a",
-          500: "#265c28", // Verde folhagem principal
-          600: "#1e4a20",
-          700: "#173a1a",
-          800: "#0f2a13",
-          900: "#081a0c",
+          50: "#eaf0f0",
+          100: "#cdd9da",
+          200: "#aec1c2",
+          300: "#8fa9aa",
+          400: "#6f9193",
+          500: "#193A3C", // Primary brand (dark teal)
+          600: "#143033",
+          700: "#0f2628",
+          800: "#0a1c1e",
+          900: "#051214",
         },
         earth: {
           50: "#fafaf5",
@@ -33,16 +40,16 @@ module.exports = {
           900: "#361a0e",
         },
         wheat: {
-          50: "#fefdf7",
-          100: "#fef9e7",
-          200: "#fdf3d1",
-          300: "#fbe8a3",
-          400: "#f8d675",
-          500: "#fbba00", // Amarelo Moura
-          600: "#e6a800",
-          700: "#cc9600",
-          800: "#b38400",
-          900: "#997200",
+          50: "#fbfdf5",
+          100: "#f6faea",
+          200: "#edf4d7",
+          300: "#e3efc4",
+          400: "#ddebb7",
+          500: "#D5E6AB", // Accent brand (light green)
+          600: "#c5d893",
+          700: "#b3c97c",
+          800: "#9fb968",
+          900: "#8aa955",
         },
         neutral: {
           50: "#fafaf5",

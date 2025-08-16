@@ -46,6 +46,15 @@ export class AuthService {
     return await apiClient.post<User>("/auth/register", userData);
   }
 
+  async signUp(userData: RegisterRequest): Promise<LoginResponse> {
+    await this.register(userData);
+
+    return await this.login({
+      email: userData.email,
+      password: userData.password,
+    });
+  }
+
   async getProfile(): Promise<User> {
     return await apiClient.get<User>("/auth/profile");
   }
@@ -72,7 +81,7 @@ export class AuthService {
         return null;
       }
       return JSON.parse(userStr);
-    } catch (error) {
+    } catch {
       // Limpar dados corrompidos
       this.clearAuthData();
       return null;
@@ -83,13 +92,26 @@ export class AuthService {
     const user = this.getCurrentUser();
     if (!user || !user.role) return false;
 
-    // Implementar lógica de permissões baseada na role
-    // Por enquanto, ADMIN tem todas as permissões
+    // ADMIN tem todas as permissões
     if (user.role === "ADMIN") return true;
 
-    // COMMON_USER só pode ler
-    const readPermissions = ["READ_TOOL", "READ_PRODUCT"];
-    return readPermissions.includes(permission);
+    // COMMON_USER tem permissões específicas
+    if (user.role === "COMMON_USER" || user.role === "COMMON") {
+      const commonUserPermissions = [
+        "READ_TOOL",
+        "CREATE_TOOL", // Adicionado para permitir criação
+        "READ_PRODUCT",
+        "CREATE_SALE",
+        "READ_SALE",
+        "READ_INVOICE",
+        "CREATE_INPUT_MATERIAL_ENTRY",
+        "READ_INPUT_MATERIAL_ENTRY",
+        "READ_UAP",
+      ];
+      return commonUserPermissions.includes(permission);
+    }
+
+    return false;
   }
 
   isAdmin(): boolean {
