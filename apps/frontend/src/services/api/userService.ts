@@ -42,7 +42,6 @@ export class UserService {
     return await apiClient.delete<void>(`/users/${id}`);
   }
 
-  // Métodos auxiliares
   async getAdminUsers(): Promise<User[]> {
     const users = await this.getAllUsers();
     return users.filter((user) => user.role === "ADMIN");

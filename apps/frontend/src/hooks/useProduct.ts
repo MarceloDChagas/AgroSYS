@@ -38,7 +38,6 @@ export function useProduct(): UseProductResult {
         // Se há um filtro, fazer busca
         result = await productService.searchProducts(filter);
       } else {
-        // Buscar todos os produtos
         result = await productService.getAllProducts();
       }
 

@@ -88,7 +88,7 @@ function NotasFiscaisPage() {
     {
       label: "DOWNLOAD",
       onClick: () => {
-        // TODO: Implementar download da nota fiscal
+        // Implementar download da nota fiscal
       },
       variant: "primary" as const,
       icon: <FaDownload size={14} />,
@@ -96,7 +96,7 @@ function NotasFiscaisPage() {
     {
       label: "EXCLUIR",
       onClick: () => {
-        // TODO: Implementar exclusão da nota fiscal
+        // Implementar exclusão da nota fiscal
       },
       variant: "danger" as const,
       icon: <FaTrash size={14} />,

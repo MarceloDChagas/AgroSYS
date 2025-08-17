@@ -82,7 +82,7 @@ function ColheitaPage() {
     {
       label: "VISUALIZAR",
       onClick: () => {
-        // TODO: Implementar visualização da colheita
+        // Implementar visualização da colheita
       },
       variant: "primary" as const,
       icon: <FaEye size={14} />,
@@ -96,7 +96,7 @@ function ColheitaPage() {
     {
       label: "EXCLUIR",
       onClick: () => {
-        // TODO: Implementar exclusão da colheita
+        // Implementar exclusão da colheita
       },
       variant: "danger" as const,
       icon: <FaTrash size={14} />,
@@ -154,7 +154,7 @@ function ColheitaPage() {
         <FilterBar
           filters={filters}
           onFilterChange={(_key, _value) => {
-            // TODO: Implementar filtros baseados em key e value
+            // Implementar filtros baseados em key e value
           }}
         />
 

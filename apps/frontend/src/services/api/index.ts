@@ -54,4 +54,3 @@ export type { Insumo } from "../../../shared/types/insumo";
 export type { ApiResponse, ApiError } from "./client";
 
 // Convenience exports (import services in components instead)
-// Example: import { authService, toolService, invoiceService } from '@/services/api';

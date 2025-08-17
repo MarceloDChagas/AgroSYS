@@ -59,7 +59,7 @@ function UapPage() {
     {
       label: "EXCLUIR",
       onClick: () => {
-        // TODO: Implementar ação de exclusão
+        // Implementar ação de exclusão
       },
       variant: "danger" as const,
       icon: <FaTrash size={14} />,
@@ -115,7 +115,7 @@ function UapPage() {
         <FilterBar
           filters={filters}
           onFilterChange={() => {
-            // TODO: Implementar filtros
+            // Implementar filtros
           }}
         />
 

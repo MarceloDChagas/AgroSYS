@@ -93,7 +93,6 @@ export class ProductService {
     return await apiClient.get<Product[]>(`/products/search?q=${query}`);
   }
 
-  // Métodos auxiliares para ações específicas
   async getAvailableProducts(): Promise<Product[]> {
     return await this.getProductsByStatus("DISPONIVEL");
   }

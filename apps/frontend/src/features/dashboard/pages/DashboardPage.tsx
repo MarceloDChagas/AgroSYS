@@ -1,11 +1,4 @@
-import {
-  FaTree,
-  FaSeedling,
-  FaTint,
-  FaWrench,
-  FaBox,
-  FaClipboardList,
-} from "react-icons/fa";
+import { FaTree } from "react-icons/fa";
 import { SideMenu } from "@/components/layout/SideMenu";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { SystemInfo } from "@/components/ui/SystemInfo";
@@ -42,32 +35,14 @@ export function DashboardPage() {
     }
   }, [isNewUser, hasSeenAlertsTutorial, alerts.length]);
 
-  // Se todos os passos estão concluídos, considerar usuário como não novo
   const shouldShowOnboarding = isNewUser && !allStepsCompleted;
 
-  // Converter atividades recentes do backend para o formato do componente
   const recentActivityItems = recentActivities.map((activity) => ({
     id: activity.id,
     title: activity.title,
     type: activity.type,
     time: formatTimeAgo(activity.createdAt),
   }));
-
-  // Função para obter ícone baseado no tipo de atividade
-  const getActivityIcon = (type: string) => {
-    switch (type) {
-      case "harvest":
-        return <FaSeedling className="text-green-600" />;
-      case "fertilizer":
-        return <FaTint className="text-blue-600" />;
-      case "maintenance":
-        return <FaWrench className="text-orange-600" />;
-      case "inventory":
-        return <FaBox className="text-purple-600" />;
-      default:
-        return <FaClipboardList className="text-neutral-600" />;
-    }
-  };
 
   if (loading) {
     return (
@@ -99,7 +74,6 @@ export function DashboardPage() {
     );
   }
 
-  // Se for um novo usuário e nem todos os passos estão concluídos, mostrar o EmptyState
   if (shouldShowOnboarding) {
     return (
       <SideMenu>
@@ -149,10 +123,7 @@ export function DashboardPage() {
             <CostDistribution data={costDistribution} />
 
             {/* Atividades Recentes */}
-            <RecentActivities
-              activities={recentActivityItems}
-              getActivityIcon={getActivityIcon}
-            />
+            <RecentActivities activities={recentActivityItems} />
           </div>
         </div>
 

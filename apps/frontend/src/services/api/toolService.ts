@@ -59,7 +59,6 @@ export class ToolService {
     );
   }
 
-  // Métodos auxiliares para ações específicas
   async requestTool(toolId: string, responsiblePerson: string): Promise<Tool> {
     return await this.updateTool(toolId, {
       status: "SOLICITADA",

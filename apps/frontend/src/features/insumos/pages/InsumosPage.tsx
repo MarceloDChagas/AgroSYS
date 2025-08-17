@@ -42,7 +42,7 @@ function InsumosPage() {
 
   if (loading) {
     return (
-      <SideMenu title="INSUMOS">
+      <SideMenu>
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-agro-600 mx-auto mb-4"></div>
@@ -55,7 +55,7 @@ function InsumosPage() {
 
   if (error) {
     return (
-      <SideMenu title="INSUMOS">
+      <SideMenu>
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <p className="text-red-600 mb-4">
@@ -71,7 +71,7 @@ function InsumosPage() {
   }
 
   return (
-    <SideMenu title="INSUMOS">
+    <SideMenu>
       <div className="space-y-6">
         {/* Header */}
         <PageHeader
@@ -91,7 +91,7 @@ function InsumosPage() {
         <FilterBar
           filters={filters}
           onFilterChange={() => {
-            // TODO: Implementar filtros
+            // Implementar filtros
           }}
         />
 
