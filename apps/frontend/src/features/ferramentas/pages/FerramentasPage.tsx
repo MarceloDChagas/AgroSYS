@@ -13,7 +13,8 @@ function FerramentasPage() {
   const [error, setError] = useState<string>("");
   const [filter, setFilter] = useState<string>("");
 
-  const canManageTools = authService.hasPermission("CREATE_TOOL");
+  const canManageTools =
+    authService.hasPermission("CREATE_TOOL") || authService.isAdmin();
 
   const fetchTools = useCallback(async () => {
     try {
@@ -28,7 +29,7 @@ function FerramentasPage() {
       }
 
       setTools(toolsData);
-    } catch (error) {
+    } catch {
       setError("Erro ao carregar ferramentas");
     } finally {
       setLoading(false);
@@ -50,7 +51,7 @@ function FerramentasPage() {
         toolsData = await toolService.getAllTools();
       }
       setTools(toolsData);
-    } catch (error) {
+    } catch {
       setError("Erro ao filtrar ferramentas");
     } finally {
       setLoading(false);
@@ -59,14 +60,12 @@ function FerramentasPage() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "DISPONIVEL":
+      case "RETURNED":
         return "text-green-600 bg-green-100";
-      case "EMPRESTADA":
+      case "LENDING":
         return "text-red-600 bg-red-100";
-      case "SOLICITADA":
+      case "REQUESTED":
         return "text-yellow-600 bg-yellow-100";
-      case "MANUTENCAO":
-        return "text-gray-600 bg-gray-100";
       default:
         return "text-gray-600 bg-gray-100";
     }
@@ -74,14 +73,12 @@ function FerramentasPage() {
 
   const getStatusText = (status: string) => {
     switch (status) {
-      case "DISPONIVEL":
+      case "RETURNED":
         return "Disponível";
-      case "EMPRESTADA":
+      case "LENDING":
         return "Emprestada";
-      case "SOLICITADA":
+      case "REQUESTED":
         return "Solicitada";
-      case "MANUTENCAO":
-        return "Manutenção";
       default:
         return status;
     }
@@ -132,10 +129,9 @@ function FerramentasPage() {
                 className="px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-600"
               >
                 <option value="">Todos os status</option>
-                <option value="DISPONIVEL">Disponível</option>
-                <option value="EMPRESTADA">Emprestada</option>
-                <option value="SOLICITADA">Solicitada</option>
-                <option value="MANUTENCAO">Manutenção</option>
+                <option value="RETURNED">Disponível</option>
+                <option value="LENDING">Emprestada</option>
+                <option value="REQUESTED">Solicitada</option>
               </select>
               <button
                 onClick={fetchTools}
@@ -147,7 +143,7 @@ function FerramentasPage() {
 
             {canManageTools && (
               <button
-                onClick={() => navigate(routes.navigation.editarFerramenta)}
+                onClick={() => navigate(routes.navigation.cadastroFerramenta)}
                 className="btn-primary flex items-center gap-2"
               >
                 <FaTools size={14} />

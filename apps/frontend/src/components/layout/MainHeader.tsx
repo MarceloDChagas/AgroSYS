@@ -1,6 +1,7 @@
 import { FaUserCircle, FaCog, FaSignOutAlt } from "react-icons/fa";
 import logo from "../../assets/logo.png";
 import { NotificationButton } from "../ui/";
+import { authService } from "@/services/api";
 
 export function MainHeader() {
   return (
@@ -56,13 +57,17 @@ export function MainHeader() {
             </div>
             <div className="hidden md:block text-left">
               <p className="text-sm font-bold text-neutral-900">
-                Usuário Administrador
+                {authService.getCurrentUser()?.name || "Usuário"}
               </p>
               <p className="text-xs font-semibold text-agro-600">
-                Nível: Administrador
+                Nível:{" "}
+                {authService.getCurrentUser()?.role === "ADMIN"
+                  ? "Administrador"
+                  : "Usuário Comum"}
               </p>
             </div>
             <button
+              onClick={() => authService.logout()}
               className="p-1 text-neutral-400 hover:text-red-600 transition-colors"
               title="Sair do sistema"
             >

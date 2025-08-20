@@ -94,7 +94,6 @@ export class InvoiceService {
     );
   }
 
-  // Métodos auxiliares para ações específicas
   async approveInvoice(id: string): Promise<Invoice> {
     return await this.updateInvoice(id, { status: "APROVADA" });
   }

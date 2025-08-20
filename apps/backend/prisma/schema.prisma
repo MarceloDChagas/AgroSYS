@@ -163,6 +163,22 @@ model InputMaterialEntry {
   @@map("input_material_entries")
 }
 
+model Insumo {
+  id          String   @id @default(uuid())
+  name        String
+  type        String   // fertilizante, defensivo, corretivo, etc.
+  amount      Decimal  @db.Decimal(10, 2)
+  unit        EUnit
+  supplier    String?
+  expiryDate  DateTime?
+  observations String?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("insumos")
+}
+
 model Harvest {
   id            String        @id @default(uuid())
   harvestDate   DateTime

@@ -1,189 +1,52 @@
-import {
-  FaDollarSign,
-  FaExclamationTriangle,
-  FaChartLine,
-  FaCalendarAlt,
-  FaClipboardList,
-  FaRocket,
-  FaBox,
-  FaSeedling,
-  FaWrench,
-  FaTint,
-} from "react-icons/fa";
+import { FaTree } from "react-icons/fa";
 import { SideMenu } from "@/components/layout/SideMenu";
-import { StatCard } from "@/components/ui/StatCard";
-import { ChartCard, PeriodSelector } from "@/components/ui/ChartCard";
-import { AlertCard, type AlertPriority } from "@/components/ui/AlertCard";
 import { EmptyState } from "@/components/ui/EmptyState";
-import { DonutChart } from "@/components/ui/DonutChart";
 import { SystemInfo } from "@/components/ui/SystemInfo";
+import { AlertsTutorial } from "@/components/ui/AlertsTutorial";
 import { useDashboard } from "@/hooks/useDashboard";
-import { useState } from "react";
+import { useAlerts } from "@/hooks/useAlerts";
+import { useUserOnboarding } from "@/hooks/useUserOnboarding";
+import { useOnboardingSteps } from "@/hooks/useOnboardingSteps";
+import { useDashboardData } from "@/hooks/useDashboardData";
+import { formatTimeAgo } from "@/utils/dateUtils";
+import { DashboardKPIs } from "@/components/dashboard/DashboardKPIs";
+import { UpcomingActivities } from "@/components/dashboard/UpcomingActivities";
+import { CostDistribution } from "@/components/dashboard/CostDistribution";
+import { RecentActivities } from "@/components/dashboard/RecentActivities";
+import { ProductionChart } from "@/components/dashboard/ProductionChart";
+import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
+import { useState, useEffect } from "react";
 
 export function DashboardPage() {
   const { statistics, loading, error, refreshStatistics } = useDashboard();
+  const { alerts, recentActivities, markAlertAsRead } = useAlerts();
+  const { isNewUser, hasSeenAlertsTutorial, markAlertsTutorialAsSeen } =
+    useUserOnboarding();
+  const { setupSteps, allStepsCompleted } = useOnboardingSteps();
+  const { upcomingActivities, costDistribution, periodOptions } =
+    useDashboardData();
   const [selectedPeriod, setSelectedPeriod] = useState("6months");
+  const [showAlertsTutorial, setShowAlertsTutorial] = useState(false);
 
-  // Simular se é um novo usuário (em produção, isso viria do backend)
-  const isNewUser = statistics.harvests === 2 && statistics.sales === "R$ 0,00";
-
-  // Passos para novos usuários
-  const setupSteps = [
-    {
-      id: "1",
-      title: "Cadastre sua primeira Unidade de Produção",
-      description: "Configure suas áreas de plantio e produção",
-      route: "/uap/cadastro",
-      completed: statistics.uaps > 0,
-    },
-    {
-      id: "2",
-      title: "Adicione seus Insumos ao Estoque",
-      description: "Registre fertilizantes, defensivos e outros insumos",
-      route: "/insumos/cadastro",
-      completed: false, // Seria verificado pelo backend
-    },
-    {
-      id: "3",
-      title: "Agende sua primeira atividade",
-      description: "Programe colheitas, aplicações e manutenções",
-      route: "/colheita/nova",
-      completed: statistics.harvests > 0,
-    },
-    {
-      id: "4",
-      title: "Configure suas ferramentas",
-      description: "Registre tratores, implementos e equipamentos",
-      route: "/ferramentas",
-      completed: statistics.tools > 0,
-    },
-  ];
-
-  // Dados de exemplo para alertas
-  const alerts = [
-    {
-      id: "1",
-      title: "Estoque Crítico",
-      description: "Fertilizante NPK: Restam apenas 2 sacas",
-      priority: "urgent" as AlertPriority,
-      action: {
-        label: "Pedir",
-        onClick: () => console.log("Criar pedido de fertilizante"),
-      },
-    },
-    {
-      id: "2",
-      title: "Manutenção Pendente",
-      description: "Trator John Deere: Manutenção agendada para amanhã",
-      priority: "warning" as AlertPriority,
-      action: {
-        label: "Ver",
-        onClick: () => console.log("Ver detalhes da manutenção"),
-      },
-    },
-    {
-      id: "3",
-      title: "Colheita Programada",
-      description: "Soja: Colheita programada para próxima semana",
-      priority: "info" as AlertPriority,
-      action: {
-        label: "Detalhes",
-        onClick: () => console.log("Ver detalhes da colheita"),
-      },
-    },
-  ];
-
-  // Dados de exemplo para próximas atividades
-  const upcomingActivities = [
-    {
-      id: "1",
-      title: "Colheita da Soja",
-      location: "UAP Norte",
-      date: "15/01/2024",
-      daysLeft: 3,
-      type: "harvest",
-    },
-    {
-      id: "2",
-      title: "Aplicação de Fertilizante",
-      location: "UAP Sul",
-      date: "12/01/2024",
-      daysLeft: 0,
-      type: "fertilizer",
-    },
-    {
-      id: "3",
-      title: "Manutenção do Trator",
-      location: "Garagem",
-      date: "18/01/2024",
-      daysLeft: 6,
-      type: "maintenance",
-    },
-  ];
-
-  // Dados de exemplo para distribuição de custos
-  const costDistribution = [
-    { category: "Insumos", value: 45, color: "#10b981" },
-    { category: "Mão de Obra", value: 25, color: "#3b82f6" },
-    { category: "Manutenção", value: 15, color: "#f59e0b" },
-    { category: "Combustível", value: 10, color: "#ef4444" },
-    { category: "Outros", value: 5, color: "#8b5cf6" },
-  ];
-
-  // Dados de exemplo para atividades recentes
-  const recentActivities = [
-    {
-      id: "1",
-      title: "Aplicação de fertilizante concluída",
-      type: "fertilizer",
-      time: "Hoje",
-    },
-    {
-      id: "2",
-      title: "Nova colheita registrada",
-      type: "harvest",
-      time: "Hoje",
-    },
-    {
-      id: "3",
-      title: "Manutenção do trator realizada",
-      type: "maintenance",
-      time: "Ontem",
-    },
-    {
-      id: "4",
-      title: "Estoque de insumos atualizado",
-      type: "inventory",
-      time: "Ontem",
-    },
-  ];
-
-  const periodOptions = [
-    { value: "1month", label: "Último mês" },
-    { value: "3months", label: "Últimos 3 meses" },
-    { value: "6months", label: "Últimos 6 meses" },
-    { value: "1year", label: "Este ano" },
-  ];
-
-  // Função para obter ícone baseado no tipo de atividade
-  const getActivityIcon = (type: string) => {
-    switch (type) {
-      case "harvest":
-        return <FaSeedling className="text-green-600" />;
-      case "fertilizer":
-        return <FaTint className="text-blue-600" />;
-      case "maintenance":
-        return <FaWrench className="text-orange-600" />;
-      case "inventory":
-        return <FaBox className="text-purple-600" />;
-      default:
-        return <FaClipboardList className="text-neutral-600" />;
+  // Mostrar tutorial para novos usuários que ainda não viram
+  useEffect(() => {
+    if (isNewUser && !hasSeenAlertsTutorial && alerts.length > 0) {
+      setShowAlertsTutorial(true);
     }
-  };
+  }, [isNewUser, hasSeenAlertsTutorial, alerts.length]);
+
+  const shouldShowOnboarding = isNewUser && !allStepsCompleted;
+
+  const recentActivityItems = recentActivities.map((activity) => ({
+    id: activity.id,
+    title: activity.title,
+    type: activity.type,
+    time: formatTimeAgo(activity.createdAt),
+  }));
 
   if (loading) {
     return (
-      <SideMenu title="Dashboard">
+      <SideMenu>
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-agro-600 mx-auto mb-4"></div>
@@ -196,7 +59,7 @@ export function DashboardPage() {
 
   if (error) {
     return (
-      <SideMenu title="Dashboard">
+      <SideMenu>
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <p className="text-red-600 mb-4">
@@ -211,16 +74,15 @@ export function DashboardPage() {
     );
   }
 
-  // Se for um novo usuário, mostrar o EmptyState
-  if (isNewUser) {
+  if (shouldShowOnboarding) {
     return (
-      <SideMenu title="Dashboard">
+      <SideMenu>
         <div className="max-w-4xl mx-auto">
           <EmptyState
-            title="Bem-vindo ao AgroSys! 🚀"
+            title="Bem-vindo ao AgroSys!"
             description="Vamos configurar seu sistema para começar a gerenciar sua propriedade de forma eficiente."
             steps={setupSteps}
-            icon={<FaRocket />}
+            icon={<FaTree />}
           />
         </div>
       </SideMenu>
@@ -228,195 +90,56 @@ export function DashboardPage() {
   }
 
   return (
-    <SideMenu title="Dashboard">
+    <SideMenu>
       <div className="space-y-6">
         {/* KPIs Principais - Linha do Topo */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <StatCard
-            title="FATURAMENTO DO MÊS"
-            value="R$ 28.450,00"
-            icon={<FaDollarSign className="text-green-600" />}
-            trend={{ value: 12, isPositive: true, period: "mês anterior" }}
-          />
-
-          <StatCard
-            title="CUSTOS DO MÊS"
-            value="R$ 15.200,00"
-            icon={<FaDollarSign className="text-red-600" />}
-            trend={{ value: 8, isPositive: false, period: "mês anterior" }}
-          />
-
-          <StatCard
-            title="COLHEITAS ATIVAS"
-            value={statistics.harvests.toString()}
-            icon={<FaSeedling className="text-green-600" />}
-            trend={{ value: 5, isPositive: true, period: "mês anterior" }}
-          />
-
-          <StatCard
-            title="ALERTAS DE ESTOQUE"
-            value="3"
-            icon={<FaBox className="text-orange-600" />}
-          />
-        </div>
+        <DashboardKPIs statistics={statistics} alertsCount={alerts.length} />
 
         {/* Layout Principal - 2/3 + 1/3 */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Coluna Esquerda - 2/3 da tela */}
           <div className="lg:col-span-2 space-y-6">
             {/* Gráfico de Produção Mensal */}
-            <ChartCard
-              title="Produção Mensal (Últimos 6 meses)"
-              periodSelector={
-                <PeriodSelector
-                  value={selectedPeriod}
-                  onChange={setSelectedPeriod}
-                  options={periodOptions}
-                />
-              }
-            >
-              <div className="h-64 bg-neutral-50 rounded-lg flex items-center justify-center">
-                <div className="text-center text-neutral-500">
-                  <FaChartLine className="text-4xl mx-auto mb-2" />
-                  <p>Gráfico de Produção Mensal</p>
-                  <p className="text-sm">
-                    Período:{" "}
-                    {
-                      periodOptions.find((opt) => opt.value === selectedPeriod)
-                        ?.label
-                    }
-                  </p>
-                  <p className="text-xs mt-2 text-neutral-400">
-                    Seus dados de produção aparecerão aqui
-                  </p>
-                </div>
-              </div>
-            </ChartCard>
+            <ProductionChart
+              selectedPeriod={selectedPeriod}
+              onPeriodChange={setSelectedPeriod}
+              periodOptions={periodOptions}
+            />
 
             {/* Próximas Atividades/Cronograma */}
-            <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral-100">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-semibold text-neutral-900">
-                  Próximas Atividades
-                </h3>
-                <FaCalendarAlt className="text-neutral-400" />
-              </div>
-
-              <div className="space-y-4">
-                {upcomingActivities.map((activity) => (
-                  <div
-                    key={activity.id}
-                    className="flex items-center p-4 bg-neutral-50 rounded-lg hover:bg-neutral-100 transition-all duration-200 cursor-pointer group"
-                  >
-                    <div className="mr-4">
-                      <div className="w-3 h-3 bg-agro-500 rounded-full group-hover:scale-110 transition-transform duration-200"></div>
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="font-medium text-neutral-900 group-hover:text-agro-700 transition-colors duration-200">
-                        {activity.title}
-                      </h4>
-                      <p className="text-sm text-neutral-600">
-                        {activity.location} • {activity.date}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <span className="text-xs font-medium text-neutral-500">
-                        {activity.daysLeft === 0
-                          ? "Hoje"
-                          : `${activity.daysLeft} dias`}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <UpcomingActivities activities={upcomingActivities} />
           </div>
 
           {/* Coluna Direita - 1/3 da tela */}
           <div className="space-y-6">
-            {/* Alertas Importantes */}
-            <AlertCard
-              title="Alertas Importantes"
-              icon={<FaExclamationTriangle />}
+            {/* Centro de Alertas & Notificações */}
+            <DashboardSidebar
               alerts={alerts}
+              onShowHelp={() => setShowAlertsTutorial(true)}
+              onMarkAlertAsRead={markAlertAsRead}
             />
 
             {/* Distribuição de Custos */}
-            <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral-100">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-semibold text-neutral-900">
-                  Distribuição de Custos
-                </h3>
-                <FaChartLine className="text-neutral-400" />
-              </div>
-
-              <div className="flex items-center space-x-6">
-                {/* Gráfico de Rosca */}
-                <div className="flex-shrink-0">
-                  <DonutChart data={costDistribution} size={120} />
-                </div>
-
-                {/* Legenda */}
-                <div className="flex-1 space-y-3">
-                  {costDistribution.map((item, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between"
-                    >
-                      <div className="flex items-center">
-                        <div
-                          className="w-3 h-3 rounded-full mr-3"
-                          style={{ backgroundColor: item.color }}
-                        ></div>
-                        <span className="text-sm text-neutral-700">
-                          {item.category}
-                        </span>
-                      </div>
-                      <span className="text-sm font-medium text-neutral-900">
-                        {item.value}%
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+            <CostDistribution data={costDistribution} />
 
             {/* Atividades Recentes */}
-            <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral-100">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-semibold text-neutral-900">
-                  Atividades Recentes
-                </h3>
-                <FaClipboardList className="text-neutral-400" />
-              </div>
-
-              <div className="space-y-4">
-                {recentActivities.map((activity) => (
-                  <div
-                    key={activity.id}
-                    className="flex items-start space-x-3 p-3 rounded-lg hover:bg-neutral-50 transition-colors duration-200"
-                  >
-                    <div className="flex-shrink-0 mt-0.5">
-                      {getActivityIcon(activity.type)}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm text-neutral-900 font-medium">
-                        {activity.title}
-                      </p>
-                      <p className="text-xs text-neutral-500">
-                        {activity.time}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <RecentActivities activities={recentActivityItems} />
           </div>
         </div>
 
         {/* System Info */}
         <SystemInfo />
       </div>
+
+      {/* Tutorial de Alertas */}
+      <AlertsTutorial
+        isVisible={showAlertsTutorial}
+        onClose={() => setShowAlertsTutorial(false)}
+        onComplete={() => {
+          setShowAlertsTutorial(false);
+          markAlertsTutorialAsSeen();
+        }}
+      />
     </SideMenu>
   );
 }

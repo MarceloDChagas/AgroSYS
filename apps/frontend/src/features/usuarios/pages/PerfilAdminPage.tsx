@@ -7,7 +7,7 @@ function PerfilAdminPage() {
     {
       label: "EDITAR",
       onClick: () => {
-        // TODO: Implementar ação de edição
+        // Implementar ação de edição
       },
       variant: "primary" as const,
       icon: <FaEdit size={14} />,
@@ -15,7 +15,7 @@ function PerfilAdminPage() {
     {
       label: "EXCLUIR",
       onClick: () => {
-        // TODO: Implementar ação de exclusão
+        // Implementar ação de exclusão
       },
       variant: "danger" as const,
       icon: <FaTrash size={14} />,

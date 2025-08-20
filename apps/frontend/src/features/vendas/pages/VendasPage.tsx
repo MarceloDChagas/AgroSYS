@@ -37,7 +37,7 @@ function VendasPage() {
   const vendasData = sales.map((sale) => ({
     id: sale.id,
     data: new Date(sale.saleDate).toLocaleDateString("pt-BR"),
-    cliente: sale.user?.name || "Cliente não identificado",
+    cliente: sale.uap?.responsible || "Cliente não identificado",
     produto: sale.saleItems
       .map((item) => `${item.product.name} (${item.quantity} un)`)
       .join(", "),
@@ -82,7 +82,7 @@ function VendasPage() {
     {
       label: "Visualizar",
       onClick: () => {
-        // TODO: Implementar visualização da venda
+        // Implementar visualização da venda
       },
       variant: "primary" as const,
       icon: <FaEye size={14} />,
@@ -96,7 +96,7 @@ function VendasPage() {
     {
       label: "Excluir",
       onClick: () => {
-        // TODO: Implementar exclusão da venda
+        // Implementar exclusão da venda
       },
       variant: "danger" as const,
       icon: <FaTrash size={14} />,

@@ -44,8 +44,17 @@ export class AuthService {
     const payload = { email: user.email, sub: user.id };
     const token = this.jwtService.sign(payload);
 
+    // Buscar dados completos do usuário para obter a role
+    const fullUser = await this.usersService.findOne(user.id);
+
     return {
       access_token: token,
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: fullUser?.role || "COMMON",
+      },
     };
   }
 

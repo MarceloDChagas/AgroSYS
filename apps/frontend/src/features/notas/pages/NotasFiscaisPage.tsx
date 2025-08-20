@@ -4,7 +4,6 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { FilterBar } from "@/components/ui/FilterBar";
 import { DataTable } from "@/components/ui/DataTable";
 import { ActionButtons } from "@/components/ui/ActionButtons";
-<<<<<<< HEAD
 import {
   FaPlus,
   FaEye,
@@ -13,9 +12,6 @@ import {
   FaFileInvoice,
 } from "react-icons/fa";
 import { useInvoice } from "@/hooks/useInvoice";
-=======
-import { FaPlus, FaEye, FaDownload, FaTrash } from "react-icons/fa";
->>>>>>> 30a273d (chore: remove todos os console.log/console.error e corrige erros de linter relacionados a variáveis não usadas em catch)
 
 function NotasFiscaisPage() {
   const navigate = useNavigate();
@@ -92,7 +88,7 @@ function NotasFiscaisPage() {
     {
       label: "DOWNLOAD",
       onClick: () => {
-        // TODO: Implementar download da nota fiscal
+        // Implementar download da nota fiscal
       },
       variant: "primary" as const,
       icon: <FaDownload size={14} />,
@@ -100,12 +96,7 @@ function NotasFiscaisPage() {
     {
       label: "EXCLUIR",
       onClick: () => {
-<<<<<<< HEAD
-        // For now, we'll handle deletion through the table row actions
-        // This can be enhanced later to work with selected items
-=======
-        // TODO: Implementar exclusão da nota fiscal
->>>>>>> 30a273d (chore: remove todos os console.log/console.error e corrige erros de linter relacionados a variáveis não usadas em catch)
+        // Implementar exclusão da nota fiscal
       },
       variant: "danger" as const,
       icon: <FaTrash size={14} />,

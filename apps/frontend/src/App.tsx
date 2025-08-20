@@ -12,6 +12,7 @@ import SolicitarFerramentaPage from "./features/ferramentas/pages/SolicitarFerra
 import DevolverFerramentaPage from "./features/ferramentas/pages/DevolverFerramentaPage";
 import EditarFerramentaPage from "./features/ferramentas/pages/EditarFerramentaPage";
 import ExcluirFerramentaPage from "./features/ferramentas/pages/ExcluirFerramentaPage";
+import CadastroFerramentaPage from "./features/ferramentas/pages/CadastroFerramentaPage";
 import VendaCadastroPage from "./features/vendas/pages/VendaCadastroPage";
 import NotaFiscalPage from "./features/notas/pages/NotaFiscalPage";
 import GerarNotaPage from "./features/notas/pages/GerarNotaPage";
@@ -24,14 +25,11 @@ import ProdutosPage from "./features/produtos/pages/ProdutosPage";
 import CadastroInsumoPage from "./features/insumos/pages/CadastroInsumoPage";
 import CadastroProdutoPage from "./features/produtos/pages/CadastroProdutoPage";
 import EditarProdutoPage from "./features/produtos/pages/EditarProdutoPage";
-<<<<<<< HEAD
-=======
 import PerfilPage from "./features/usuarios/pages/PerfilPage";
 import ListaUsuariosPage from "./features/usuarios/pages/ListaUsuariosPage";
 import PerfilAdminPage from "./features/usuarios/pages/PerfilAdminPage";
 import CadastroUsuarioPage from "./features/usuarios/pages/CadastroUsuarioPage";
 import EditarPermissaoPage from "./features/usuarios/pages/EditarPermissaoPage";
->>>>>>> 30a273d (chore: remove todos os console.log/console.error e corrige erros de linter relacionados a variáveis não usadas em catch)
 
 function App() {
   return (
@@ -44,6 +42,10 @@ function App() {
         <Route path="/colheita" element={<ColheitaPage />} />
         <Route path="/vendas" element={<VendasPage />} />
         <Route path="/ferramentas" element={<FerramentasPage />} />
+        <Route
+          path="/ferramentas/cadastro"
+          element={<CadastroFerramentaPage />}
+        />
         <Route path="/colheita/nova" element={<NovaColheitaPage />} />
         <Route
           path="/ferramentas/solicitar"
@@ -70,14 +72,11 @@ function App() {
         <Route path="/insumos/cadastro" element={<CadastroInsumoPage />} />
         <Route path="/produtos/cadastro" element={<CadastroProdutoPage />} />
         <Route path="/produtos/editar/:id" element={<EditarProdutoPage />} />
-<<<<<<< HEAD
-=======
         <Route path="/perfil" element={<PerfilPage />} />
         <Route path="/perfil/lista" element={<ListaUsuariosPage />} />
         <Route path="/perfil/admin" element={<PerfilAdminPage />} />
         <Route path="/perfil/cadastro" element={<CadastroUsuarioPage />} />
         <Route path="/perfil/editar" element={<EditarPermissaoPage />} />
->>>>>>> 30a273d (chore: remove todos os console.log/console.error e corrige erros de linter relacionados a variáveis não usadas em catch)
 
         {/* Adicione outras rotas conforme necessário */}
       </Routes>

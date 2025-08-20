@@ -9,6 +9,12 @@ export interface UseAuthResult {
   isAdmin: boolean;
   isCommonUser: boolean;
   login: (credentials: { email: string; password: string }) => Promise<void>;
+  signUp: (userData: {
+    email: string;
+    password: string;
+    name: string;
+    role?: string;
+  }) => Promise<void>;
   logout: () => void;
 }
 
@@ -53,6 +59,23 @@ export function useAuth(): UseAuthResult {
     }
   };
 
+  const signUp = async (userData: {
+    email: string;
+    password: string;
+    name: string;
+    role?: string;
+  }) => {
+    try {
+      const response = await authService.signUp(userData);
+      setUser(response.user);
+      setIsAuthenticated(true);
+    } catch (error) {
+      setUser(null);
+      setIsAuthenticated(false);
+      throw error;
+    }
+  };
+
   const logout = () => {
     authService.logout();
     setUser(null);
@@ -67,6 +90,7 @@ export function useAuth(): UseAuthResult {
     isAdmin: user?.role === "ADMIN",
     isCommonUser: user?.role === "COMMON_USER" || user?.role === "COMMON",
     login,
+    signUp,
     logout,
   };
 }

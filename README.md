@@ -115,7 +115,12 @@ cd Sistema-de-gestao-agropecuaria
 # 2. Instalar dependências
 npm install
 
-# 3. Configurar banco de dados (MANUAL)
+# 3. Configurar banco de dados (COM DOCKER - RECOMENDADO)
+# - Certifique-se de que o Docker está instalado e rodando
+# - Execute o script de configuração:
+scripts\docker-setup.bat
+
+# OU configuração manual:
 # - Instalar PostgreSQL
 # - Criar banco 'gestao_agropecuaria'
 # - Criar arquivo .env no backend com DATABASE_URL
@@ -325,6 +330,40 @@ npm run setup        # Instala dependências, formata e inicia
 - Migrations com Prisma
 
 ## 🔧 Configuração do Ambiente
+
+### Banco de Dados com Docker (Recomendado)
+
+Para facilitar a configuração, o projeto inclui suporte completo ao Docker:
+
+#### Configuração Rápida:
+
+```bash
+# Execute o script de configuração (Windows)
+scripts\docker-setup.bat
+
+# Ou no Linux/Mac
+chmod +x scripts/docker-setup.sh
+./scripts/docker-setup.sh
+```
+
+#### Configuração Manual:
+
+```bash
+# Iniciar containers
+docker-compose up -d
+
+# Executar migrações
+cd apps/backend
+npx prisma migrate dev
+```
+
+#### Acesso ao Banco:
+
+- **PostgreSQL:** localhost:5432
+- **pgAdmin:** http://localhost:8080 (admin@agrosys.com / admin123)
+- **Database:** gestao_agropecuaria
+
+> 📖 Para mais detalhes, consulte [README-DOCKER.md](README-DOCKER.md)
 
 ### Backend
 

@@ -69,7 +69,7 @@ function ProdutosPage() {
     {
       label: "EXCLUIR",
       onClick: () => {
-        // TODO: Implementar ação de exclusão
+        // Implementar ação de exclusão
       },
       variant: "danger" as const,
       icon: <FaTrash size={14} />,
@@ -127,7 +127,7 @@ function ProdutosPage() {
         <FilterBar
           filters={filters}
           onFilterChange={() => {
-            // TODO: Implementar filtros
+            // Implementar filtros
           }}
         />
 
